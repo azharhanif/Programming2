@@ -1,6 +1,6 @@
 package com.prog2.labs;
 /**
- * @author adinashby
+ * @author 
  *
  */
 public class Account {
@@ -88,3 +88,4 @@ public class Account {
 		return false;
 	}
 }
+
