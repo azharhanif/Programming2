@@ -1,6 +1,6 @@
 /**
  *
- * @author adinashby
+ * @author 
  */
 public class Account {
 
