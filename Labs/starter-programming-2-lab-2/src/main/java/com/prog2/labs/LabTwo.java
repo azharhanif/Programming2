@@ -1,6 +1,6 @@
 package com.prog2.labs;
 /**
- * @author adinashby
+ * @author 
  *
  */
 public class LabTwo {
@@ -43,3 +43,4 @@ public class LabTwo {
 	 */
 
 }
+
