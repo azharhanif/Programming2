@@ -1,6 +1,6 @@
 # Programming 2 - Lab 15
 
-This template repository is the starter project for Programming 2 Lab 15. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 15.Written in Java, Use JUnit for testing.
 
 ### Question(s)
 
@@ -36,3 +36,4 @@ Here’s the expected output when #disks = 3
 ![](Q2_2.png)
 
 ![](Q2_3.png)
+
