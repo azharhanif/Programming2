@@ -1,6 +1,6 @@
 # Programming 2 - Lab 14
 
-This template repository is the starter project for Programming 2 Lab 14. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 14. Written in Java, Use JUnit for testing.
 
 ### Question(s)
 
@@ -29,3 +29,4 @@ Now, what about solving this recursively?
 6. Write a recursive method that accepts an array of words and returns the longest word found in the array. If the input array is empty then the method should return null.
 
 7. Given an array of integers array and an integer n, write a recursive method that returns the number of occurrences of n in a.
+
