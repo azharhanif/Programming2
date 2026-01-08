@@ -1,6 +1,6 @@
 # Programming 2 - Lab 6
 
-This template repository is the starter project for Programming 2 Lab 6. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 6. Written in Java, Use JUnit for testing.
 
 ### Question(s)
 
@@ -46,10 +46,5 @@ Constraints
 1 <= q <= 1000  
 1 <= x, y <= n
 
-### Setup Command
 
-`gradle clean`
 
-### Run Command
-
-`gradle test`
