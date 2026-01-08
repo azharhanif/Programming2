@@ -1,6 +1,6 @@
 # Programming 2 - Lab 2
 
-This template repository is the starter project for Programming 2 Lab 2. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 2.  Written in Java, Use JUnit for testing.
 
 ### Questions
 
@@ -52,10 +52,5 @@ This template repository is the starter project for Programming 2 Lab 2. Written
 
    x) equals() method to compare if two instances of Account class are equal or not.
 
-### Setup Command
 
-`gradle clean`
 
-### Run Command
-
-`gradle test`
