@@ -1,6 +1,6 @@
 # Programming 2 - Lab 18
 
-This template repository is the starter project for Programming 2 Lab 18. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 18. Written in Java, Use JUnit for testing.
 
 ### Question(s)
 
@@ -28,3 +28,4 @@ The program should compute the GPA (grade point or quality point average) for ea
    Add a catch for each of these situations, and in each case give as specific a message as you can. The program will terminate if any of these exceptions are thrown, but at least you can supply the user with useful information.
 
 5. Test the program. Test data is in the file students.dat. Be sure to test each of the exceptions as well.
+
