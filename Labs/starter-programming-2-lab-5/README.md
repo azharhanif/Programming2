@@ -24,11 +24,6 @@ if the user enters 5, you should generate:
 
 ![](Q2_2.png)
 
-### Setup Command
 
-`gradle clean`
 
-### Run Command
-
-`gradle test`
 
