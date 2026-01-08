@@ -1,6 +1,6 @@
 # Programming 2 - Lab 17
 
-This template repository is the starter project for Programming 2 Lab 17. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 17. Written in Java, Use JUnit for testing.
 
 ### Question(s)
 
@@ -19,3 +19,4 @@ New York: 298734.12
 Write a program that will compute and print the total sales from all the cities together. The program should also report the number of cities for which data was not available. The name of the file is "sales.dat".
 
 Suggestion: For each line, read and ignore characters up to the colon. Then read the rest of the line into a variable of type String. Try to convert the string into a number, and use try..catch to test whether the conversion succeeds.
+
