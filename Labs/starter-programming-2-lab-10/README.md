@@ -1,6 +1,6 @@
 # Programming 2 - Lab 10
 
-This template repository is the starter project for Programming 2 Lab 10. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 10. Written in Java, Use JUnit for testing.
 
 ### Question(s)
 
@@ -11,4 +11,5 @@ This template repository is the starter project for Programming 2 Lab 10. Writte
 2. Implement the following classes along with their driver class based on the UML class diagrams:
 
 ![](Q2.png)
+
 
