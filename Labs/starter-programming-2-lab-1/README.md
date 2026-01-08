@@ -1,6 +1,6 @@
 # Programming 2 - Lab 1
 
-This template repository is the starter project for Programming 2 Lab 1. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 1. Written in Java, Use JUnit for testing.
 
 ### Questions
 
@@ -37,10 +37,5 @@ This template repository is the starter project for Programming 2 Lab 1. Written
     Please input a password: `Vanier1234`  
     The password is `valid`!
 
-### Setup Command
 
-`gradle clean`
 
-### Run Command
-
-`gradle test`
