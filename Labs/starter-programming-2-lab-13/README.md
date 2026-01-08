@@ -1,6 +1,6 @@
 # Programming 2 - Lab 13
 
-This template repository is the starter project for Programming 2 Lab 13. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 13. Written in Java, Use JUnit for testing.
 
 ### Question(s)
 
@@ -13,3 +13,4 @@ This template repository is the starter project for Programming 2 Lab 13. Writte
 ![](Q2.png)
 
 3. Override the hashCode() method and generate a hash based on the data members.
+
