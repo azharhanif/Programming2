@@ -1,6 +1,6 @@
 # Programming 2 - Lab 4
 
-This template repository is the starter project for Programming 2 Lab 4. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 4. Written in Java, Use JUnit for testing.
 
 ### Questions
 
@@ -44,10 +44,5 @@ Input: `[1, 1]`
    -1000 <= nums[i] <= 1000  
    -104 <= target <= 104
 
-### Setup Command
 
-`gradle clean`
 
-### Run Command
-
-`gradle test`
