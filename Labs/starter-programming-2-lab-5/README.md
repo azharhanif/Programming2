@@ -1,6 +1,6 @@
 # Programming 2 - Lab 5
 
-This template repository is the starter project for Programming 2 Lab 5. Written in Java, and tested with Gradle/JUnit.
+This template repository is the starter project for Programming 2 Lab 5. Written in Java, Use JUnit for testing.
 
 ### Questions
 
@@ -31,3 +31,4 @@ if the user enters 5, you should generate:
 ### Run Command
 
 `gradle test`
+
