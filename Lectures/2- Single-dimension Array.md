@@ -136,46 +136,54 @@ int[] nums5 = Arrays.copyOfRange(nums1, 1, 2); // {2}
 
 Shallow copy vs Deep copy - Example:
 
-```java
 import java.util.Arrays;
 
-/**
- *
- * @author adinashby
- */
 public class CopyExample {
 
     private int[] data;
 
-    public CopyExample(int[] values) {
-        // Shallow Copy
-        //this.data = values;
+    // Constructor with choice of copy type
+    public CopyExample(int[] values, boolean deepCopy) {
 
-        // Deep Copy
-        data = new int[values.length];
-
-        for(int i = 0; i < data.length; i++) {
-            data[i] = values[i];
+        if (deepCopy) {
+            // DEEP COPY
+            data = new int[values.length];
+            for (int i = 0; i < values.length; i++) {
+                data[i] = values[i];
+            }
+        } else {
+            // SHALLOW COPY
+            data = values;
         }
     }
 
     public void showData() {
         System.out.println(Arrays.toString(data));
     }
+
+    public static void main(String[] args) {
+
+        int[] values = { 1, 2, 3 };
+
+        // Shallow copy example
+        CopyExample shallow = new CopyExample(values, false);
+        // Deep copy example
+        CopyExample deep = new CopyExample(values, true);
+
+        System.out.print("Before change:\nShallow: ");
+        shallow.showData();
+        System.out.print("Deep:    ");
+        deep.showData();
+
+        values[0] = 13;
+
+        System.out.print("\nAfter change to values[0]:\nShallow: ");
+        shallow.showData();
+        System.out.print("Deep:    ");
+        deep.showData();
+    }
 }
-```
 
-```java
-public static void main(String[] args) {
-    int[] values = { 1, 2, 3 };
-
-    CopyExample copyExample = new CopyExample(values);
-
-    copyExample.showData();
-    values[0] = 13;
-    copyExample.showData();
-}
-```
 
 ### 4.4. sort an array
 
