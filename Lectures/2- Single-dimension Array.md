@@ -122,7 +122,7 @@ Usually we can use the copy constructor (or `clone()`) to implement deep copy. F
 int[] nums1 = {1, 2, 3};
 
 // copy the entire array
-int[] nums2 = Arrays.copyOf(nums2, nums2.length);     // {1, 2, 3};
+int[] nums2 = Arrays.copyOf(nums1, nums1.length);   // {1, 2, 3};
 
 // copy part of an array
 int[] nums3 = Arrays.copyOf(nums1, 2);      		 // {1, 2};
