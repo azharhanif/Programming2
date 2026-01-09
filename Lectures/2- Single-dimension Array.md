@@ -135,7 +135,7 @@ int[] nums5 = Arrays.copyOfRange(nums1, 1, 2); // {2}
 ```
 
 Shallow copy vs Deep copy - Example:
-
+```java
 import java.util.Arrays;
 
 public class CopyExample {
@@ -183,7 +183,7 @@ public class CopyExample {
         deep.showData();
     }
 }
-
+```
 
 ### 4.4. sort an array
 
