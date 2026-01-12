@@ -325,7 +325,7 @@ OOP is about 2 things:
 
      - **equals()**: to compare two objects (_overload_ version), we will learn the (_override_ version) of this method this semester
      - **getter and setter**: to read or modify the data members of the class
-- Object: real, akes memory
+- Object: real, takes memory
 
 
 ### 4.2 Access modifier
