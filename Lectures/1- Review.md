@@ -262,7 +262,7 @@ Give programmers the ability to go back to the previous code
 
 OOP is about 2 things:
 
-- Class: abstract
+- Class: abstract, takes no memory
 
   - data members: the information you care about
   - methods: to define the behaviors
@@ -324,8 +324,8 @@ OOP is about 2 things:
       ```
 
      - **equals()**: to compare two objects (_overload_ version), we will learn the (_override_ version) of this method this semester
-      - Object: real
-      - - **getter and setter**: to read or modify the data members of the class
+     - **getter and setter**: to read or modify the data members of the class
+- Object: real, akes memory
 
 
 ### 4.2 Access modifier
@@ -372,7 +372,7 @@ For each object, java will allocate two pieces of memory to it, one to store the
   // Example of static and non-static variables and methods
   /**
    * A class of clock
-   * @author Yi Wang
+   * @author  
    */
   public class Clock {
       private int hr;     // non-static
