@@ -225,7 +225,9 @@ Give programmers the ability to go back to the previous code
    for (; num < str.length(); i += 2)
 
    // for loop with two initialization
-   for (int i = 0; num < str.length(); i += 2)
+   for (int i = 0, j = str.length() - 1; i < j; i++, j--) {
+    System.out.println("i = " + i + ", j = " + j);
+}
    ```
 
 2. **while**: second. If we DO NOT know how many times the loop will iterate, then use while loop.
