@@ -323,18 +323,18 @@ OOP is about 2 things:
       }
       ```
 
-    - **equals()**: to compare two objects (_overload_ version), we will learn the (_override_ version) of this method this semester
+     - **equals()**: to compare two objects (_overload_ version), we will learn the (_override_ version) of this method this semester
       - Object: real
       - - **getter and setter**: to read or modify the data members of the class
+
 ### A brief on overloading and overridding:
 
   In Object-Oriented Programming (OOP), the equals() method is used to compare objects for logical equality, rather   than reference equality. Java provides two related concepts:
-
       1. Overloading equals() — writing a new method with a different parameter list
-
       2. Overriding equals() — replacing the inherited Object.equals() method
 
-  Only overriding achieves true object equality comparison in Java.
+   Only overriding achieves true object equality comparison in Java.
+  
       1. Default equals() (from java.lang.Object)
       
        ```java
@@ -342,14 +342,13 @@ OOP is about 2 things:
        ```
         Default behavior: Compares memory references (same as ==).
       
-      ```java
-      MyClass a = new MyClass();
-      MyClass b = new MyClass();
+       ```java
+       MyClass a = new MyClass();
+       MyClass b = new MyClass();
 
-      System.out.println(a.equals(b)); // false (different objects)
-      System.out.println(a == b);       // false
-     
-      ```
+       System.out.println(a.equals(b)); // false (different objects)
+       System.out.println(a == b);       // false
+       ```
       2. Overloading equals() (NOT recommended for equality)
 
 Example:
@@ -357,7 +356,6 @@ Example:
     -```java
     class Student {
     private int id;
-
     public Student(int id) {
         this.id = id;
     }
@@ -367,9 +365,10 @@ Example:
         return this.id == other.id;
       }
     }
-
     ```
+
 Problem:
+
     ```java
     Student s1 = new Student(101);
     Student s2 = new Student(101);
