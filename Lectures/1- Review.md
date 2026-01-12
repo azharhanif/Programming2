@@ -326,26 +326,29 @@ OOP is about 2 things:
     - **equals()**: to compare two objects (_overload_ version), we will learn the (_override_ version) of this method this semester
       - Object: real
       - - **getter and setter**: to read or modify the data members of the class
-A brief on overloading and overridding:
+### A brief on overloading and overridding:
 
-In Object-Oriented Programming (OOP), the equals() method is used to compare objects for logical equality, rather than reference equality. Java provides two related concepts:
+  In Object-Oriented Programming (OOP), the equals() method is used to compare objects for logical equality, rather   than reference equality. Java provides two related concepts:
 
-1. Overloading equals() — writing a new method with a different parameter list
+      1. Overloading equals() — writing a new method with a different parameter list
 
-2. Overriding equals() — replacing the inherited Object.equals() method
+      2. Overriding equals() — replacing the inherited Object.equals() method
 
-Only overriding achieves true object equality comparison in Java.
-1. Default equals() (from java.lang.Object)
+  Only overriding achieves true object equality comparison in Java.
+      1. Default equals() (from java.lang.Object)
+      
        ```java
         public boolean equals(Object obj)
-      ```
-      Default behavior: Compares memory references (same as ==).
+       ```
+        Default behavior: Compares memory references (same as ==).
+      
       ```java
       MyClass a = new MyClass();
       MyClass b = new MyClass();
 
       System.out.println(a.equals(b)); // false (different objects)
       System.out.println(a == b);       // false
+     
       ```
       2. Overloading equals() (NOT recommended for equality)
 
