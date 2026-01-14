@@ -398,8 +398,9 @@ For each object, java will allocate two pieces of memory to it, one to store the
        * e.g.: Clock.printBrand()
        * Math.max(1, 2)
       */
-      public void printBrand() {
-          System.out.println(brand);
-      }
+    public static void printBrand() {
+    System.out.println(brand);
+}
+
   }
   ```
