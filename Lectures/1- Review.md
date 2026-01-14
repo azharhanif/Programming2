@@ -399,8 +399,8 @@ For each object, java will allocate two pieces of memory to it, one to store the
        * Math.max(1, 2)
       */
     public static void printBrand() {
-    System.out.println(brand);
-}
+        System.out.println(brand);
+    }
 
   }
   ```
