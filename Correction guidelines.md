@@ -211,7 +211,13 @@ for (String name : names) {
             if (num > 46)
             ```
             In this case, this is a magic number, because the boundary you are using (46) might be changed in the future. 
-
+Good Example (No Magic Numbers): Use named constants instead.
+final int EXCELLENT_SCORE = 85;
+```java
+if (score > EXCELLENT_SCORE) {
+    System.out.println("Excellent");
+}
+```
 ### Indentation
 Indents are a very important to achieve a clean code. Here are some general guidelines on when you should add them.
 *Note: To add indents, you can press the tab key on your keyboard.*
@@ -296,3 +302,4 @@ Indents are a very important to achieve a clean code. Here are some general guid
 ## Major Mistakes (-3)
 
 *Note: Major mistakes do not have a cummulative limit, and depend more on your comprehension of the course and its tasks.*
+
