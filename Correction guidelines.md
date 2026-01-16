@@ -288,7 +288,7 @@ Indents are a very important to achieve a clean code. Here are some general guid
 * If one statement is not finished in one line and is continued in another line, use two-level of indent 
 
     ```java
-    return "Hi, my name is Yi, I am a teacher at Vanier Colelge" +
+    return "Hi, my name is Bond, James Bond. I am 007 at MI5" +
         	"Nice to meet you";				// two-level of indent since this is one statement
     ```
     
@@ -303,5 +303,6 @@ Indents are a very important to achieve a clean code. Here are some general guid
 ## Major Mistakes (-3)
 
 *Note: Major mistakes do not have a cummulative limit, and depend more on your comprehension of the course and its tasks.*
+
 
 
