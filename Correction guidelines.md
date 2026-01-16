@@ -11,9 +11,8 @@ Here are general guidelines on how to properly use spaces
 - You should use spaces before and after operators if they are not unary
   
     *Example 1*
-    
     ```java
-int num=3/2;
+	int num=3/2;
     return num >0 ?  1:0;
 
     // Should be
@@ -23,8 +22,8 @@ int num=3/2;
     ```
     *Example 2*
     ```java
-num++;
-  // This is a unary operator, so no need for spaces
+	num++;
+  	// This is a unary operator, so no need for spaces
   ```
   
 - When you create signatures for methods, you should not add a space between the name of the method and the parentheses for parameters
@@ -169,6 +168,37 @@ num++;
 
 ### For Loops
 - If you should use enhanced for loops, but you use regular ones, -1
+- An enhanced for loop (also called a for-each loop) is a simplified loop in Java used to iterate over collections or arrays without manually managing an index.
+```java
+  for (DataType element : collection) {
+    // use element
+}
+```
+Example with an Array
+```java
+int[] numbers = {10, 20, 30, 40};
+
+for (int num : numbers) {
+    System.out.println(num);
+}
+```
+Equivalent traditional loop
+```java
+for (int i = 0; i < numbers.length; i++) {
+    System.out.println(numbers[i]);
+}
+```
+Example with an ArrayList
+```java
+ArrayList<String> names = new ArrayList<>();
+names.add("Alice");
+names.add("Bob");
+names.add("Charlie");
+
+for (String name : names) {
+    System.out.println(name);
+}
+```
 
 ### Magic Numbers
 - Magic numbers are numbers used in code with either: 
@@ -264,4 +294,5 @@ Indents are a very important to achieve a clean code. Here are some general guid
 <br>
 
 ## Major Mistakes (-3)
+
 *Note: Major mistakes do not have a cummulative limit, and depend more on your comprehension of the course and its tasks.*
