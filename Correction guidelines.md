@@ -299,10 +299,9 @@ Indents are a very important to achieve a clean code. Here are some general guid
 - It is okay to use empty lines to separate different steps of code, but do not go overboard with them (usually, one empty line will suffice to create that separation)
 
 <br>
-
 ## Major Mistakes (-3)
-
 *Note: Major mistakes do not have a cummulative limit, and depend more on your comprehension of the course and its tasks.*
+
 
 
 
