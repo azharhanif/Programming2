@@ -295,7 +295,7 @@ Indents are a very important to achieve a clean code. Here are some general guid
     If everything was left indented, it would be hard to keep track of where something starts or ends.
 
 ### Lines
-- Your code should not contain lines that go past the vertical line that is in Netbeans files by too much (this vertical line marks 80 characters, I will tolerate up to 100 characters / line)
+- Your code should not contain lines that go past the vertical line that is by too much (this vertical line usually marks 80 characters, I will tolerate up to 100 characters / line)
 - It is okay to use empty lines to separate different steps of code, but do not go overboard with them (usually, one empty line will suffice to create that separation)
 
 <br>
@@ -303,6 +303,7 @@ Indents are a very important to achieve a clean code. Here are some general guid
 ## Major Mistakes (-3)
 
 *Note: Major mistakes do not have a cummulative limit, and depend more on your comprehension of the course and its tasks.*
+
 
 
 
