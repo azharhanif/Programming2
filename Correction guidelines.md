@@ -174,7 +174,7 @@ Here are general guidelines on how to properly use spaces
     // use element
 }
 ```
-Example with an Array
+- Example with an Array
 ```java
 int[] numbers = {10, 20, 30, 40};
 
@@ -182,13 +182,13 @@ for (int num : numbers) {
     System.out.println(num);
 }
 ```
-Equivalent traditional loop
+- Equivalent traditional loop
 ```java
 for (int i = 0; i < numbers.length; i++) {
     System.out.println(numbers[i]);
 }
 ```
-Example with an ArrayList
+- Example with an ArrayList
 ```java
 ArrayList<String> names = new ArrayList<>();
 names.add("Alice");
@@ -211,9 +211,10 @@ for (String name : names) {
             if (num > 46)
             ```
             In this case, this is a magic number, because the boundary you are using (46) might be changed in the future. 
-Good Example (No Magic Numbers): Use named constants instead.
-final int EXCELLENT_SCORE = 85;
+- Good Example (No Magic Numbers): Use named constants instead.
+
 ```java
+final int EXCELLENT_SCORE = 85;
 if (score > EXCELLENT_SCORE) {
     System.out.println("Excellent");
 }
@@ -302,4 +303,5 @@ Indents are a very important to achieve a clean code. Here are some general guid
 ## Major Mistakes (-3)
 
 *Note: Major mistakes do not have a cummulative limit, and depend more on your comprehension of the course and its tasks.*
+
 
