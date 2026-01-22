@@ -22,12 +22,14 @@ Clock[] clocks = new Clock[5];				// an array of objects
 
 Default values are given based on the data type:
 
-| Data type                         | Default value-              |
-| --------------------------------- | --------------------------- |
-| double, int, char (or any number) | 0                           |
-| boolean                           | false                       |
-| String                            | null, not empty string ("") |
-| Clock (any class)                 | null                        |
+| Data type                         | Default value-              		|
+| --------------------------------- | --------------------------- 		|
+| double, int, char (or any number) | 0                           		|
+| boolean                           | false                       		|
+| String                            | null, not empty string ("") 		|
+|									|"" is a real object				|
+|									|✔ null means no object reference	|
+| Clock (any class)                 | null                        		|
 
 2. If you not only know the size of the array, but also want to **initialize it with specific values**, use **{}** to initialize it:
 
