@@ -449,7 +449,7 @@ public class AccountTest {
 
 	public static void main(String[] args) {
 //		Account account = new Account();
-//		Account[] accounts = { new Account(), new Account(1242, "Adin", 20), new Account(4212, "John", 4332) };
+//		Account[] accounts = { new Account(), new Account(1242, "Adel", 20), new Account(4212, "John", 4332) };
 //
 //		Account[] accounts = new Account[3];    // { null, null, null }
 //		Arrays.fill(accounts, new Account());
