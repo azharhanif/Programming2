@@ -66,9 +66,7 @@ In Java, you cannot modify an element (character) of a String because String obj
 String s = "Hello";
 s[0] = 'J';   // ❌ Not allowed
 ```
-Why Did Java Make String Immutable?
-
-✅ 1. Security
+Why Did Java Make String Immutable? Mainly Security. 
 
 Strings are widely used for:
 
