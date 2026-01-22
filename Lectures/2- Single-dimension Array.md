@@ -409,7 +409,7 @@ Another example - Account class:
 ```java
 /**
  *
- * @author adinashby
+ * @author 
  */
 public class Account {
 
