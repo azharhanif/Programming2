@@ -77,7 +77,7 @@ If strings were mutable, malicious code could modify sensitive values after vali
 
 ## 4. Arrays class
 
-Java provides us an `Arrays` class which contains many useful methods related to array.
+Java provides us an `Arrays` class, a utility class named java.util.Arrays. It contains static methods related to array.
 
 ### 4.1. print the entire array
 
