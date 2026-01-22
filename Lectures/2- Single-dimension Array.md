@@ -210,7 +210,7 @@ public class CopyExample {
 // Sort an array
 int[] nums = {1, 6, 3, -2, 5, 0};
 // Arrays.sort() is a void method, it direclty modifies the original array instead of create a new array. If you want to keep the original array, you should create a copy of the array manually before sorting it.
-int[] numsCopy = Arrays.copyOf(nums12, nums12.length);
+int[] numsCopy = Arrays.copyOf(nums, nums.length);
 
 // sort the entire array, ascending
 Arrays.sort(numsCopy);
