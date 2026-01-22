@@ -60,6 +60,23 @@ An array is very similar to a string.
 | Read an element   | `str.charAt(idx)` | `array[idx]`   |
 | Modify an element | Does not exist    | `array[idx]`   |
 
+In Java, you cannot modify an element (character) of a String because String objects are immutable by design. An immutable object is one whose state cannot be changed after it is created.
+
+```java
+String s = "Hello";
+s[0] = 'J';   // ❌ Not allowed
+```
+Why Did Java Make String Immutable?
+
+✅ 1. Security
+
+Strings are widely used for:
+
+	Usernames, Passwords, File paths, Network connections
+
+If strings were mutable, malicious code could modify sensitive values after validation. Immutability prevents this risk.
+
+
 ## 4. Arrays class
 
 Java provides us an `Arrays` class which contains many useful methods related to array.
