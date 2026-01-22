@@ -457,7 +457,7 @@ public class AccountTest {
 		Account[] accounts;
 
 		Account account1 = new Account();
-		Account account2 = new Account(1242, "Adin", 20);
+		Account account2 = new Account(1242, "Adel", 20);
 		Account account3 = new Account(4212, "John", 4332);
 
 		accounts = new Account[] { account1, account2, account3 };
