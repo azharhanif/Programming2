@@ -129,7 +129,7 @@ System.out.println(Arrays.equals(nums1, nums2)); // comparing the elements -> tr
 
 ### 4.3. deep copy
 
-Usually we can use the copy constructor (or `clone()`) to implement deep copy. For array, there are two methods we can directly use:
+Usually we can use the copy constructor (or `clone()',  Cloneable interface needed, more advanced, more on this later) to implement deep copy. For array, there are two methods we can directly use:
 
 1. `Arrays.copyOf()`: deep copy an array, **from the first element to a specific element**.
 2. `Arrays.copyOfRange()`: deep copy an array, **from a specific element to another specific element**.
