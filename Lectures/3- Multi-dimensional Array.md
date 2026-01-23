@@ -132,10 +132,10 @@ public static void increaseValue(double[][] numss, double value) {
 
 1. `Arrays.deepToString()` for multi-dimension (not necessary only 2d) array
 2. `Arrays.deepEquals()` for multi-dimension array
-### 4.1 'Arrays.deepToString()'
+### 4.1 `Arrays.deepToString()`
 (Works for ANY depth: 2D, 3D, n-D)
 #### Problem it solves
-'Arrays.toString()' prints references for nested arrays:
+`Arrays.toString()` prints references for nested arrays:
 
 ```java
 int[][] a = { {1, 2}, {3, 4} };
@@ -146,7 +146,118 @@ System.out.println(Arrays.toString(a));
 ```java
 [[I@1b6d3586, [I@4554617c]
 ```
+#### Correct solution: `deepToString()`
+```java
+import java.util.Arrays;
 
+public class DeepToStringDemo {
+    public static void main(String[] args) {
+        int[][] a = { {1, 2}, {3, 4} };
+        int[][][] b = {
+            { {1, 2}, {3, 4} },
+            { {5, 6} }
+        };
+
+        System.out.println(Arrays.deepToString(a));
+        System.out.println(Arrays.deepToString(b));
+    }
+}
+```
+#### Output:
+```java
+[[1, 2], [3, 4]]
+[[[1, 2], [3, 4]], [[5, 6]]]
+```
+✔ Works for any depth
+✔ Handles null safely
+### 4.2 `Arrays.deepEquals()`
+(Compares contents, not references)
+#### Problem it solves
+`equals()` compares references, not values:
+```java
+int[][] a = { {1, 2}, {3, 4} };
+int[][] b = { {1, 2}, {3, 4} };
+System.out.println(a.equals(b));   // false
+```
+#### Correct solution: `deepEquals()`
+```java
+import java.util.Arrays;
+
+public class DeepEqualsDemo {
+    public static void main(String[] args) {
+        int[][] a = { {1, 2}, {3, 4} };
+        int[][] b = { {1, 2}, {3, 4} };
+        int[][] c = { {1, 2}, {4, 3} };
+
+        System.out.println(Arrays.deepEquals(a, b)); // true
+        System.out.println(Arrays.deepEquals(a, c)); // false
+    }
+}
+```
+✔ Compares values recursively
+✔ Works for mixed dimensions
+✔ Handles null correctly
+
+### 4.3 `Arrays.deepHashCode()`
+(Used with deepEquals())
+#### Why it matters
+If you override equality logic (e.g., in tests or hashing), use:
+```java
+import java.util.Arrays;
+
+public class DeepHashCodeDemo {
+    public static void main(String[] args) {
+        int[][] a = { {1, 2}, {3, 4} };
+        int[][] b = { {1, 2}, {3, 4} };
+
+        System.out.println(Arrays.deepHashCode(a));
+        System.out.println(Arrays.deepHashCode(b)); // same value
+    }
+}
+```
+✔ Ensures consistent hashing
+✔ Required for correctness in hash-based structures
+### 4.4 Arrays.copyOf() (Outer array only)
+```java
+int[][] original = { {1, 2}, {3, 4} };
+int[][] copy = Arrays.copyOf(original, original.length);
+
+copy[0][0] = 99;
+
+System.out.println(Arrays.deepToString(original));
+```
+#### Output:
+```java
+[[99, 2], [3, 4]]
+```
+#### Why?
+`copyOf()` performs a shallow copy:
+New outer array, Same inner arrays
+### 4.5 Deep copy of a multidimensional array (correct way)
+```java
+int[][] original = { {1, 2}, {3, 4} };
+int[][] deepCopy = new int[original.length][];
+
+for (int i = 0; i < original.length; i++) {
+    deepCopy[i] = Arrays.copyOf(original[i], original[i].length);
+}
+```
+### 4.6 Arrays.fill() (Row-wise usage)
+You cannot fill a whole 2D array at once.
+Correct approach:
+```java
+int[][] matrix = new int[3][4];
+
+for (int i = 0; i < matrix.length; i++) {
+    Arrays.fill(matrix[i], -1);
+}
+
+System.out.println(Arrays.deepToString(matrix));
+```
+#### Output:
+```java
+[[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]]
+```
 ## 5 Some Examples
 
 ```java
