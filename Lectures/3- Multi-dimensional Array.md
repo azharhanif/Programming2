@@ -132,6 +132,20 @@ public static void increaseValue(double[][] numss, double value) {
 
 1. `Arrays.deepToString()` for multi-dimension (not necessary only 2d) array
 2. `Arrays.deepEquals()` for multi-dimension array
+### 4.1 'Arrays.deepToString()'
+(Works for ANY depth: 2D, 3D, n-D)
+#### Problem it solves
+'Arrays.toString()' prints references for nested arrays:
+
+```java
+int[][] a = { {1, 2}, {3, 4} };
+System.out.println(Arrays.toString(a));
+```
+#### Output (bad):
+
+```java
+[[I@1b6d3586, [I@4554617c]
+```
 
 ## 5 Some Examples
 
