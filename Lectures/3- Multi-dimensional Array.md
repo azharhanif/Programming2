@@ -138,7 +138,7 @@ public static void increaseValue(double[][] numss, double value) {
 ```java
 /**
  *
- * @author adinashby
+ * @author 
  */
 public class Week3Part1MultiExample {
     public static void main(String[] args) {
