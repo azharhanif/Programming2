@@ -42,6 +42,53 @@ int[][][] numsss = {null, {{}}, {null}, {{1, 2, 3}, {1, 2}}, new int[1][2]};
 // Error: cannot convert double[] to int[]
 int[][] numss6 = { new double[]{5.5, 2.2} };
 ```
+### Key Concept
+In Java, a multidimensional array is an array whose elements are themselves arrays. This is the single most important idea.
+### Understanding the 2-D Initialization Example
+```java
+int[][] numss = {null, {}, {1, 2, 3}, nums, new int[]{1, 2, 3}};
+```
+Each element must be an `int[]` (or `null`), because numss is an array of `int[]`.
+
+Let’s examine each element:
+| Element              | Meaning                 | Valid? |
+| -------------------- | ----------------------- | ------ |
+| `null`               | Reference to no `int[]` | ✔      |
+| `{}`                 | Empty `int[]`           | ✔      |
+| `{1, 2, 3}`          | `int[]` of size 3       | ✔      |
+| `nums`               | Must already be `int[]` | ✔      |
+| `new int[]{1, 2, 3}` | Explicit `int[]`        | ✔      |
+
+#### Memory View: All elements are 1-D int arrays
+```java
+numss
+ ├──► null
+ ├──► int[0]
+ ├──► int[3]
+ ├──► nums → int[]
+ └──► int[3]
+```
+#### Understanding the 3-D Initialization Example
+```java
+int[][][] numsss = {
+    null,
+    {{}},
+    {null},
+    {{1, 2, 3}, {1, 2}},
+    new int[1][2]
+};
+```
+Each element must be an `int[][]`.
+
+| Element           | Explanation                   |
+| ----------------- | ----------------------------- |
+| `null`            | No 2-D array                  |
+| `{{}}`            | 2-D array → one empty `int[]` |
+| `{null}`          | 2-D array with one null row   |
+| `{{1,2,3},{1,2}}` | Jagged 2-D array              |
+| `new int[1][2]`   | 1 row, 2 columns              |
+
+All valid because each element is int[][]
 
 In general, if you know the data have some specific values, use the second way, else use the first way, then check if the data should be stored in a matrix, then put two sizes there, else just give the first size.
 
