@@ -259,6 +259,30 @@ System.out.println(Arrays.deepToString(matrix));
 [[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]]
 ```
 ## 5 Some Examples
+How to access a 2-D array using index relationships? Calculate diagonal sums of a 4 x 4 square matrix. 
+```java
+Row\Col  0   1   2   3
+       ----------------
+0 |     1   2   3   4
+1 |     5   6   7   8
+2 |     9  10  11  12
+3 |    13  14  15  16
+```
+### What are the two diagonals?
+#### Primary (main) diagonal
+```java
+1   x   x   x
+x   6   x   x
+x   x  11   x
+x   x   x  16
+```
+#### Secondary (anti) diagonal
+```java
+x   x   x   4
+x   x   7   x
+x  10   x   x
+13  x   x   x
+```
 
 ```java
 /**
@@ -288,11 +312,35 @@ public class Week3Part1MultiExample {
 
         int sum = sumOfPrimaryDiagonal + sumOfSecondaryDiagonal;
 
-        if (theArray.length % 2 != 0)
+        if (theArray.length % 2 != 0) {
             sum -= theArray[theArray.length/2][theArray.length/2];
+            }
             System.out.println("total sum:" + sum);
     }
 }
 ```
+#### Why is there a subtraction at the end?
+```java
+if (theArray.length % 2 != 0)
+    sum -= theArray[theArray.length/2][theArray.length/2];
+```
+#### Concept
+1. In an odd-sized matrix (3×3, 5×5), the center element belongs to BOTH diagonals
 
+2. It gets counted twice
+
+3. So we subtract it once
+
+Example (3×3):
+```java
+2   x   4
+x   5   x   ← center (counted twice)
+6   x   8
+```
+1. But your array is 4×4 (even), so:
+
+2. No center element
+
+3. This if does nothing
+   
 ---
