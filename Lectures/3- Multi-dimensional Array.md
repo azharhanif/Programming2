@@ -14,8 +14,10 @@ For naming an array, we can
 2. add `Array` after the noun for 1-d array, e.g.: `personArray`, and `2Array` or `2dArray` after the noun for 2-d array, e.g.: `person2dArray`.
 
 ## 2. Initialization
+#### Key Concept
+In Java, a multidimensional array is an array whose elements are themselves arrays. Java multidimensional arrays are arrays of references to arrays.
 
-1. Use the keyword `new` to initialize a 2-d array
+### 1. Use the keyword `new` to initialize a 2-d array
 
 ```java
 // initialize a 2-d array with 1 size
@@ -31,8 +33,66 @@ int[][] numss2 = new int[2][3];				// {{0, 0, 0}, {0, 0, 0}}
 int[][][] numsss = new int[2][3][4];		// {{{ 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0}}, {{ 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0}}}
 
 ```
+#### 2D Array Example Explained
+```java
+int[][] numss = new int[3][];
+```
+What This Actually Creates
+1. An array of 3 references
+2. Each reference can point to an int[]
+3. But none of them do yet
+So internally:
+```java
+numss ──► [ null | null | null ]
+```
+Why null?
+1. int[][] → reference type
+2. numss[0], numss[1], numss[2] are int[] references
+3. Reference default value = null
+4. No inner arrays created yet
+#### Completing the Initialization
+```java
+numss[0] = new int[2];
+numss[1] = new int[3];
+numss[2] = new int[4];
+```
+Now memory looks like:
+```java
+numss
+ ├──► int[2] {0, 0}
+ ├──► int[3] {0, 0, 0}
+ └──► int[4] {0, 0, 0, 0}
+```
+This is a jagged array
+#### Why “One More null” at Each Level?
+Because: Each dimension adds one more layer of references.
+General Rule
+```java
+| Declaration | What Is Created               |
+| ----------- | ----------------------------- |
+| `int[]`     | Array of ints                 |
+| `int[][]`   | Array of `int[]` references   |
+| `int[][][]` | Array of `int[][]` references |
+```
+So when you write:
+```java
+new int[4][][]
+```
+You are saying: “Create 4 references to 2D arrays — but don’t create the 2D arrays yet.”
+Hence: 
+'''java
+{ null, null, null, null }
+```
+#### Common mistake
+```java
+int[][] a = new int[3][];
+System.out.println(a[0][0]);  // ❌ NullPointerException
+```
+Because:
+1. a[0] is null
+2. Cannot index into null
 
-2. Use `{}` to initialize a 2-d array
+### 2. Use `{}` to initialize a 2-d array
 
 ```java
 // each element inside of a 2-d array is an 1-d array
@@ -42,9 +102,7 @@ int[][][] numsss = {null, {{}}, {null}, {{1, 2, 3}, {1, 2}}, new int[1][2]};
 // Error: cannot convert double[] to int[]
 int[][] numss6 = { new double[]{5.5, 2.2} };
 ```
-### Key Concept
-In Java, a multidimensional array is an array whose elements are themselves arrays. Java multidimensional arrays are arrays of references to arrays.
-### Understanding the 2-D Initialization Example
+#### Understanding the 2-D Initialization Example
 ```java
 int[][] numss = {null, {}, {1, 2, 3}, nums, new int[]{1, 2, 3}};
 ```
