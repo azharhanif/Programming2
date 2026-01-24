@@ -196,7 +196,7 @@ int[][] jagged = new int[3][];
 ```java
 new int[][]
 ```
-is not allowed in Java because:Java must know the size of the outer array at allocation time in order to create the array object. Java arrays are not dynamic containers. They are fixed-size objects once created.
+is not allowed in Java because: Java must know the size of the outer array at allocation time in order to create the array object. Java arrays are not dynamic containers. They are fixed-size objects once created.
 #### Why `new int[][];` is illegal
 In Java, `new` means: “Allocate a concrete object in memory right now.”
 
@@ -208,18 +208,18 @@ new int[3][4]
 new int[] {1, 2, 3}
 ```
 ✔ Because Java is asking: “How many elements should this array have?”
-✔ and you gave no answer.
+✔ And you gave no answer.
 #### Why `new int[3][]` is the most dynamic option
 Because:
 1. The number of rows is fixed (3)
 2. The contents and sizes of rows are fully dynamic
 3. You can later do:
-4. ```java
+ ```java
    a[0] = new int[100];
    a[1] = new int[2];
    a[2] = null;       // still allowed
    ```
-5. You can later do:Java allows flexibility after allocation, not during it.
+4. Java allows flexibility after allocation, not during it.
 #### Why Java does NOT treat arrays like ArrayList
 ✔ You may be thinking in terms of: `ArrayList<ArrayList<Integer>>`
 ✔ That can grow dynamically.
