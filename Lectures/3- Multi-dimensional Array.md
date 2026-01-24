@@ -234,9 +234,13 @@ That is why `new int[][]`; is not a “dynamic declaration” — it would requi
 #### Analogy
 Think of arrays like apartment buildings:
 ✔ `new int[3][]`
+
 → A building with 3 apartment doors, but nothing inside yet
+
 ✔ `new int[][]`
+
 → “Build me a building with… I don’t know how many apartments” ❌
+
 ✔ Java refuses to build without a floor plan.
 #### Correct “unknown data size” patterns in Java
 ##### Option 1: Two-phase allocation (arrays only)
