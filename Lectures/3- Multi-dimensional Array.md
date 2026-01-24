@@ -233,6 +233,7 @@ Because:
 That is why `new int[][]`; is not a “dynamic declaration” — it would require resizing later, which arrays cannot do.
 #### Analogy
 Think of arrays like apartment buildings:
+
 ✔ `new int[3][]`
 
 → A building with 3 apartment doors, but nothing inside yet
