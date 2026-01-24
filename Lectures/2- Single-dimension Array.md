@@ -21,7 +21,7 @@ double scores[] = new double[22];			// do not suggest Oracle’s Java Code Conve
 											// average → double ❌ (not an array)
 											// preferred: double[] scores, average;
 											// both are arrays
-Clock[] clocks = new Clock[5];				// an array of objects
+Clock[] clocks = new Clock[5];				// object arrays are naturally clearer with the recommended style:
 ```
 
 Default values are given based on the data type:
