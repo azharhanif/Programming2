@@ -58,14 +58,18 @@ String[] validDifficultyLevels = {"Easy", "Medium", "Hard"};	// no need to give 
 ### Way 3. Sometimes, you may need to declare an array and then initialize it in another place
 
 ```java
-double[] nums;									   // declare an array
+double[] nums;									 // declare an array
 double num1 = 5;
 double num2 = 3;
 double num3 = num1 + num2;
 double num4 = num1 - num2;
-nums = {num1, num2, num3, num4};				    // ERROR
-nums = new double[5];							   // Correct, initlize the array with default values
-nums = new double[]{num1, num2, num3, num4};		 //  Correct, initialize the array with specific values
+nums = {num1, num2, num3, num4};				// ERROR
+												// Must be done in the same line as declaration
+												// `double[] nums = { num1, num2, num3, num4 };` OK
+nums = new double[]{num1, num2, num3, num4};	// Correct, initialize the array with specific values
+												// Use `{}` only when declaring an array;
+												// otherwise, you must use `new` to initialize
+nums = new double[5];							// Correct, initlize the array with default values
 ```
 
 ## 3. How to visit elements in an array
@@ -167,6 +171,9 @@ int[] nums4 = Arrays.copyOf(nums1, 5);     // {1, 2, 3, 0, 0};
 
 // copy part of an array
 int[] nums5 = Arrays.copyOfRange(nums1, 1, 2); // {2}
+// `Arrays.copyOfRange(array, from, to):`
+// Copies elements starting at index `from`
+// Stops before index `to` (exclusive) 
 ```
 
 Shallow copy vs Deep copy - Example:
