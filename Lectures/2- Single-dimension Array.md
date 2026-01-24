@@ -10,7 +10,7 @@ An array is a collection of data, **with the same data type**. The data type cou
 
 There are two ways to create an array:
 
-1. If you know the size of the array, but there is **no specific initial values**, use the keyword **new** to create. When you use this way to create an array, default values will be given to each elements.
+### Way 1. If you know the size of the array, but there is **no specific initial values**, use the keyword **new** to create. When you use this way to create an array, default values will be given to each elements.
 
 ```java
 // datatype[] varname = new datatype[length];
@@ -34,8 +34,20 @@ Default values are given based on the data type:
 |									|"" is a real object				|
 |									|✔ null means no object reference	|
 | Clock (any class)                 | null                        		|
+#### `String	null`, not empty string ("")
+1.	Interpretation: `null` means no object exists
+2.	The variable does not reference any `String` object
+3.	Memory for a String object has not been allocated
+4.	Consequences: `System.out.println(s.length());`  // NullPointerException, You cannot call methods on null.
+5.	What it means:  `String s = "";`
 
-2. If you not only know the size of the array, but also want to **initialize it with specific values**, use **{}** to initialize it:
+	A String object does exist
+
+	The object’s length is 0
+
+	It occupies memory
+
+### Way 2. If you not only know the size of the array, but also want to **initialize it with specific values**, use **{}** to initialize it:
 
 ```java
 // datatype[] varname = {element1, element2, ..... elementN};
@@ -43,7 +55,7 @@ Default values are given based on the data type:
 String[] validDifficultyLevels = {"Easy", "Medium", "Hard"};	// no need to give the length
 ```
 
-3. Sometimes, you may need to declare an array and then initialize it in another place
+### Way 3. Sometimes, you may need to declare an array and then initialize it in another place
 
 ```java
 double[] nums;									   // declare an array
