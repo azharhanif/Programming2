@@ -17,8 +17,10 @@ There are two ways to create an array:
 
 double[] scores = new double[22];			// the length is obligated, and CANNOT be changed.
 double scores[] = new double[22];			// do not suggest Oracle’s Java Code Conventions explicitly recommend 											// placing brackets with the type, not the variable name.
-											// double scores[], average; // average → double ❌ (not an array)
-											// preferred: double[] scores, average;  // both are arrays
+											// double scores[], average;
+											// average → double ❌ (not an array)
+											// preferred: double[] scores, average;
+											// both are arrays
 Clock[] clocks = new Clock[5];				// an array of objects
 ```
 
