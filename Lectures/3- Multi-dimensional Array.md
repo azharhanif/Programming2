@@ -79,11 +79,15 @@ So when you write:
 new int[4][][]
 ```
 You are saying: “Create 4 references to 2D arrays — but don’t create the 2D arrays yet.”
+
 Hence: 
+
 '''java
 { null, null, null, null }
 ```
+
 #### Common mistake
+
 ```java
 int[][] a = new int[3][];
 System.out.println(a[0][0]);  // ❌ NullPointerException
