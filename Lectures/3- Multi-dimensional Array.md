@@ -43,7 +43,7 @@ int[][][] numsss = {null, {{}}, {null}, {{1, 2, 3}, {1, 2}}, new int[1][2]};
 int[][] numss6 = { new double[]{5.5, 2.2} };
 ```
 ### Key Concept
-In Java, a multidimensional array is an array whose elements are themselves arrays. 
+In Java, a multidimensional array is an array whose elements are themselves arrays. Java multidimensional arrays are arrays of references to arrays.
 ### Understanding the 2-D Initialization Example
 ```java
 int[][] numss = {null, {}, {1, 2, 3}, nums, new int[]{1, 2, 3}};
