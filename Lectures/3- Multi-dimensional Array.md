@@ -222,6 +222,7 @@ Because:
 4. Java allows flexibility after allocation, not during it.
 #### Why Java does NOT treat arrays like ArrayList
 ✔ You may be thinking in terms of: `ArrayList<ArrayList<Integer>>`
+
 ✔ That can grow dynamically.
 
 ✔ But arrays:
