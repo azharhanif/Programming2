@@ -1,0 +1,51 @@
+Filtering Blue Cars from a Car Array
+Frequent mistakes
+1.	Using == instead of .equals()
+if (car.getColor() == "blue")
+Problem:
+•	Compares references, not content
+•	Very common beginner error
+Correct:
+car.getColor().equalsIgnoreCase("blue")
+________________________________________
+2.	Not handling case sensitivity
+equals("blue")
+Problem:
+•	Fails for "Blue" or "BLUE"
+________________________________________
+3.	Why getBlueCars(Car[] cars) can not be part of the class implementation? why this methods must be in the main? Is there any alternative solution to implement a method inside the class and call it from main class with a parameter of Car color?
+1️.	 Short Answer
+getBlueCars(Car[] cars) does NOT belong inside the Car class because a Car object represents one car, not a collection of cars.
+Putting that method in Main was convenient, not mandatory.
+________________________________________
+2️.	Why It Does NOT Belong in Car
+Single Responsibility Principle (SRP)
+Car → represents ONE car
+Filtering → requires MULTIPLE cars
+A Car object:
+•	Knows its own color
+•	Does not manage other cars
+So this would be conceptually wrong:
+public class Car {
+    public static Car[] getBlueCars(Car[] cars) { ... } // ❌ bad design
+}
+Why?
+•	A single Car should not filter other Car objects
+•	Violates encapsulation and responsibility
+________________________________________
+3️.	Why It Was Put in Main
+Because:
+•	Main is a driver / procedural controller
+•	Acceptable place for logic in beginner labs
+•	Easy to understand and grade
+But it is NOT the only correct design.
+________________________________________
+4️.	BEST Object-Oriented Alternative (Recommended)
+Create a Manager / Utility Class
+This is the correct OO solution.
+CarUtils.java
+Main.java
+Car[] blueCars = CarUtils.getCarsByColor(cars, "blue");
+✔ Clean
+✔ Reusable
+✔ Follows OOP
