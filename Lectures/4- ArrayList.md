@@ -195,12 +195,6 @@ while (input.hasNextInt()) {
 
 ArrayList methods is a pre-existed class with many useful methods inside:
 
-```java
-// Assume we have an ArrayList with 1, 2, 3 inside
-Integer[] nums = {1, 2, 3};
-List<Integer> list = new ArrayList<>(Arrays.asList(nums));
-```
-
 | Method                      | Usage                                                                             | Example                                                  |
 | --------------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `al.size()`                 | check the number of elements in an ArrayList                                      | `list.size()` returns `3`                                |
