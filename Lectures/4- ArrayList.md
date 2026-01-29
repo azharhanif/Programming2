@@ -43,18 +43,6 @@ ArrayList<Integer> al2 = new ArrayList<Integer>();   // So this is equivalent to
 ArrayList<Integer> al2 = new ArrayList<>();   // Empty list, Size = 0, Capacity = 10, but no elements inside
 ArrayList<Integer> al3 = new ArrayList<>(100);       // capacity = 100, but no elements inside
 
-// the reference can also be List instead of ArrayList
-List<Integer> l4 = new ArrayList();				   // ArrayList is a special kind of array
-
-// when you have specific values you want to put in the ArrayList,
-// first create an array with {} to list all elements,
-// then use Arrays.asList() to cast the array into a List
-Integer[] nums = {1, 2, 3, 1, 1, 1};     // array
-List<Integer> l5 = new ArrayList(Arrays.asList(nums));
-
-Collections.sort(newList); // sorts the ArrayList
-
-Collections.reverse(newList); // reverses the ArrayList
 ```
 ### When an ArrayList becomes full:
 
@@ -105,6 +93,102 @@ This strikes a balance between:
 | **1.5×** | Best balance ✔      |
 ```
 This is empirically chosen, not arbitrary.
+## Design principles: use 'List' references
+```java
+
+// the reference can also be List instead of ArrayList
+List<Integer> l4 = new ArrayList();				   // ArrayList is a special kind of array
+// ❌ ArrayList is NOT an array, Arrays → fixed size
+// ✔ ArrayList uses an array internally, ArrayList → dynamic size (resizes internally)
+
+// When should we “cast” or convert an array to a List?
+// when you have specific values you want to put in the ArrayList,
+// first create an array with {} to list all elements,
+// Instead of adding one-by-one: list.add(1); list.add(2); .....list.add(1);
+// Better use Arrays.asList() to cast the array into a List
+Integer[] nums = {1, 2, 3, 1, 1, 1};     // array
+List<Integer> l5 = new ArrayList(Arrays.asList(nums));
+// Cleaner and shorter.
+// Now you can: add, remove, sort, reverse
+
+// `ArrayList` does not “have” `sort()` or `reverse()`
+//  Lets look at `Collections` which is a utility class, not a superclass of `ArrayList`.
+// `Collections` provides static helper methods that operate on collections
+Collections.sort(newList); // sorts the ArrayList
+Collections.reverse(newList); // reverses the ArrayList
+// If we use Collections, it requires A modifiable List and Elements that implement Comparable
+// `ArrayList` satisfies both.
+// If you had used:
+List<Integer> list = Arrays.asList(nums);
+// `sort()` works but, `add()` / `remove()` do NOT
+```
+### Why does Collections.sort() work with List references?
+Because:
+```java
+public static <T> void sort(List<T> list)
+```
+It accepts any List implementation: `ArrayList`, `LinkedList`, `Vector`
+
+This is intentional design. This reinforces: 
+
+Program to the interface (`List`), not the implementation (`ArrayList`).
+### Why use 'List' instead of 'ArrayList' as the reference?
+   
+   Key idea: Program to an interface, not an implementation
+
+   ✔ List is an interface
+
+   ✔ ArrayList is a concrete implementation
+
+ #### Advantages: 
+ ##### Flexibility
+
+    You can later change the implementation without changing the rest of the code:
+    ```java
+    List<Integer> list = new ArrayList<>();
+    // later
+    list = new LinkedList<>();
+    ```
+    If you had written:
+    ```java
+    ArrayList<Integer> list = new ArrayList<>();
+    ```
+    you are locked into `ArrayList`.
+##### Cleaner APIs
+Methods should accept the most general type they need:
+```java
+public void process(List<Integer> data) { }
+```
+This method works with: `ArrayList`, `LinkedList`, `Vector`
+##### Better design
+In final project later in the course, this shows OOP maturity
+```java
+List<Type> list = new ArrayList<>();
+```
+Casting an array to a `List` using `Arrays.asList()` is useful when initializing a collection with known values, and wrapping it in an `ArrayList` allows full list operations such as adding, removing, sorting, and reversing while maintaining flexibility through the `List` interface.
+## THREE independent decisions
+1️⃣ Reference type
+```java
+List<Integer> list
+```
+2️⃣ Implementation
+```java
+new ArrayList<>()
+```
+3️⃣ How data arrives
+```java
+// You know the elements beforehand, Known → Arrays.asList
+Integer[] nums = {1, 2, 3};
+
+List<Integer> list = new ArrayList<>(Arrays.asList(nums));
+
+// You DO NOT know elements beforehand Unknown → add() in loop
+List<Integer> list = new ArrayList<>();
+
+while (input.hasNextInt()) {
+    list.add(input.nextInt());
+}
+```
 ## 4 Methods
 
 ### 4.1 ArrayList methods:
