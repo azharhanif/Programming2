@@ -85,10 +85,13 @@ Which is:
 newCapacity = oldCapacity × 1.5
 ```
 Fewer resizes than +1
+
 ✔ Less wasted memory than ×2
 ✔ Good cache locality
 ✔ Proven in real-world workloads
+
 This strikes a balance between:
+
 ✔ CPU cost (copying arrays)
 ✔ RAM usage (unused slots)
 
