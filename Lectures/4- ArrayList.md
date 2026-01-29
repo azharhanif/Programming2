@@ -83,16 +83,16 @@ newCapacity = oldCapacity + (oldCapacity >> 1)
 Which is:
 ```java
 newCapacity = oldCapacity × 1.5
+// Less wasted memory than ×2
+// Good cache locality
+// Proven in real-world workloads
 ```
 Fewer resizes than +1
-
-✔ Less wasted memory than ×2
-✔ Good cache locality
-✔ Proven in real-world workloads
 
 This strikes a balance between:
 
 ✔ CPU cost (copying arrays)
+
 ✔ RAM usage (unused slots)
 
 4. Why not another number (e.g., 1.2× or 1.8×)?
