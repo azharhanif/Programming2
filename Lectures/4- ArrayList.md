@@ -38,12 +38,10 @@ al1.add("hello");
 // you can add Integer to both <> before and after the '=',
 // or you can just add it before the '=' if you have two <>
 // when you want to create an empty ArrayList, use new constructor
-ArrayList<Integer> al2 = new ArrayList<>();          // capacity = 10, but no elements inside
-ArrayList<Integer> al3 = new ArrayList<>(100);       // capacity = 100, but no elements inside
 
-// -----------------------------------------------------------
-// advanced, will talk about it later in chapeter 2
-// -----------------------------------------------------------
+ArrayList<Integer> al2 = new ArrayList<Integer>();   // So this is equivalent to the next line
+ArrayList<Integer> al2 = new ArrayList<>();   // Empty list, Size = 0, Capacity = 10, but no elements inside
+ArrayList<Integer> al3 = new ArrayList<>(100);       // capacity = 100, but no elements inside
 
 // the reference can also be List instead of ArrayList
 List<Integer> l4 = new ArrayList();				   // ArrayList is a special kind of array
@@ -58,7 +56,49 @@ Collections.sort(newList); // sorts the ArrayList
 
 Collections.reverse(newList); // reverses the ArrayList
 ```
+### When an ArrayList becomes full:
 
+1.  Java must allocate a new array
+2.  Copy all elements
+3.  This is expensive
+### How much bigger should the new array be?
+1. ❌ Grow by +1 each time
+```java
+10 → 11 → 12 → 13 → ...
+```
+Too many resizes, Each resize = full copy
+2. ❌ Double the size (×2)
+```java
+10 → 20 → 40 → 80 → ...
+```
+Very fast growth, But wastes memory, Large unused space
+3. The compromise: grow by 1.5×
+```java
+newCapacity = oldCapacity + (oldCapacity >> 1)
+// Bit shift >> 1 = divide by 2
+// Fast, low-level operation.
+```
+Which is:
+```java
+newCapacity = oldCapacity × 1.5
+```
+Fewer resizes than +1
+✔ Less wasted memory than ×2
+✔ Good cache locality
+✔ Proven in real-world workloads
+This strikes a balance between:
+✔ CPU cost (copying arrays)
+✔ RAM usage (unused slots)
+4. Why not another number (e.g., 1.2× or 1.8×)?
+```java
+| Growth   | Problem             |
+| -------- | ------------------- |
+| 1.2×     | Too many resizes    |
+| 1.8×     | More memory waste   |
+| 2×       | Large memory spikes |
+| **1.5×** | Best balance ✔      |
+```
+This is empirically chosen, not arbitrary.
 ## 4 Methods
 
 ### 4.1 ArrayList methods:
