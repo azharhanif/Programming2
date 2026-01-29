@@ -67,11 +67,13 @@ Collections.reverse(newList); // reverses the ArrayList
 10 → 11 → 12 → 13 → ...
 ```
 Too many resizes, Each resize = full copy
+
 2. ❌ Double the size (×2)
 ```java
 10 → 20 → 40 → 80 → ...
 ```
 Very fast growth, But wastes memory, Large unused space
+
 3. The compromise: grow by 1.5×
 ```java
 newCapacity = oldCapacity + (oldCapacity >> 1)
@@ -89,6 +91,7 @@ Fewer resizes than +1
 This strikes a balance between:
 ✔ CPU cost (copying arrays)
 ✔ RAM usage (unused slots)
+
 4. Why not another number (e.g., 1.2× or 1.8×)?
 ```java
 | Growth   | Problem             |
