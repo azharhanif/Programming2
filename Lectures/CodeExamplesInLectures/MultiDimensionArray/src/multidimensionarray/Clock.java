@@ -28,7 +28,7 @@ import java.util.Arrays;
 /**
  * A simple Clock class for testing Arrays.equals() and Arrays.deepEquals()
  *
- * @author Yi Wang
+ * @author Yi Wang, updated Hanif
  */
 public class Clock {
 
@@ -60,20 +60,6 @@ public class Clock {
         return true;
     }
 
-    public static void main(String[] args) {
-        Clock c1 = new Clock(0, 0, 0);
-        Clock c2 = new Clock(0, 0, 0);
-        Clock c3 = new Clock(0, 0, 0);
-        Clock c4 = new Clock(0, 0, 0);
-
-        Clock[] cs1 = {c1, c2};
-        Clock[] cs2 = {c3, c4};
-
-        // reference of cs1 and cs2
-        System.out.println(cs1 == cs2);
-        // calling equals() in Clock class to comapre c1 and c3, c2 and c4
-        System.out.println(Arrays.equals(cs1, cs2));
-        // calling equals() to compare c1 and c3, c2 and c4
-        System.out.println(Arrays.deepEquals(cs1, cs2));
-    }
+   
 }
+
