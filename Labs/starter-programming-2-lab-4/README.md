@@ -1,12 +1,13 @@
 # Programming 2 - Lab 1-Part1 
-# Marks: 50
+# Marks: 100
 
 This template repository is the starter project for Programming 2 Lab 4. Written in Java, Use JUnit for testing.
 
 ### Questions
 
 1. You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]). Find two lines that together with the x-axis form a container, such that the container contains the most water. Return the maximum amount of water a container can store. Notice that you may not slant the container.
-Marks: 25
+
+Marks: 50
 
 ![](Q1.jpg)
 
@@ -28,7 +29,8 @@ Input: `[1, 1]`
  Output: `1`
 
 2. Given an integer accrray nums of length n and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input would have exactly one solution.
-Marks: 25
+
+Marks: 50
    Example 1:
 
    Input: nums = `[-1, 2, 1, -4]`, target = `1`  
@@ -45,6 +47,7 @@ Marks: 25
    3 <= nums.length <= 1000  
    -1000 <= nums[i] <= 1000  
    -104 <= target <= 104
+
 
 
 
