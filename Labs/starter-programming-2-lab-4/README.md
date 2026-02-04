@@ -1,4 +1,4 @@
-# Programming 2 - Lab 1-Part1 
+# Programming 2 - Lab 1
 # Marks: 100
 
 This template repository is the starter project for Programming 2 Lab 4. Written in Java, Use JUnit for testing.
@@ -47,6 +47,7 @@ Marks: 50
    3 <= nums.length <= 1000  
    -1000 <= nums[i] <= 1000  
    -104 <= target <= 104
+
 
 
 
