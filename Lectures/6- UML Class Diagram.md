@@ -65,6 +65,7 @@ public class Bird implements Flyable {
 
 ```
 ![](./imgs/Chapter2/2.4-interface.JPG)
+
 An interface in `UML` is just like a class, but it represents a contract that defines what must be done, not how it is done.
 #### When to Choose Interface vs Abstract Class
 
