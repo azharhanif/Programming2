@@ -40,10 +40,23 @@ A class can contains three parts:
    2. return type: the return type should also be written after the method name
    3. parameters: if a method requires parameters, then for each parameter, the data type should also be after the parameter name.
    4. abstract and override: if a method is abstract or override, use `<<abstract>>` or `<<override>>` to indicate.
+```java
+// Abstract Method (Java)
+      public abstract double calculateInterest();
+// UML
+<<abstract>> calculateInterest() : double
+
+// @Override
+public String getType() { }
+// UML
+<<override>> getType() : String
+
+
+```
 
 #### 2.1.2 Interface
 
-An interface looks very similar to a class, the only difference is it is indicated with `<<Interface>>` in the first row
+An interface looks very similar to a class, the only difference is it is indicated with `<<Interface>>` in the first row. An interface defines what must be done, not how.
 
 ![](./imgs/Chapter2/2.4-interface.JPG)
 
