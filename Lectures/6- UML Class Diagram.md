@@ -50,16 +50,148 @@ A class can contains three parts:
 public String getType() { }
 // UML
 <<override>> getType() : String
-
-
 ```
 
 #### 2.1.2 Interface
 
-An interface looks very similar to a class, the only difference is it is indicated with `<<Interface>>` in the first row. An interface defines what must be done, not how.
+An interface looks very similar to a class, the only difference is it is indicated with `<<Interface>>` in the first row.  
+```java
+// Class Implementing an Interface (for Context)
+public class Bird implements Flyable {
+    public void fly() {
+        System.out.println("Bird is flying");
+    }
+}
 
+```
 ![](./imgs/Chapter2/2.4-interface.JPG)
+An interface in `UML` is just like a class, but it represents a contract that defines what must be done, not how it is done.
+#### When to Choose Interface vs Abstract Class
 
+##### Think in terms of design intent, not syntax. Choose an Interface when…
+```java
+You want to define a capability / role
+“What can this class do?”
+
+Examples:
+1. Flyable
+2. Comparable
+3. Serializable
+4. Runnable
+
+interface Flyable {
+    void fly();
+}
+// Classes can have many roles
+class Bird implements Flyable, Runnable { }
+
+// You need multiple inheritance implementations
+class `SmartPhone` implements `Camera`, `GPS`, `MusicPlayer` { }
+
+Interfaces: Stateless design
+
+1. Do not hold instance variables
+2. Only constants
+
+interface Taxable {
+    double TAX_RATE = 0.15;
+}
+
+```
+##### Choose an Abstract Class when…
+```java
+You want to share code + behavior. Abstract classes can have:
+
+1.   Instance variables
+2.   Concrete methods
+3.   Abstract methods
+
+//Shared implementation → abstract class
+abstract class Animal {
+    protected int age;
+
+    void sleep() {
+        System.out.println("Sleeping");
+    }
+
+    abstract void makeSound();
+
+}
+
+//You want to represent an `is-a` hierarchy
+class Dog extends Animal { }
+class Cat extends Animal { }
+
+//You want to control inheritance
+
+Abstract classes:
+
+1. Can use protected
+2. Can prevent misuse
+3. Can evolve safely
+
+Interfaces are harder to change once published.
+
+```
+
+| Decision Factor       | Interface             | Abstract Class |
+| --------------------- | --------------------- | -------------- |
+| Multiple inheritance  | ✔ Yes                 | ❌ No           |
+| Contains fields       | ❌ No (constants only) | ✔ Yes          |
+| Method implementation | ❌ (default only)      | ✔ Yes          |
+| Represents            | Role / capability     | Base class     |
+| State                 | ❌ No                  | ✔ Yes          |
+| Evolution             | Harder                | Easier         |
+
+##### Take away from Interface vs Abstract Class
+Use an interface when you want to define a capability (what a class can do).
+
+Use an abstract class when you want to define a type hierarchy (what a class is).
+
+###### Example 1: Interface — Capability (`can do`)
+Scenario: Different classes can fly, but they are not the same type.
+```java
+// These things are different, but they can all fly.
+interface Flyable {
+    void fly();
+}
+
+class Bird implements Flyable { }
+class Airplane implements Flyable { }
+class Drone implements Flyable { }
+//Bird ≠ Airplane ≠ Drone
+
+//No shared state
+
+// Only behavior requirement: fly()
+```
+###### Example 2: Abstract Class — Type Hierarchy (`is a`)
+Scenario: Dog and Cat are both animals and share common data and behavior.
+```java
+abstract class Animal {
+    protected int age;
+
+    void sleep() {
+        System.out.println("Sleeping");
+    }
+
+    abstract void makeSound();
+}
+
+class Dog extends Animal {
+    void makeSound() { System.out.println("Bark"); }
+}
+
+class Cat extends Animal {
+    void makeSound() { System.out.println("Meow"); }
+}
+//Shared state (`age`)
+
+//Shared code (`sleep()`)
+
+//Clear `is-a` relationship
+
+```
 ### 2.2 Relationship
 
 ### 2.2.1 Inheritance
