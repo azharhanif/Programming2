@@ -53,13 +53,13 @@ An interface looks very similar to a class, the only difference is it is indicat
 
 If a class extends from another class, then the there is a solid line triangle arrow pointing from the subclass to the superclass.
 
-![](imgs\Chapter2\2.4-inheritance.JPG)
+![](./imgs/Chapter2/2.4-inheritance.JPG)
 
 ### 2.2.2 Implementation
 
 If a class implements an interface, then there is a dashed line triangle arrow pointing from the class to the interface
 
-![](imgs\Chapter2\2.4-implementation.JPG)
+![](./imgs/Chapter2/2.4-implementation.JPG)
 
 ### 2.2.3 Association, Aggregation and Composition
 
@@ -67,12 +67,12 @@ Previous relationships relates to inheritance, however, two classes not necessar
 
 1. `Association`: If class A uses class B while class B also use class A, then the relationship between them are `association`. For example: Teacher class and Student class. You can use a solid line to link the two classes.
 
-   ![](imgs\Chapter2\2.4-association.JPG)
+   ![](./imgs/Chapter2/2.4-association.JPG)
 
 2. `Aggregation`: If class A uses class B while class B does not use class A, and class B can exist without class A. For example: Person class and Coat class. There should be an empty diamond arrow pointing from class B to class A.
 
-   ![](imgs\Chapter2\2.4-aggregation.JPG)
+   ![](./imgs/Chapter2/2.4-aggregation.JPG)
 
 3. `Composition`: If class A uses class B while class B does not use class A, and class B cannot exist without class A. For example: Person class and Hand class. There should be an filled diamond arrow pointing from class B to class A.
 
-   ![](imgs\Chapter2\2.4-Composition.JPG)
+   ![](./imgs/Chapter2/2.4-Composition.JPG)
