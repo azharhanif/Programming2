@@ -45,7 +45,7 @@ A class can contains three parts:
 
 An interface looks very similar to a class, the only difference is it is indicated with `<<Interface>>` in the first row
 
-![](\imgs\Chapter2\2.4-interface.JPG)
+![](./imgs/Chapter2/2.4-interface.JPG)
 
 ### 2.2 Relationship
 
