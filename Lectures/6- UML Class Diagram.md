@@ -100,14 +100,25 @@ interface Taxable {
 
 ```
 #### Choose an Abstract Class when…
-```java
 You want to share code + behavior. Abstract classes can have:
 
 1.   Instance variables
 2.   Concrete methods
 3.   Abstract methods
 
-//Shared implementation → abstract class
+You want to represent an `is-a` hierarchy
+```java
+
+class Dog extends Animal { }
+class Cat extends Animal { }
+```
+Abstract classes:
+
+1. Can use protected
+2. Can prevent misuse
+3. Can evolve safely
+4. Shared implementation → abstract class
+```java
 abstract class Animal {
     protected int age;
 
@@ -119,21 +130,8 @@ abstract class Animal {
 
 }
 
-//You want to represent an `is-a` hierarchy
-class Dog extends Animal { }
-class Cat extends Animal { }
-
-//You want to control inheritance
-
-Abstract classes:
-
-1. Can use protected
-2. Can prevent misuse
-3. Can evolve safely
-
-Interfaces are harder to change once published.
-
 ```
+Interfaces are harder to change once published.
 
 | Decision Factor       | Interface             | Abstract Class |
 | --------------------- | --------------------- | -------------- |
