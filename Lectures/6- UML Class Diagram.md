@@ -69,7 +69,7 @@ public class Bird implements Flyable {
 An interface in `UML` is just like a class, but it represents a contract that defines what must be done, not how it is done.
 #### When to Choose Interface vs Abstract Class
 
-##### Think in terms of design intent, not syntax. Choose an Interface when…
+#### Think in terms of design intent, not syntax. Choose an Interface when…
 ```java
 You want to define a capability / role
 “What can this class do?”
@@ -99,7 +99,7 @@ interface Taxable {
 }
 
 ```
-##### Choose an Abstract Class when…
+#### Choose an Abstract Class when…
 ```java
 You want to share code + behavior. Abstract classes can have:
 
@@ -144,13 +144,19 @@ Interfaces are harder to change once published.
 | State                 | ❌ No                  | ✔ Yes          |
 | Evolution             | Harder                | Easier         |
 
-##### Take away from Interface vs Abstract Class
+#### Examples: Interface vs Abstract Class
 Use an interface when you want to define a capability (what a class can do).
 
 Use an abstract class when you want to define a type hierarchy (what a class is).
 
 ###### Example 1: Interface — Capability (`can do`)
 Scenario: Different classes can fly, but they are not the same type.
+1. `Bird` ≠ `Airplane` ≠ `Drone`
+
+2. No shared state
+
+3. Only behavior requirement: `fly()`
+
 ```java
 // These things are different, but they can all fly.
 interface Flyable {
@@ -160,14 +166,17 @@ interface Flyable {
 class Bird implements Flyable { }
 class Airplane implements Flyable { }
 class Drone implements Flyable { }
-//Bird ≠ Airplane ≠ Drone
 
-//No shared state
-
-// Only behavior requirement: fly()
 ```
 ###### Example 2: Abstract Class — Type Hierarchy (`is a`)
 Scenario: Dog and Cat are both animals and share common data and behavior.
+
+1. Shared state (`age`)
+
+2. Shared code (`sleep()`)
+
+3. Clear `is-a` relationship
+   
 ```java
 abstract class Animal {
     protected int age;
@@ -186,11 +195,6 @@ class Dog extends Animal {
 class Cat extends Animal {
     void makeSound() { System.out.println("Meow"); }
 }
-//Shared state (`age`)
-
-//Shared code (`sleep()`)
-
-//Clear `is-a` relationship
 
 ```
 ### 2.2 Relationship
