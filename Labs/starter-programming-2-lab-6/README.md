@@ -1,3 +1,5 @@
+# Winter 2026 - Lab 3
+## Marks = 100
 # Programming 2 - Lab 6
 
 This template repository is the starter project for Programming 2 Lab 6. Written in Java, Use JUnit for testing.
@@ -45,6 +47,7 @@ Constraints
 0 <= d <= 50000  
 1 <= q <= 1000  
 1 <= x, y <= n
+
 
 
 
