@@ -11,6 +11,7 @@
 	1. one `.java` file for Task 1
 	2. one `.java` file for Task 2.1
 	3. one `.java` file for Task 2.2
+	4. one `.java` driver file for all Tasks 
 
 **Full Score**: 100
 
@@ -133,3 +134,4 @@ Write a Class `Zoo`, that contains
     ```
 
   * getters and setters
+
