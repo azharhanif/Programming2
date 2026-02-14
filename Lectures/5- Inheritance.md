@@ -319,8 +319,8 @@ When we are dealing with inheritance, our classes can also be casted, more speci
         Dog d = new Dog(); 			// d can eat, sleep and playWithHuman
         Animal a = new Dog();		// a can only eat and sleep, but not playWithHuman
 
-        Dog d2 = (Dog) a;			// a is casted to a Dog, now it can eat, sleep and playWithHuman
-        Dog d3 = (Dog) new Animal(); // Error, the object is Animal at beginning, cannot be casted to Dog
+        Dog d2 = (Dog) a;			// a is casted to a Dog d2, now it can eat, sleep and playWithHuman
+        Dog d3 = (Dog) new Animal(); // Error, the object is Animal at beginning, cannot be casted to Dog d3
     }
     ```
 
