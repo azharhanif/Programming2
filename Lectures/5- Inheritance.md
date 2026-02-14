@@ -213,7 +213,7 @@ public boolean equals(Object obj) {
 
   - third `if` in `part 1`: two classes may accidently have the same data member, for example, `Dog` class contains `name`, `age`, `gender`, and `Cat` class also contains `name`, `age`, `gender`. And accidently a cat and a dog have the same values for the `name`, `age` and `gender`, but it would be very strange if we say, ok, this cat is the same as the dog. Here the third `if` will use the `getClass()` method to check what classes each object belongs to, and if they belong to different classes, then it will directly return `false`.
 
-  - `part 2`: after `part 1`, we know the two references are pointing at two different objects, and null of them have value `null`, also the real classes of the two objects are the same. The next step is to make sure second object is the same class with the first object.
+  - `part 2`: after `part 1`, we know the two references are pointing at two different objects, and none of them have value `null`, also the real classes of the two objects are the same. The next step is to make sure second object is the same class with the first object.
 
     ```java
     Animal a = new Animal();
