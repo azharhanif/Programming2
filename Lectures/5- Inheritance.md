@@ -290,7 +290,7 @@ In Programming 1 we have learned the primitive data types, and we can cast one t
 
 When we are dealing with inheritance, our classes can also be casted, more specifically, a super class can be casted to a subclass type, and a subclass can be casted to a superclass type:
 
-1.  sub to super: A superclass reference can always point at a subclass object: `Animal animal = new Dog();`, this casts the `Dog `object into a `Animal` object. But keep in mind, since the object is created as a dog, so the true data type is always a Dog, however, since it is casted to an `Animal`, then it can only use the methods defined in the `Animal` class. You can understand it as there is a prince, that has been turned into a frog. Deep inside it is still a prince, however, it cannot only jump instead of walk.
+1.  sub to super: A superclass reference can always point at a subclass object: `Animal animal = new Dog();`, this casts the `Dog `object into a `Animal` object. But keep in mind, since the object is created as a dog, so the true data type is always a Dog, however, since it is casted to an `Animal`, then it can only use the methods defined in the `Animal` class. You can understand it as there is a prince, that has been turned into a frog. Deep inside it is still a prince, however, it can only jump instead of walk.
 
 2.  super to sub: A superclass can be cast to a subclass, only if the object is deep inside the subclass type. You need to use `(subclass)` to cast it manually. You can understand it as: the frog prince can be turned back to a prince, but that need a kiss (manually). And not every frog can turn into a prince, only if the frog was a prince at the very beginning.
 
