@@ -3,7 +3,12 @@
 # Programming 2 - Lab 6
 
 This template repository is the starter project for Programming 2 Lab 6. Written in Java, Use JUnit for testing.
+### What to Submit:
 
+1) Code with seperate driver function file
+
+2) In a separate document, write down the differences between two possible solutions (available in the document section)
+   
 ### Question(s)
 
 Sometimes it's better to use dynamic size arrays. Java's Arraylist can provide you this feature. Try to solve this problem using Arraylist. You are given n lines. In each line there are zero or more integers. You need to answer a few queries where you need to tell the number located in yth position of xth line.
@@ -47,6 +52,7 @@ Constraints
 0 <= d <= 50000  
 1 <= q <= 1000  
 1 <= x, y <= n
+
 
 
 
