@@ -317,6 +317,62 @@ Dog barks
 Cat meows
 Dog barks
 ```
+#### POLYMORPHISM: ONE loop. ONE method call. DIFFERENT behaviors.
+```java
+Compiler:
+"I only know they are Animals."
+
+JVM:
+"I know exactly which animal each one is."
+
+Polymorphism =
+Parent reference + Child object + Overridden method
+```
+#### Downcasting (The Crash Demo)
+Add in the main: 
+```java
+Dog d = (Dog) a;
+d.wagTail();
+```
+Output:
+```java
+Dog wagging tail
+```
+#### Casting always works? No. The Crash Demo
+Change ONLY ONE LINE:
+```java
+Animal a = new Cat();
+```
+Full code:
+```java
+public class Main {
+
+    public static void main(String[] args) {
+
+        Animal a = new Cat();
+
+        Dog d = (Dog) a;   // dangerous cast
+        d.wagTail();
+    }
+}
+```
+Runtime Error:
+```java
+Exception in thread "main"
+java.lang.ClassCastException:
+Cat cannot be cast to Dog
+```
+##### Why did it crash?
+Compiler checks:
+```java
+Is Dog related to Animal?
+YES → allow compile
+```
+JVM checks at runtime:
+```java
+Is object actually a Dog?
+NO → crash
+```
 
 
 
