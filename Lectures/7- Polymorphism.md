@@ -121,7 +121,9 @@ But polymorphism is actually:
 The abstract class accomplishes:
 
 ✅ Animal is a concept, not a concrete object
+
 ✅ We never create a generic animal
+
 ✅ Only specific animals exist
     
 ```java
@@ -148,4 +150,177 @@ b.makeSound();
 | Generalization | Dog IS-A Animal             |
 | Contract       | All animals must make sound |
 | Polymorphism   | Same call, different result |
+The abstract class ties these together cleanly.
+#### Without abstract method
+```java
+class Animal {
+    void makeSound() {
+        System.out.println("Some sound");
+    }
+}
+```
+❌ polymorphism is optional overriding.
+#### With abstract method
+```java
+abstract void makeSound();
+```
+Now:
+
+Animal declares behavior
+
+Subclasses implement behavior
+
+Example:
+```java
+class Dog extends Animal {
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+}
+```
+Usage:
+```java
+Animal a = new Dog();
+a.makeSound();
+```
+Animal becomes a concept. The compiler enforces polymorphism. 
+## Classroom demo (reference type vs object type, runtime method selection)
+✅ Java decides WHAT you can call using the reference type
+
+✅ but decides WHAT actually runs using the object type
+
+#### Step 1 — with NO Polymorphism
+File: Animal.java
+```java
+class Animal {
+    void makeSound() {
+        System.out.println("Animal makes sound");
+    }
+}
+```
+File: Dog.java
+```java
+class Dog extends Animal {
+
+    @Override
+    void makeSound() {
+        System.out.println("Dog barks");
+    }
+
+    void wagTail() {
+        System.out.println("Dog wagging tail");
+    }
+}
+```
+File: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        Dog d = new Dog();
+
+        d.makeSound();
+        d.wagTail();
+    }
+}
+```
+Output
+```java
+Dog barks
+Dog wagging tail
+```
+#### Step 2 — Introduce Polymorphism
+Change ONLY ONE LINE:
+```java
+Animal a = new Dog();
+```
+Full code:
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        Animal a = new Dog();
+
+        a.makeSound();
+    }
+}
+```
+Which sound will print?
+```java
+❌ Animal makes sound
+✅ Dog barks
+```
+1) `a` LOOKS like Animal
+
+2) but OBJECT is Dog
+
+3) JVM uses real object at runtime
+
+```java
+STACK (reference)           HEAP (object)
+
+Animal a  ------------->   Dog object
+                              |
+                              makeSound() = Dog version
+```
+
+#### Step 3 — Compiler Restriction
+Add:
+```java
+a.wagTail();
+```
+Compile error:
+```java
+cannot find symbol
+```
+Explaination: Compiler sees, 
+```java
+Animal a
+```
+Animal has no `wagTail()`. So:
+
+1) Reference type controls ACCESS
+   
+2) Object type controls BEHAVIOR
+
+#### Step 5 — TRUE Polymorphism
+Add another class.
+```java
+class Cat extends Animal {
+
+    @Override
+    void makeSound() {
+        System.out.println("Cat meows");
+    }
+}
+```
+Update Main
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        Animal[] animals = {
+            new Dog(),
+            new Cat(),
+            new Dog()
+        };
+
+        for (Animal a : animals) {
+            a.makeSound();
+        }
+    }
+}
+```
+Output
+```java
+Dog barks
+Cat meows
+Dog barks
+```
+
+
+
+
+
+
 
