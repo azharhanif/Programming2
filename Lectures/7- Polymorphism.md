@@ -107,7 +107,7 @@ public static void main() {
     Animal.makeSound(d);		// call makeSound() in Dog class, "Woof"
 }
 ```
-3. ## Why use abstract class Animal?
+## 3. Why use abstract class Animal?
 The abstract class is used to force polymorphism as a TYPE relationship, not just inheritance.
 
 Without abstraction,
