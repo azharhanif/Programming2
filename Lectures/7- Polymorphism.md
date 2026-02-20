@@ -107,7 +107,7 @@ public static void main() {
     Animal.makeSound(d);		// call makeSound() in Dog class, "Woof"
 }
 ```
-## Why use abstract class Animal?
+3. ## Why use abstract class Animal?
 The abstract class is used to force polymorphism as a TYPE relationship, not just inheritance.
 
 Without abstraction,
@@ -151,7 +151,7 @@ b.makeSound();
 | Contract       | All animals must make sound |
 | Polymorphism   | Same call, different result |
 The abstract class ties these together cleanly.
-#### Without abstract method
+#### 3.1 Without abstract method
 ```java
 class Animal {
     void makeSound() {
@@ -160,7 +160,7 @@ class Animal {
 }
 ```
 ❌ polymorphism is optional overriding.
-#### With abstract method
+#### 3.2 With abstract method
 ```java
 abstract void makeSound();
 ```
@@ -184,12 +184,12 @@ Animal a = new Dog();
 a.makeSound();
 ```
 Animal becomes a concept. The compiler enforces polymorphism. 
-## Classroom demo (reference type vs object type, runtime method selection)
+## 4. Classroom demo (reference type vs object type, runtime method selection)
 ✅ Java decides WHAT you can call using the reference type
 
 ✅ but decides WHAT actually runs using the object type
 
-#### Step 1 — with NO Polymorphism
+#### 4.1 Step 1 — with NO Polymorphism
 File: Animal.java
 ```java
 class Animal {
@@ -264,7 +264,7 @@ Animal a  ------------->   Dog object
                               makeSound() = Dog version
 ```
 
-#### Step 3 — Compiler Restriction
+#### 4.3 Step 3 — Compiler Restriction
 Add:
 ```java
 a.wagTail();  // UPCAST Compile error, not run time crash
@@ -283,7 +283,7 @@ Animal has no `wagTail()`. So:
    
 2) Object type controls BEHAVIOR
 
-#### Step 4 — TRUE Polymorphism
+#### 4.4 Step 4 — TRUE Polymorphism
 Add another class.
 ```java
 class Cat extends Animal {
@@ -316,9 +316,9 @@ Output
 Dog barks
 Cat meows
 Dog barks
-```
-#### POLYMORPHISM: ONE loop. ONE method call. DIFFERENT behaviors.
-```java
+
+ONE loop. ONE method call. DIFFERENT behaviors.
+
 Compiler:
 "I only know they are Animals."
 
@@ -328,7 +328,7 @@ JVM:
 Polymorphism =
 Parent reference + Child object + Overridden method
 ```
-#### Downcasting (The Crash Demo)
+#### 4.5 Downcasting (The Crash Demo)
 Add in the main: 
 ```java
 public class Main {
@@ -346,7 +346,7 @@ Output:
 ```java
 Dog wagging tail
 ```
-#### Casting always works?  
+#### 4.6 Casting always works?  
 1) Upcasting  → automatic & safe.
 
 2) Downcasting → manual & risky. 
@@ -374,7 +374,7 @@ Exception in thread "main"
 java.lang.ClassCastException:
 Cat cannot be cast to Dog
 ```
-##### Why did it crash?
+##### 4.7 Why did it crash?
 Compiler checks:
 ```java
 Is Dog related to Animal?
@@ -385,12 +385,12 @@ JVM checks at runtime:
 Is object actually a Dog?
 NO → crash
 ```
-#### Frog Prince Analogy (Correct Version)
+#### 4.8 Frog Prince Analogy (Correct Version)
 
 A prince (aka 'Dog') turned into a frog (aka `Animal`) can become a prince (aka 'Dog') again.
 
 But not every frog ('Animal`) is secretly a prince (`Dog`).
-#### The SAFE Solution (instanceof)
+#### 4.9 The SAFE Solution (instanceof)
 Fix program:
 ```java
 if (a instanceof Dog) {
@@ -410,7 +410,7 @@ That means:
 Reference type controls ACCESS.
 Object type controls BEHAVIOR.
 ```
-#### Alternative Design
+## 5. Alternative Design
 If you want polymorphism to call tail behavior without casting, you must declare it in the parent:
 ```java
 abstract class Animal {
@@ -430,7 +430,7 @@ Animal a = new Dog();
 a.moveBody();   // polymorphic
 ```
 No casting needed.This is proper OOP design.
-## Polymorphism does NOT depend on inheritance — only on shared behavior contracts
+#### 5.1 Polymorphism does NOT depend on inheritance — only on shared behavior contracts
 Most introductory Java courses teach polymorphism using inheritance:
 ```java
 Polymorphism = inheritance
@@ -440,7 +440,7 @@ But technically:
 Polymorphism = one interface (or contract), many implementations
 ```
 Inheritance is just one way to create that shared contract.
-#### The REAL Requirement for Polymorphism
+#### 5.2 The REAL Requirement for Polymorphism
 You only need:
 
 A shared method definition (a contract)
@@ -451,13 +451,13 @@ A reference typed as the contract
 
 Inheritance is optional.
 
-#### Polymorphism needs agreement, not family relationship.
+#### 5.3 Polymorphism needs agreement, not family relationship.
 
 Inheritance → family tree (is-a relationship)
 
 Contract → agreement to behave a certain way
 
-#### Example analogy:
+#### 5.4 Example analogy:
 
 Drivers, pilots, and captains are not related.
 
@@ -465,15 +465,15 @@ But all follow the “VehicleOperator” rules.
 
 Same contract → polymorphism possible.
 
-## Example: No Inheritance Between Classes
-##### Step 1 — Define a contract (interface)
+#### 5.5 Example: No Inheritance Between Classes
+##### 5.5.1 Step 1 — Define a contract (interface)
 ```java
 interface Payable {
     double calculatePay();
 }
 ```
 This is the behavior contract.
-##### Step 2 — Completely unrelated classes
+##### 5.5.2 Step 2 — Completely unrelated classes
 ```java
 class Employee implements Payable {
     public double calculatePay() {
@@ -503,7 +503,7 @@ Freelancer is NOT related to Invoice
 
 No inheritance hierarchy exists.
 
-##### Step 3 — Polymorphism happens here
+##### 5.5.3 Step 3 — Polymorphism happens here
 ```java
 Payable p;
 
@@ -540,14 +540,14 @@ Examples in real Java:
 
 These enable polymorphism without shared ancestry.
 
-#### Finally These enable polymorphism without shared ancestry. Substitutability
+##### 5.5.4 Finally These enable polymorphism without shared ancestry. Substitutability
 If an object can be substituted wherever a contract is expected, polymorphism exists.
 
 Polymorphism is not about parents and children.
 
 It is about promises and behavior. 
 
-#### Polymorphism via inheritance (Animal example)
+#### 5.6 Polymorphism via inheritance (Animal example)
 ```java
         Animal
            |
@@ -556,16 +556,16 @@ It is about promises and behavior.
    Dog            Cat
 ```
 
-#### Polymorphism via interface only (industry-style design)
+#### 5.7 Polymorphism via interface only (industry-style design)
 ```java
           SoundMaker
          /     |     \
        Dog   Alarm  BabyToy
 (No relationship between implementations.)
 ```
-#### Why Industry Prefers Interface Polymorphism
+#### 5.8 Why Industry Prefers Interface Polymorphism
 Large systems avoid rigid hierarchies.
-
+```java
 Example from real Java:
 
 Thread system → Runnable
@@ -575,7 +575,7 @@ Collections → Comparable
 Event systems → listeners
 
 Objects just agree to behave, not belong to one family.
-
+```
 
 
 
