@@ -107,3 +107,45 @@ public static void main() {
     Animal.makeSound(d);		// call makeSound() in Dog class, "Woof"
 }
 ```
+## Why use abstract class Animal?
+The abstract class is used to force polymorphism as a TYPE relationship, not just inheritance.
+
+Without abstraction,
+```java
+“Dog extends Animal → just reuse code.”
+```
+But polymorphism is actually:
+```java
+“Different objects share a common contract type.”
+```
+The abstract class accomplishes:
+
+✅ Animal is a concept, not a concrete object
+✅ We never create a generic animal
+✅ Only specific animals exist
+    
+```java
+abstract class Animal {
+    public abstract void makeSound();
+}
+```
+So instead of:
+```java
+Animal a = new Animal(); // ❌ meaningless conceptually
+```
+we enforce:
+```java
+Animal a = new Dog();
+Animal b = new Cat();
+```
+Now polymorphism becomes visible:
+```java
+a.makeSound();
+b.makeSound();
+```
+| Concept        | Learning         |
+| -------------- | --------------------------- |
+| Generalization | Dog IS-A Animal             |
+| Contract       | All animals must make sound |
+| Polymorphism   | Same call, different result |
+
