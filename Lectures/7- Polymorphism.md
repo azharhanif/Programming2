@@ -530,6 +530,7 @@ Inheritance creates polymorphism indirectly.
 ```
 Real systems rely more on interfaces than inheritqance
 Examples in real Java:
+
 `Comparable`
 
 `Runnable`
