@@ -217,7 +217,7 @@ File: Main.java
 public class Main {
     public static void main(String[] args) {
 
-        Dog d = new Dog();  // UPCAST
+        Dog d = new Dog();  
 
         d.makeSound();
         d.wagTail();
