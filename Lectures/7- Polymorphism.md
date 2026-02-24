@@ -120,11 +120,11 @@ But polymorphism is actually:
 ```
 The abstract class accomplishes:
 
-✅ Animal is a concept, not a concrete object
+A) Animal is a concept, not a concrete object
 
-✅ We never create a generic animal
+B) We never create a generic animal
 
-✅ Only specific animals exist
+C) Only specific animals exist
     
 ```java
 abstract class Animal {
@@ -159,7 +159,7 @@ class Animal {
     }
 }
 ```
-❌ polymorphism is optional overriding.
+WRONG: polymorphism is optional overriding.
 #### 3.2 With abstract method
 ```java
 abstract void makeSound();
@@ -185,9 +185,9 @@ a.makeSound();
 ```
 Animal becomes a concept. The compiler enforces polymorphism. 
 ## 4. Classroom demo (reference type vs object type, runtime method selection)
-✅ Java decides WHAT you can call using the reference type
+A) Java decides WHAT you can call using the reference type
 
-✅ but decides WHAT actually runs using the object type
+B) but decides WHAT actually runs using the object type
 
 #### 4.1 Step 1 — with NO Polymorphism
 File: Animal.java
@@ -247,8 +247,10 @@ public class Main {
 ```
 Which sound will print?
 ```java
-❌ Animal makes sound
-✅ Dog barks
+
+WRONG! Animal makes sound
+
+CORRECT Dog barks
 ```
 1) `a` LOOKS like Animal
 
@@ -387,9 +389,9 @@ NO → crash
 ```
 #### 4.8 Frog Prince Analogy (Correct Version)
 
-A prince (aka 'Dog') turned into a frog (aka `Animal`) can become a prince (aka 'Dog') again.
+A prince (aka `Dog`) turned into a frog (aka `Animal`) can become a prince (aka `Dog`) again.
 
-But not every frog ('Animal`) is secretly a prince (`Dog`).
+But not every frog (`Animal`) is secretly a prince (`Dog`).
 #### 4.9 The SAFE Solution (instanceof)
 Fix program:
 ```java
@@ -431,7 +433,7 @@ a.moveBody();   // polymorphic
 ```
 No casting needed.This is proper OOP design.
 #### 5.1 Polymorphism does NOT depend on inheritance — only on shared behavior contracts
-Most introductory Java courses teach polymorphism using inheritance:
+Most common approaches to introduce polymorphism use inheritance:
 ```java
 Polymorphism = inheritance
 ```
@@ -461,7 +463,7 @@ Contract → agreement to behave a certain way
 
 Drivers, pilots, and captains are not related.
 
-But all follow the “VehicleOperator” rules.
+But all follow the `VehicleOperator` rules.
 
 Same contract → polymorphism possible.
 
@@ -518,7 +520,7 @@ System.out.println(p.calculatePay());
 ```
 Same variable. Same method call. Different behavior.
 
-This is polymorphism. It works because all classes promise: 'calculatePay()`
+This is polymorphism. It works because all classes promise: `calculatePay()`
 
 The compiler only cares about: 'Does this object follow the Payable contract?'
 
