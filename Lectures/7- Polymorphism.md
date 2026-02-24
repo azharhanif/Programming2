@@ -541,9 +541,11 @@ Examples in real Java:
 
 `Iterable`
 
-These enable polymorphism without shared ancestry.
+    A) These enable polymorphism without shared ancestry.
 
-##### 5.5.4 Finally These enable polymorphism without shared ancestry. Substitutability
+    B) These enable polymorphism without shared ancestry.
+
+##### 5.5.4  Substitutability
 If an object can be substituted wherever a contract is expected, polymorphism exists.
 
 Polymorphism is not about parents and children.
