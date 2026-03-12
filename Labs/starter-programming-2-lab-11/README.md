@@ -1,4 +1,4 @@
-# Programming 2 - Lab 11
+# Programming 2 - Lab 11 - Lab 6 Win 26
 
 This template repository is the starter project for Programming 2 Lab 11. Written in Java, Use JUnit for testing.
 
@@ -30,4 +30,5 @@ This template repository is the starter project for Programming 2 Lab 11. Writte
    4.4. Implement the Pet interface methods.
    4.5. Implement the eat method.
 5. Create the Fish class. Override the Animal methods to specify that fish can't walk and don't have legs.
+
 
