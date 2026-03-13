@@ -11,6 +11,7 @@ Mar-27 23:57:00. **Late submission will directly be marked as 0**.
 **Full Score**: 100
 
 **Grading**: 
+
 60% on the submitted project code.
 
 40% on the post-submission challange. 
