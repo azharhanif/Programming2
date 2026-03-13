@@ -9,6 +9,16 @@ Mar-27 23:57:00. **Late submission will directly be marked as 0**.
 **Please submit .java files for the code and a .png or .jpg for the class diagram**.
 
 **Full Score**: 100
+**Grading**: 
+60% on the submitted project code.
+40% on the post-submission challange. 
+**What is post-submission challange?** 
+After final code submission there will be an in class extension challenges built directly on the submitted project. The challange is designed to fit a 30-minute pen-and-paper coding task, and will test high-level understanding, not memorization.
+
+Each challenge:
+•	plugs into the existing submitted solution
+•	targets a different OOP skill
+•	is specific enough to grade consistently
 
 ## **Knowledge Points**  of  This  Assignment
 
