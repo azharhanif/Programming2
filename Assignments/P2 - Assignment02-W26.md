@@ -43,6 +43,6 @@ Use inheritance and polymorphism to solve a real-world system development proble
     
     * **at least one user defined interface** that is implemented by some of the classes in the hierarchy. The header of methods in the interface must be reasonable. However, the override method body could be simplified if you do not have enough knowledge to code it.
     
-3. Draw a UML Class Diagram of the entire project. (Create a screenshot of it and save it as a .png file or a .jpg file)
+3. Draw a UML Class Diagram of the entire project. (Create a screenshot of it and save it as a .png file or a .jpg file or draw in draw.io)
 
 4. Translate the UML Class Diagram into Java code. Your code should follow the same structure as defined in the UML. (For some of the methods, to implement the real body could be very difficult, then you can just implement a simplified version of it.)
