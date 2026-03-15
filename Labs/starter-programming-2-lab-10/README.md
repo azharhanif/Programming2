@@ -1,4 +1,5 @@
-# Programming 2 - Lab 10 (practice with Abstract lecture)
+# Programming 2 - Lab 10 (practice in class)
+### Abstract and Interface Lecture
 
 This template repository is the starter project for Programming 2 Lab 10. Written in Java, Use JUnit for testing.
 
