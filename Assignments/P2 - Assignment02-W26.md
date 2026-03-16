@@ -20,6 +20,7 @@ Mar-27 23:57:00. **Late submission will directly be marked as 0**.
 After final code submission there will be an in class extension challenges built directly on the submitted project. The challange is designed to fit a 30-minute pen-and-paper coding task, and will test high-level understanding, not memorization.
 
 Each challenge:
+
 •	plugs into the existing submitted solution
 
 •	targets a different OOP skill
