@@ -1,6 +1,27 @@
 public class Circle implements GeometricObject {
 
     protected double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double getPerimeter() {
+        return 2 * Math.PI * radius;
+    }
+
+    @Override
+    public double getArea() {
+        return Math.PI * radius * radius;
+    }
+
+    @Override
+    public String toString() {
+        return "Circle[radius=" + radius + "]";
+    }
+}
+
 /*Why radius is protected in the following Circle class? What is the design choice in making it protected instead of private?
 First: What does protected mean?
 
@@ -80,23 +101,3 @@ radius is protected so that subclasses of Circle can directly access it.
 If it were private, subclasses would not be able to use it without getters.
 This is a design trade-off between ease of inheritance and encapsulation.
 */
-
-    public Circle(double radius) {
-        this.radius = radius;
-    }
-
-    @Override
-    public double getPerimeter() {
-        return 2 * Math.PI * radius;
-    }
-
-    @Override
-    public double getArea() {
-        return Math.PI * radius * radius;
-    }
-
-    @Override
-    public String toString() {
-        return "Circle[radius=" + radius + "]";
-    }
-}
