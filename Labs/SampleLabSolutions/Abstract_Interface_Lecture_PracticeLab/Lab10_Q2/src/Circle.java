@@ -78,10 +78,20 @@ Now subclasses use:
 
 return 2 * getRadius();
 
-✔ keeps encapsulation
-✔ still supports inheritance
-protected is often used in teaching to simplify inheritance,
-but in real design, we prefer private + controlled access.
+This allows:
+
+    controlled access
+    
+    validation later
+    
+    better encapsulation
+    
+Protected is often used to simplify inheritance. Making radius protected does NOT provide any advantage for implementing multiple interfaces.
+
+Interfaces only interact through methods, not fields. 
+
+Protected is useful for inheritance, not for interfaces.
+
 When SHOULD you use protected?
 
 Use it when:
@@ -97,7 +107,11 @@ Example:
 abstract class Shape {
     protected double size;
 }
-radius is protected so that subclasses of Circle can directly access it.
-If it were private, subclasses would not be able to use it without getters.
+
+```radius``` is protected so that subclasses of Circle can directly access it. If it were private, subclasses would not be able to use it without getters.
 This is a design trade-off between ease of inheritance and encapsulation.
+
+Interfaces care about methods.
+
+Inheritance cares about fields.
 */
