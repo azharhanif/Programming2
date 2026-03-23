@@ -259,5 +259,152 @@ Key Difference
 Comparable → class decides
 Comparator → user decides
 ```
+#### Trick 3 — Same class, different sorting needs
+Scenario
+
+You are building:
+
+University system
+
+Admin dashboard
+
+Scholarship ranking
+
+##### Required sorting:
+```
+| Context   | Sorting |
+| --------- | ------- |
+| Admission | GPA     |
+| Database  | ID      |
+| Display   | Name    |
+
+```
+❗ Question: Can Comparable handle this?
+
+❌ Answer: No — only ONE compareTo()
+
+✅ Comparator solves this
+```
+Comparator<Student> byName = ...
+Comparator<Student> byGpa = ...
+Comparator<Student> byId = ...
+```
+#### Trick 4 — You CANNOT modify class
+Scenario
+```
+class LibraryBook {
+    String title;
+}
+```
+👉 You don’t own this class (API / third-party)
+
+❓ Can you implement Comparable? ❌ NO
+✅ Solution
+```
+Collections.sort(list, new Comparator<LibraryBook>() {
+    public int compare(LibraryBook a, LibraryBook b) {
+        return a.title.compareTo(b.title);
+    }
+});
+```
+Insight: 
+```
+Comparator works EVEN if you cannot modify class
+```
+#### Trick 5 — Comparator vs Comparable conflict
+Code
+```
+Collections.sort(list); // uses Comparable
+Collections.sort(list, comparator); // uses Comparator
+```
+❓ Which one wins? 👉 Comparator ALWAYS overrides Comparable
+
+Insight:
+```
+Comparator > Comparable when both exist
+```
+#### Trick 6 — Subtle bug in Comparable
+```
+public int compareTo(Student other) {
+    return this.id - other.id;
+}
+```
+❗ Problem: Overflow risk:
+```
+Integer.MAX_VALUE - (-1)
+```
+✅ Better
+```
+return Integer.compare(this.id, other.id);
+```
+
+
 ## Concept clarification
+Is Comparator just using compareTo internally? 👉 NO.
+
+Difference in method signature
+```
+| Interface  | Method                  |
+| ---------- | ----------------------- |
+| Comparable | `this.compareTo(other)` |
+| Comparator | `compare(obj1, obj2)`   |
+```
+Conceptual difference
+```
+Comparable → object compares itself
+Comparator → external object compares two objects
+```
+
+
+
 ## Weighted comparator explanation (advanced insight)
+
+Can Comparator use multiple fields with weights?
+
+👉 YES — this is where Comparator becomes powerful.
+
+Example — Weighted Comparator
+
+Scenario
+
+You want ranking:
+
+GPA → 70% importance
+
+Experience → 30% importance
+
+Code
+```
+class Student {
+    double gpa;
+    int experience;
+}
+```
+Comparator with weights
+```
+Comparator<Student> weightedComparator = (a, b) -> {
+    double scoreA = a.gpa * 0.7 + a.experience * 0.3;
+    double scoreB = b.gpa * 0.7 + b.experience * 0.3;
+
+    return Double.compare(scoreB, scoreA);
+};
+```
+This is IMPOSSIBLE with Comparable. Why?
+```
+Comparable = fixed logic inside class
+Comparator = dynamic logic outside class
+```
+Cleaner Java Version
+```
+Comparator<Student> weightedComparator = (a, b) -> {
+    double scoreA = a.gpa * 0.7 + a.experience * 0.3;
+    double scoreB = b.gpa * 0.7 + b.experience * 0.3;
+
+    return Double.compare(scoreB, scoreA);
+};
+```
+## “Why do we need Comparator if Comparable already exists?”
+```
+Comparable → ONE default ordering
+Comparator → MANY possible orderings
+```
