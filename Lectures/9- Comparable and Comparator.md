@@ -213,3 +213,51 @@ public void sortStudents(ArrayList<Student> students) {
     }
 }
 ```
+## Tricky examples (Comparable vs Comparator pitfalls)
+#### Trick 1 — Comparable locks you into ONE logic
+Code
+```
+class Student implements Comparable<Student> {
+    int id;
+    double gpa;
+
+    public int compareTo(Student other) {
+        return this.id - other.id;
+    }
+}
+```
+```
+Collections.sort(list);
+```
+Question: Can you now sort by GPA using Comparable?
+
+Student mistake: “Yes, just change compareTo”
+
+Correct:❌ You must MODIFY the class 
+    
+    👉 That’s BAD design
+    ```
+    Comparable = ONE fixed sorting rule
+    ```
+#### Trick 2 — Comparator gives flexibility
+```
+Collections.sort(list, new Comparator<Student>() {
+    public int compare(Student a, Student b) {
+        return Double.compare(b.gpa, a.gpa);
+    }
+});
+```
+Now you can do:
+```
+sort by id  
+sort by gpa  
+sort by name
+```
+👉 Without touching Student class
+```
+Key Difference
+Comparable → class decides
+Comparator → user decides
+```
+## Concept clarification
+## Weighted comparator explanation (advanced insight)
