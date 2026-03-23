@@ -231,7 +231,7 @@ Collections.sort(list);
 ```
 Question: Can you now sort by GPA using Comparable?
 
-Student mistake: “Yes, just change compareTo”
+Common mistake: “Yes, just change compareTo”
 
 Correct:❌ You must MODIFY the class 
     
@@ -337,8 +337,6 @@ Integer.MAX_VALUE - (-1)
 ```
 return Integer.compare(this.id, other.id);
 ```
-
-
 ## Concept clarification
 Is Comparator just using compareTo internally? 👉 NO.
 
@@ -354,9 +352,6 @@ Conceptual difference
 Comparable → object compares itself
 Comparator → external object compares two objects
 ```
-
-
-
 ## Weighted comparator explanation (advanced insight)
 
 Can Comparator use multiple fields with weights?
@@ -403,7 +398,7 @@ Comparator<Student> weightedComparator = (a, b) -> {
     return Double.compare(scoreB, scoreA);
 };
 ```
-## “Why do we need Comparator if Comparable already exists?”
+## Why do we need Comparator if Comparable already exists?
 ```
 Comparable → ONE default ordering
 Comparator → MANY possible orderings
