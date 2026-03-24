@@ -202,13 +202,13 @@ public void sortStudents(ArrayList<Student> students) {
 
     switch (choice) {
         case 1:
-            Collections.sort(students, new Student.AgeComparator());		// sort based on age
+            Collections.sort(students, new AgeComparator());		// sort based on age
             return;
         case 2:
-            Collections.sort(students, new Student.NameComparator());		// sort based on name
+            Collections.sort(students, new NameComparator());		// sort based on name
             return;
         case 3:
-            Collections.sort(students, new Student.GenderComparator());		// sort based on gender
+            Collections.sort(students, new GenderComparator());		// sort based on gender
             return;
     }
 }
