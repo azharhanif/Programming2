@@ -331,11 +331,44 @@ public int compareTo(Student other) {
 ```
 ❗ Problem: Overflow risk:
 ```
-Integer.MAX_VALUE - (-1)
+int a = Integer.MAX_VALUE;   //  2147483647
+int b = -1;
+
+int result = a - b;          // 2147483647 - (-1)
+
+// Integer.MAX_VALUE - (-1)
+
+// 2147483647 + 1 = 2147483648 ❌ (too big for int)
+
+// Java wraps around (overflow):
+
+// 2147483648 → -2147483648  ❌ WRONG SIGN
+
+System.out.println(result); // negative value!
+
+// Why this breaks `compareTo`
+
+// return this.id - other.id;
+
+// is supposed to return:
+
+| Meaning       | Value    |
+| ------------- | -------- |
+| this < other  | negative |
+| this == other | 0        |
+| this > other  | positive |
+
+
 ```
-✅ Better
+✅ Why Integer.compare() is better
 ```
 return Integer.compare(this.id, other.id);
+// It does safe comparison, NOT subtraction:
+if (x < y) return -1;
+if (x == y) return 0;
+return 1;
+
+//No arithmetic overflow.
 ```
 ## Concept clarification
 Is Comparator just using compareTo internally? 👉 NO.
