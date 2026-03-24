@@ -391,12 +391,10 @@ Comparator = dynamic logic outside class
 ```
 Cleaner Java Version
 ```
-Comparator<Student> weightedComparator = (a, b) -> {
-    double scoreA = a.gpa * 0.7 + a.experience * 0.3;
-    double scoreB = b.gpa * 0.7 + b.experience * 0.3;
-
-    return Double.compare(scoreB, scoreA);
-};
+Comparator<Student> comp =
+    Comparator.comparingDouble(
+        s -> s.gpa * 0.7 + s.experience * 0.3
+    ).reversed();
 ```
 ## Why do we need Comparator if Comparable already exists?
 ```
