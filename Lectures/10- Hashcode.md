@@ -130,12 +130,12 @@ STEP 1 — Shift right by 32
 `bits >>> 32`
 
 Result:
-```
+
 shifted =
 
 [ 00000000 00000000 00000000 00000000 ]
 [ 10110011 01010101 11110000 00001111 ]
-```
+
 What happened?
 
 - HIGH half moved down
@@ -145,21 +145,21 @@ STEP 2 — XOR both values
 `bits ^ (bits >>> 32)`
 
 Now align them:
-```
+
 Original bits:
 [ HIGH ][ LOW ]
 
 Shifted bits:
 [ 0000 ][ HIGH ]
-```
+
 XOR operation
-```
+
 Top 32 bits:
 HIGH ^ 0000 = HIGH
 
 Bottom 32 bits:
 LOW ^ HIGH
-```
+
 RESULT
 `[ HIGH ][ LOW ^ HIGH ]`
 
@@ -175,10 +175,10 @@ After XOR, we still have a long.
 `(int)(...)`
 
 → keeps only the lower 32 bits (which now contain mixed data).Java keeps only the lower 32 bits:
-```
+
 FINAL HASH PART =
 [ LOW ^ HIGH ]
-```
+
 ```
 #### Why multiply by 41?
 `41 * hash`
