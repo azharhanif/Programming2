@@ -51,7 +51,160 @@ For a subclass, you need to call the superclass `hashCode()` to generate a hashc
         return hash;
     }
 ```
-### 3.3 More examples
+### 3.3 Purpose
+- Build a hash value for an object
+- Combine existing hash with a double field
+#### Why Double.doubleToLongBits(...)?
+A double is 64 bits, but hashCode() returns an int (32 bits).
+
+So we convert:
+```
+double → long (64 bits)
+long bits = Double.doubleToLongBits(publicationFrequency);
+```
+This gives the exact binary representation of the double.
+
+#### The Important Part — >>> 32 (32-bit shift)
+`bits >>> 32` What this does:
+- Takes the upper 32 bits of the 64-bit number
+- Moves them to the lower 32-bit position
+
+#### Q1 `double` is already 64 bits… why convert to `long`? 
+Visual Explanation:
+```
+double = 64 bits  
+long   = 64 bits
+```
+So the conversion is NOT about size. The real reason: bit-level access
+
+- A double is a floating-point number (IEEE-754 format): `sign | exponent | mantissa`
+
+Java does NOT let you directly:
+
+- shift a double
+- XOR a double
+- access its raw bit pattern
+
+So this is illegal:
+```
+double x = 3.14;
+x >>> 32;     // ❌ not allowed
+```
+What Double.doubleToLongBits() does?
+
+It says: “Give me the exact 64-bit binary representation of this double as a long.”
+
+`long bits = Double.doubleToLongBits(3.14);`
+
+Now you can do:
+```
+bits >>> 32   // ✅ allowed
+bits ^ ...    // ✅ allowed
+```
+#### Q2 Does shifting by 32 lose the lower 32 bits?
+
+Yes — BUT that’s intentional and temporary. Because:
+Assume:
+
+```
+long bits = Double.doubleToLongBits(x);
+```
+This is:
+`bits = [ HIGH 32 bits ][ LOW 32 bits ]`
+ 
+#### Binary Animation: bits ^ (bits >>> 32)
+```
+We start with a 64-bit value (from doubleToLongBits):
+
+STEP 0 — Original 64-bit value
+bits = [ HIGH 32 bits ] [ LOW 32 bits ]
+
+Example:
+[ 10110011 01010101 11110000 00001111 ]
+[ 11001100 00110011 10101010 01010101 ]
+
+Think of it as:
+bits = HIGH | LOW
+
+STEP 1 — Shift right by 32
+`bits >>> 32`
+
+Result:
+```
+shifted =
+
+[ 00000000 00000000 00000000 00000000 ]
+[ 10110011 01010101 11110000 00001111 ]
+```
+What happened?
+
+- HIGH half moved down
+- LOW half is gone (in this version)
+
+STEP 2 — XOR both values
+`bits ^ (bits >>> 32)`
+
+Now align them:
+```
+Original bits:
+[ HIGH ][ LOW ]
+
+Shifted bits:
+[ 0000 ][ HIGH ]
+```
+XOR operation
+```
+Top 32 bits:
+HIGH ^ 0000 = HIGH
+
+Bottom 32 bits:
+LOW ^ HIGH
+```
+RESULT
+`[ HIGH ][ LOW ^ HIGH ]`
+
+BOTH halves are now mixed into one value.
+
+STEP 3 — Cast to int
+`(int)(bits ^ (bits >>> 32))`
+
+Why cast to int?
+
+After XOR, we still have a long.
+
+`(int)(...)`
+
+→ keeps only the lower 32 bits (which now contain mixed data).Java keeps only the lower 32 bits:
+```
+FINAL HASH PART =
+[ LOW ^ HIGH ]
+```
+```
+#### Why multiply by 41?
+`41 * hash`
+
+This is a hash mixing strategy.
+
+- 41 is a prime number
+- helps spread values better
+- reduces collisions
+  
+#### Small Issue in the above Code
+
+`hash += 41 * hash + ...`
+
+This is unusual. Standard pattern is:
+
+`hash = 41 * hash + ...`
+
+It still works, but it's not standard practice.
+
+Standard Version  
+```
+long bits = Double.doubleToLongBits(this.publicationFrequency);
+hash = 41 * hash + (int)(bits ^ (bits >>> 32));
+```
+### 3.4 More examples
 
 ```java
 public class User {
