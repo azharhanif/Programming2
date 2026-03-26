@@ -64,8 +64,10 @@ long bits = Double.doubleToLongBits(publicationFrequency);
 ```
 This gives the exact binary representation of the double.
 
-#### The Important Part — >>> 32 (32-bit shift)
+The Important Part — >>> 32 (32-bit shift)
+
 `bits >>> 32` What this does:
+
 - Takes the upper 32 bits of the 64-bit number
 - Moves them to the lower 32-bit position
 
@@ -104,16 +106,15 @@ bits ^ ...    // ✅ allowed
 #### Q2 Does shifting by 32 lose the lower 32 bits?
 
 Yes — BUT that’s intentional and temporary. Because:
-Assume:
 
 ```
 long bits = Double.doubleToLongBits(x);
-```
+
 This is:
 `bits = [ HIGH 32 bits ][ LOW 32 bits ]`
  
-#### Binary Animation: bits ^ (bits >>> 32)
-```
+Binary Animation: bits ^ (bits >>> 32)
+
 We start with a 64-bit value (from doubleToLongBits):
 
 STEP 0 — Original 64-bit value
@@ -179,9 +180,7 @@ After XOR, we still have a long.
 FINAL HASH PART =
 [ LOW ^ HIGH ]
 
-```
-#### Why multiply by 41?
-`41 * hash`
+Why multiply by 41? `41 * hash`
 
 This is a hash mixing strategy.
 
@@ -189,18 +188,16 @@ This is a hash mixing strategy.
 - helps spread values better
 - reduces collisions
   
-#### Small Issue in the above Code
+Small Issue in the above Code `hash += 41 * hash + ...`
 
-`hash += 41 * hash + ...`
+This is unusual. 
 
-This is unusual. Standard pattern is:
-
-`hash = 41 * hash + ...`
+Standard pattern is: `hash = 41 * hash + ...`
 
 It still works, but it's not standard practice.
 
 Standard Version  
-```
+
 long bits = Double.doubleToLongBits(this.publicationFrequency);
 hash = 41 * hash + (int)(bits ^ (bits >>> 32));
 ```
