@@ -370,3 +370,739 @@ public class User {
 }
 
 ```
+### 3.5 conceptual confusion: step-by-step behavior inside HashSet
+
+In a Library book example think of same Canadian author who has multiple books, or same book multiple editions, or same book multiple publishers will be added? Because they will have different hash code? Its is not clear if the hash code is only based on authors name in the book objects in the library. To clarify this confusion lets consider step-by-step behavior inside HashSet.
+
+First — The CORE RULE (must be crystal clear)
+
+From Java contract:
+
+✅ If two objects are equal (equals = true) → they MUST have same hashCode
+❗ If two objects are not equal → they can have same OR different hashCode
+
+🧠 The BIG misunderstanding students have
+
+Students think:
+
+“Different hashCode = always added”
+“Same hashCode = always duplicate”
+
+❌ BOTH are wrong.
+
+🔥 How HashSet actually works (very important)
+
+When you do:
+
+set.add(book);
+
+Java does:
+
+Step 1 → use hashCode → find bucket
+Step 2 → use equals → check duplicate inside bucket
+
+👉 hashCode = fast grouping
+👉 equals = final decision
+
+Even if hashCodes are same, equals decides uniqueness
+
+📚 Now your exact confusion — Library Example
+
+Let’s define a Book class.
+
+Case A — hashCode based ONLY on author (BAD DESIGN)
+@Override
+public int hashCode() {
+    return author.hashCode();
+}
+
+@Override
+public boolean equals(Object obj) {
+    Book other = (Book) obj;
+    return this.author.equals(other.author);
+}
+🧪 Now test:
+Book b1 = new Book("Java Basics", "Alice", 2020);
+Book b2 = new Book("Advanced Java", "Alice", 2023);
+
+HashSet<Book> set = new HashSet<>();
+set.add(b1);
+set.add(b2);
+❗ What happens?
+hashCode → SAME (same author)
+equals → TRUE (same author)
+
+👉 RESULT:
+
+Only 1 book stored ❌ WRONG
+💡 Meaning
+
+Your system thinks:
+“Same author = same book”
+
+⚠️ This is why students get confused
+
+They think:
+
+“Different books should be added”
+
+But your equals() says they are the same.
+
+🧠 KEY PRINCIPLE
+
+HashCode does NOT define uniqueness
+equals() defines uniqueness
+
+✅ Case B — Better Design (Real Library)
+@Override
+public boolean equals(Object obj) {
+    Book other = (Book) obj;
+    return this.title.equals(other.title)
+        && this.author.equals(other.author)
+        && this.year == other.year;
+}
+
+@Override
+public int hashCode() {
+    return Objects.hash(title, author, year);
+}
+🧪 Now test again
+Book b1 = new Book("Java Basics", "Alice", 2020);
+Book b2 = new Book("Advanced Java", "Alice", 2023);
+
+set.add(b1);
+set.add(b2);
+✅ RESULT
+Both books stored ✅
+
+Because:
+
+equals = FALSE
+hashCode = different (likely)
+🔁 Your 3 scenarios explained clearly
+1️⃣ Same author, different books
+Book("Java 1", "Alice")
+Book("Java 2", "Alice")
+If equals uses:
+only author → ❌ duplicate
+author + title → ✅ different
+2️⃣ Same book, different editions
+Book("Java Basics", "Alice", 1st edition)
+Book("Java Basics", "Alice", 2nd edition)
+If equals includes:
+edition → treated as DIFFERENT
+ignores edition → treated as SAME
+
+👉 Depends on your design
+
+3️⃣ Same book, different publishers
+Book("Java Basics", "Alice", "Pearson")
+Book("Java Basics", "Alice", "O'Reilly")
+
+Again:
+
+equals includes publisher?	Result
+Yes	separate books
+No	duplicate
+🔥 MOST IMPORTANT INSIGHT FOR STUDENTS
+
+HashSet does NOT decide duplicates using hashCode
+It uses equals()
+
+🧪 Demonstration (VERY CLEAR)
+Book b1 = new Book("Java", "Alice", 2020);
+Book b2 = new Book("Java", "Alice", 2020);
+
+// even if hashCodes are different (bad design)
+System.out.println(b1.equals(b2)); // true
+
+set.add(b1);
+set.add(b2);
+
+👉 Only ONE stored
+
+🧠 What if hashCodes are SAME but equals is FALSE?
+@Override
+public int hashCode() {
+    return 1; // worst possible hash
+}
+
+All books go into same bucket.
+
+But:
+
+equals() → different
+
+👉 RESULT:
+
+All books still stored ✅
+
+Because equals separates them.
+
+🎯 Final Teaching Summary (use this slide)
+hashCode → decides WHERE object goes
+equals   → decides IF object is duplicate
+
+HashSet Animation — How Objects Are Stored
+
+We simulate:
+
+HashSet<Book> set = new HashSet<>();
+🧩 STEP 0 — Empty HashSet
+
+Think of HashSet as buckets (like an array of lists):
+
+Index (bucket)
+0   →  [ ]
+1   →  [ ]
+2   →  [ ]
+3   →  [ ]
+4   →  [ ]
+📘 STEP 1 — Add First Book
+Book b1 = new Book("Java Basics", "Alice", 2020);
+set.add(b1);
+🔍 What Java does:
+Compute hashCode
+Map to bucket index
+hashCode(b1) → 12345 → index = 2
+📦 Result
+0   →  [ ]
+1   →  [ ]
+2   →  [ b1 ]
+3   →  [ ]
+4   →  [ ]
+📗 STEP 2 — Add Different Book (Different hash)
+Book b2 = new Book("Advanced Java", "Alice", 2023);
+set.add(b2);
+hashCode(b2) → 67890 → index = 4
+📦 Result
+0   →  [ ]
+1   →  [ ]
+2   →  [ b1 ]
+3   →  [ ]
+4   →  [ b2 ]
+
+👉 No collision → directly added
+
+⚠️ STEP 3 — Collision (Same hashCode)
+Book b3 = new Book("Python", "Bob", 2022);
+
+Suppose:
+
+hashCode(b3) → index = 2
+📦 Now bucket 2 already has b1
+
+Java does:
+
+Compare:
+b3.equals(b1) ?
+Case A — equals = FALSE
+b3 ≠ b1
+
+👉 Add it
+
+0   →  [ ]
+1   →  [ ]
+2   →  [ b1, b3 ]
+3   →  [ ]
+4   →  [ b2 ]
+Case B — equals = TRUE
+b3.equals(b1) → true
+
+👉 DO NOT ADD
+
+0   →  [ ]
+1   →  [ ]
+2   →  [ b1 ]
+3   →  [ ]
+4   →  [ b2 ]
+🎯 CRITICAL MOMENT (Highlight this in class)
+Same hashCode ≠ duplicate
+equals() decides duplicate
+🔥 STEP 4 — Worst Case (All hashCodes same)
+@Override
+public int hashCode() {
+    return 1;
+}
+📦 Everything goes to same bucket
+0   →  [ ]
+1   →  [ b1, b2, b3, b4, b5 ]
+2   →  [ ]
+3   →  [ ]
+4   →  [ ]
+What happens internally?
+
+Java checks:
+
+b2.equals(b1)?
+b3.equals(b1)?
+b3.equals(b2)?
+...
+
+👉 Still works — just slower
+
+🎬 FINAL ANIMATION SUMMARY
+ADD OBJECT:
+
+Step 1: hashCode() → pick bucket
+Step 2: equals() → check duplicates inside bucket
+Step 3: add if not duplicate
+
+### 3.6 Purpose of hashCode() with HashSet example
+Goal: Show how `hashCode() + equals()`
+    - actually control behavior inside a Set
+    - Example: Using User with HashSet
+
+We’ll use User class (with equals() and hashCode()).
+
+Step 1 — Create Users
+```
+User u1 = new User(1, "Alice", "a@email.com");
+User u2 = new User(1, "Alice", "a@email.com"); // same data
+User u3 = new User(2, "Bob", "b@email.com");   // different
+```
+Step 2 — Add to HashSet
+```
+import java.util.HashSet;
+
+HashSet<User> set = new HashSet<>();
+
+set.add(u1);
+set.add(u2);
+set.add(u3);
+
+System.out.println("Set size: " + set.size());
+```
+#### 3.6.1 What happens internally?
+Step-by-step:
+
+1️. Add u1
+    - compute hashCode(u1)
+    - go to bucket
+    - add
+`Bucket[2] → [u1]`
+
+2. Add u2 (same data)
+    - compute hashCode(u2) → SAME bucket
+    - compare using equals(u1, u2) → TRUE
+    - NOT added
+
+3️. Add u3
+    - different hash → different bucket
+    - added
+    
+4. Final Result
+    - Set size: 2
+      
+5. Key Insight
+    -  `HashSet` removes duplicates based on `equals()`
+    -  `hashCode()` only helps find where to check
+      
+#### 3.6.2 ❌ Now showing WRONG case (very important)
+Remove hashCode()
+
+```
+@Override
+public int hashCode() {
+    return super.hashCode(); // default (bad here)
+}
+```
+1. Run same test:
+```
+set.add(u1);
+set.add(u2);
+```
+2. Result
+Set size: 3  ❌ WRONG
+
+3. Why?
+
+    - Different memory → different hashCode
+    - goes to different buckets
+    - equals() NEVER called
+      
+#### 3.6.3 Visual Bucket Example
+
+With correct hashCode
+```
+Bucket 1 → [u1, u2 → equals → duplicate → ignored]
+Bucket 3 → [u3]
+With wrong hashCode
+Bucket 1 → [u1]
+Bucket 4 → [u2]  ❌ treated as different
+Bucket 3 → [u3]
+```
+Demo
+```
+import java.util.HashSet;
+
+public class Main {
+    public static void main(String[] args) {
+
+        HashSet<User> set = new HashSet<>();
+
+        User u1 = new User(1, "Alice", "a@email.com");
+        User u2 = new User(1, "Alice", "a@email.com");
+        User u3 = new User(2, "Bob", "b@email.com");
+
+        set.add(u1);
+        set.add(u2);
+        set.add(u3);
+
+        System.out.println("Set size: " + set.size());
+
+        for (User u : set) {
+            System.out.println(u);
+        }
+    }
+}
+```
+
+```
+Case	                        Result
+Correct equals + hashCode	    duplicates removed
+Only equals correct	            duplicates remain ❌
+Only hashCode correct	        still broken ❌
+```
+If equals() is overridden, hashCode() MUST also be overridden
+#### 3.6.4 Why super.hashCode() is bad design?
+1.    `super.hashCode()` uses memory address, not object’s data.
+```
+@Override
+public int hashCode() {
+    return super.hashCode(); // default (bad here)
+}
+```
+2.    So two objects with same data:
+```
+new User(1, "Alice", "a@email.com")
+new User(1, "Alice", "a@email.com")
+```
+    - will have different hash codes
+    - and HashSet will treat them as different
+
+3.     The Core Rule:
+```
+If `equals()` returns true → `hashCode()` MUST be same
+```
+Here `equals()` says:
+```
+id, name, email → define equality
+```
+But `super.hashCode()` says:
+```
+object identity (memory) → define hash
+```
+These are inconsistent, for example
+```
+Step 1 — Two equal objects
+User u1 = new User(1, "Alice", "a@email.com");
+User u2 = new User(1, "Alice", "a@email.com");
+
+Step 2 — equals()
+System.out.println(u1.equals(u2)); // true
+
+They are logically equal
+
+Step 3 — hashCode (with super)
+System.out.println(u1.hashCode()); // e.g. 123456
+System.out.println(u2.hashCode()); // e.g. 987654
+
+Different values ❌
+
+What happens in HashSet
+
+    HashSet<User> set = new HashSet<>();
+    set.add(u1);
+    set.add(u2);
+
+Internal behavior
+
+    Add u1
+    hash → bucket 2 → store u1
+    Add u2
+    hash → bucket 4 → store u2
+
+Different bucket → equals() NOT even checked
+
+Result
+
+Set size = 2 ❌ (duplicate not removed)
+
+Why equals() is NOT even used
+
+Because of HashSet logic:
+
+    - Use hashCode → find bucket
+    - Only compare equals() inside SAME bucket
+
+Different hash → different bucket → equals skipped
+This is the real problem
+```
+Bad `hashCode` breaks `HashSet` logic
+
+#### 3.6.5 Correct behavior (when hashCode is proper)
+```
+@Override
+public int hashCode() {
+    return Objects.hash(id, name, email);
+}
+```
+Now:
+
+`u1.hashCode() == u2.hashCode()`
+
+HashSet behavior
+
+Same bucket → compare equals → duplicate → NOT added
+
+Result
+Set size = 1 ✔️
+
+Analogy:
+
+hashCode() → which room
+equals() → same person inside room?
+
+With bad hashCode
+
+Alice (u1) → Room 2  
+Alice (u2) → Room 5  
+
+→ never compared → duplicate slips in ❌
+
+With good hashCode
+
+Alice (u1) → Room 2  
+Alice (u2) → Room 2  
+
+→ compared → duplicate removed ✔️
+
+`super.hashCode()` is bad here because it ignores object’s data and uses memory identity, breaking the rule that equal objects must have the same hash code.
+```
+If you override equals(), you MUST override hashCode()
+AND both must use the SAME fields
+```
+
+### 3.7 Trick exam question to predict HashSet output 
+#### 3.7.1 Trick Question 1 — “Looks identical”
+Code
+```
+import java.util.*;
+
+class User {
+    int id;
+
+    User(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        User u = (User) o;
+        return this.id == u.id;
+    }
+
+    // ❌ NO hashCode override
+}
+
+public class Main {
+    public static void main(String[] args) {
+        HashSet<User> set = new HashSet<>();
+
+        set.add(new User(1));
+        set.add(new User(1));
+
+        System.out.println(set.size());
+    }
+}
+```
+    - Common Student Answer: 1
+    - Correct Answer: 2
+    - Why:
+    ```
+        equals() → true
+        BUT hashCode() → different (memory-based)
+        → different buckets → equals NOT checked
+    ```
+    - Lesson
+    
+    `equals() alone is NOT enough`
+        
+#### 3.7.2 Trick Question 2 — “Bad hash but still works”
+Code
+```
+class User {
+    int id;
+
+    User(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        User u = (User) o;
+        return this.id == u.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1; // worst possible
+    }
+}
+HashSet<User> set = new HashSet<>();
+set.add(new User(1));
+set.add(new User(1));
+
+System.out.println(set.size());
+```
+
+    - Common Student Answer: 2
+    - (because hash is bad)
+    - Correct Answer:1
+    - Why
+```
+All objects go to SAME bucket
+equals() is checked → duplicate removed
+```
+    - Lesson
+    
+    Bad hashCode affects performance, not correctness
+
+#### 3.7.3 Trick Question 3 — “equals always false”
+Code
+```
+class User {
+    int id;
+
+    User(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return false; // ❌
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+}
+HashSet<User> set = new HashSet<>();
+set.add(new User(1));
+set.add(new User(1));
+
+System.out.println(set.size());
+```
+    - Correct Answer: 2
+    - Why
+```
+equals() NEVER returns true
+→ nothing is ever considered duplicate
+```
+    - Lesson
+    
+    equals() defines uniqueness — ALWAYS
+#### 3.7.4 Trick Question 4 — “Same object reference”
+Code
+```
+User u = new User(1);
+
+HashSet<User> set = new HashSet<>();
+set.add(u);
+set.add(u);
+
+System.out.println(set.size());
+```
+    - Correct Answer: 1
+    - Why
+```
+Same reference → same object
+HashSet detects duplicate immediately
+```
+    - Lesson
+    
+    Same reference = always duplicate
+#### 3.7.5 Trick Question 5 — “Different objects, same hash, equals false”
+Code
+```
+class User {
+    int id;
+
+    User(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        User u = (User) o;
+        return this.id == u.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
+    }
+}
+HashSet<User> set = new HashSet<>();
+
+set.add(new User(1));
+set.add(new User(2));
+
+System.out.println(set.size());
+```
+    - Correct Answer: 2
+    - Why
+```
+Same bucket
+equals() → false
+→ both stored
+```
+    - Lesson
+
+    Same hashCode does NOT mean duplicate
+
+#### 3.7.6 Trick Question 6 — “equals uses more fields than hashCode”
+Code
+```
+class User {
+    int id;
+    String name;
+
+    User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        User u = (User) o;
+        return this.id == u.id && this.name.equals(u.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return id; // ❌ missing name
+    }
+}
+HashSet<User> set = new HashSet<>();
+
+set.add(new User(1, "Alice"));
+set.add(new User(1, "Bob"));
+
+System.out.println(set.size());
+```
+    - Common Answer: 1
+    - Correct Answer: 2
+    - Why
+```
+hashCode → same bucket
+equals → FALSE (name different)
+→ both stored
+```
+    - Lesson
+        
+    `hashCode` can be less strict than `equals` (but never more strict)
+
+
