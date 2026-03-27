@@ -179,9 +179,10 @@ For a subclass, you need to call the superclass `hashCode()` to generate a hashc
         return hash;
     }
 ```
-### 3.3 Purpose
-- Build a hash value for an object
-- Combine existing hash with a double field
+### 3.3 `hashCode()` Calculation
+Build a hash value for an object
+
+Combine existing hash with a double field
 #### 3.3.1 Why Double.doubleToLongBits(...)?
 A double is 64 bits, but hashCode() returns an int (32 bits).
 
@@ -370,47 +371,47 @@ public class User {
 }
 
 ```
-### 3.5 conceptual confusion: step-by-step behavior inside HashSet
+### 3.5 Conceptual confusion: step-by-step behavior inside HashSet
 
 In a Library book example think of same Canadian author who has multiple books, or same book multiple editions, or same book multiple publishers will be added? Because they will have different hash code? Its is not clear if the hash code is only based on authors name in the book objects in the library. To clarify this confusion lets consider step-by-step behavior inside HashSet.
 
-First — The CORE RULE (must be crystal clear)
+#### 3.5.1 The CORE RULE
 
 From Java contract:
 
-✅ If two objects are equal (equals = true) → they MUST have same hashCode
-❗ If two objects are not equal → they can have same OR different hashCode
+    - If two objects are equal (equals = true) → they MUST have same hashCode
+    
+    - If two objects are not equal → they can have same OR different hashCode
 
-🧠 The BIG misunderstanding students have
-
-Students think:
-
+BIG misunderstanding 
+```
 “Different hashCode = always added”
 “Same hashCode = always duplicate”
 
 ❌ BOTH are wrong.
-
-🔥 How HashSet actually works (very important)
+```
+How HashSet actually works  
 
 When you do:
 
-set.add(book);
+`set.add(book);`
 
 Java does:
-
+```
 Step 1 → use hashCode → find bucket
 Step 2 → use equals → check duplicate inside bucket
+```
+hashCode = fast grouping
 
-👉 hashCode = fast grouping
-👉 equals = final decision
+equals = final decision
 
 Even if hashCodes are same, equals decides uniqueness
 
-📚 Now your exact confusion — Library Example
+#### 3.5.2 Addressing the confusion — Library Example
 
 Let’s define a Book class.
 
-Case A — hashCode based ONLY on author (BAD DESIGN)
+###### Case A — hashCode based ONLY on author (BAD DESIGN)
 @Override
 public int hashCode() {
     return author.hashCode();
@@ -421,39 +422,41 @@ public boolean equals(Object obj) {
     Book other = (Book) obj;
     return this.author.equals(other.author);
 }
-🧪 Now test:
+Now let's test:
+```
 Book b1 = new Book("Java Basics", "Alice", 2020);
 Book b2 = new Book("Advanced Java", "Alice", 2023);
 
 HashSet<Book> set = new HashSet<>();
 set.add(b1);
 set.add(b2);
-❗ What happens?
+```
+What happens?
+```
 hashCode → SAME (same author)
 equals → TRUE (same author)
-
-👉 RESULT:
+```
+RESULT:
 
 Only 1 book stored ❌ WRONG
-💡 Meaning
 
-Your system thinks:
-“Same author = same book”
+Meaning
 
-⚠️ This is why students get confused
+“Same author = same book” // conceptually wrong
 
-They think:
+Because:
 
 “Different books should be added”
 
-But your equals() says they are the same.
+But `equals()` says they are the same.
 
-🧠 KEY PRINCIPLE
-
+KEY PRINCIPLE
+```
 HashCode does NOT define uniqueness
 equals() defines uniqueness
-
-✅ Case B — Better Design (Real Library)
+```
+###### Case B — Better Design (Real Library)
+```
 @Override
 public boolean equals(Object obj) {
     Book other = (Book) obj;
@@ -466,50 +469,70 @@ public boolean equals(Object obj) {
 public int hashCode() {
     return Objects.hash(title, author, year);
 }
-🧪 Now test again
+Let's test again
+
 Book b1 = new Book("Java Basics", "Alice", 2020);
+
 Book b2 = new Book("Advanced Java", "Alice", 2023);
 
 set.add(b1);
+
 set.add(b2);
-✅ RESULT
-Both books stored ✅
+```
+RESULT
+
+Both books stored
 
 Because:
-
+```
 equals = FALSE
 hashCode = different (likely)
-🔁 Your 3 scenarios explained clearly
-1️⃣ Same author, different books
+```
+#### 3.5.3 Three scenarios explained
+
+1️. Same author, different books
+```
 Book("Java 1", "Alice")
 Book("Java 2", "Alice")
+```
 If equals uses:
+
 only author → ❌ duplicate
+
 author + title → ✅ different
-2️⃣ Same book, different editions
+
+2️. Same book, different editions
+```
 Book("Java Basics", "Alice", 1st edition)
 Book("Java Basics", "Alice", 2nd edition)
+```
 If equals includes:
+
 edition → treated as DIFFERENT
+
 ignores edition → treated as SAME
 
-👉 Depends on your design
+Depends on your design
 
-3️⃣ Same book, different publishers
+3️. Same book, different publishers
+```
 Book("Java Basics", "Alice", "Pearson")
 Book("Java Basics", "Alice", "O'Reilly")
-
+```
 Again:
 
-equals includes publisher?	Result
+`equals` includes publisher?	
+
+Result
+
 Yes	separate books
+
 No	duplicate
-🔥 MOST IMPORTANT INSIGHT FOR STUDENTS
 
-HashSet does NOT decide duplicates using hashCode
-It uses equals()
+HashSet does NOT decide duplicates using hashCode. It uses equals()
 
-🧪 Demonstration (VERY CLEAR)
+Demonstration  
+```
 Book b1 = new Book("Java", "Alice", 2020);
 Book b2 = new Book("Java", "Alice", 2020);
 
@@ -518,37 +541,35 @@ System.out.println(b1.equals(b2)); // true
 
 set.add(b1);
 set.add(b2);
+```
+Only ONE stored
 
-👉 Only ONE stored
-
-🧠 What if hashCodes are SAME but equals is FALSE?
+#### 3.5.4 What if hashCodes are SAME but equals is FALSE?
+```
 @Override
 public int hashCode() {
     return 1; // worst possible hash
 }
-
+```
 All books go into same bucket.
 
 But:
 
 equals() → different
 
-👉 RESULT:
+RESULT:
 
-All books still stored ✅
+All books still stored.
 
 Because equals separates them.
 
-🎯 Final Teaching Summary (use this slide)
-hashCode → decides WHERE object goes
-equals   → decides IF object is duplicate
-
-HashSet Animation — How Objects Are Stored
+#### 3.5.5 HashSet Animation — How Objects Are Stored
 
 We simulate:
 
 HashSet<Book> set = new HashSet<>();
-🧩 STEP 0 — Empty HashSet
+
+STEP 0 — Empty HashSet
 
 Think of HashSet as buckets (like an array of lists):
 
@@ -558,78 +579,102 @@ Index (bucket)
 2   →  [ ]
 3   →  [ ]
 4   →  [ ]
-📘 STEP 1 — Add First Book
+
+STEP 1 — Add First Book
+```
 Book b1 = new Book("Java Basics", "Alice", 2020);
+
 set.add(b1);
-🔍 What Java does:
+```
+What Java does:
+
 Compute hashCode
+
 Map to bucket index
+
 hashCode(b1) → 12345 → index = 2
-📦 Result
+
+Result
+```
 0   →  [ ]
 1   →  [ ]
 2   →  [ b1 ]
 3   →  [ ]
 4   →  [ ]
-📗 STEP 2 — Add Different Book (Different hash)
+```
+STEP 2 — Add Different Book (Different hash)
+```
 Book b2 = new Book("Advanced Java", "Alice", 2023);
 set.add(b2);
 hashCode(b2) → 67890 → index = 4
-📦 Result
+```
+Result
+```
 0   →  [ ]
 1   →  [ ]
 2   →  [ b1 ]
 3   →  [ ]
 4   →  [ b2 ]
+```
+No collision → directly added
 
-👉 No collision → directly added
+STEP 3 — Collision (Same hashCode)
 
-⚠️ STEP 3 — Collision (Same hashCode)
 Book b3 = new Book("Python", "Bob", 2022);
 
 Suppose:
 
 hashCode(b3) → index = 2
-📦 Now bucket 2 already has b1
+
+Now bucket 2 already has b1
 
 Java does:
 
-Compare:
-b3.equals(b1) ?
+Compare: b3.equals(b1) ?
+
 Case A — equals = FALSE
+
 b3 ≠ b1
 
-👉 Add it
-
+Add it
+```
 0   →  [ ]
 1   →  [ ]
 2   →  [ b1, b3 ]
 3   →  [ ]
 4   →  [ b2 ]
+```
 Case B — equals = TRUE
+
 b3.equals(b1) → true
 
-👉 DO NOT ADD
-
+DO NOT ADD
+```
 0   →  [ ]
 1   →  [ ]
 2   →  [ b1 ]
 3   →  [ ]
 4   →  [ b2 ]
-🎯 CRITICAL MOMENT (Highlight this in class)
-Same hashCode ≠ duplicate
-equals() decides duplicate
-🔥 STEP 4 — Worst Case (All hashCodes same)
+```
+    - Same hashCode ≠ duplicate
+    
+    - equals() decides duplicate
+
+STEP 4 — Worst Case (All hashCodes same)
+```
 @Override
 public int hashCode() {
     return 1;
 }
-📦 Everything goes to same bucket
+```
+Everything goes to same bucket
+```
 0   →  [ ]
 1   →  [ b1, b2, b3, b4, b5 ]
 2   →  [ ]
 3   →  [ ]
 4   →  [ ]
+```
 What happens internally?
 
 Java checks:
@@ -639,15 +684,15 @@ b3.equals(b1)?
 b3.equals(b2)?
 ...
 
-👉 Still works — just slower
+Still works — just slower
 
-🎬 FINAL ANIMATION SUMMARY
+#### 3.5.6 FINAL ANIMATION SUMMARY
 ADD OBJECT:
-
+```
 Step 1: hashCode() → pick bucket
 Step 2: equals() → check duplicates inside bucket
 Step 3: add if not duplicate
-
+```
 ### 3.6 Purpose of hashCode() with HashSet example
 Goal: Show how `hashCode() + equals()`
     - actually control behavior inside a Set
