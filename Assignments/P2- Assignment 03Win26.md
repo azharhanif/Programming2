@@ -148,3 +148,9 @@ Cell 7: num1 = 7, num2 = 3, result = 7 / 3 -> 2.33
 Cell 8: num1 = -8, num2 = 2, result = -8 / 2 -> I
 Cell 9: num1 = 9, num2 = 1, result = 0 / 1 -> 0.00
 */
+    
+// result
+A       I       0.43
+N       1.00    N              
+2.33    I       0.00
+```
