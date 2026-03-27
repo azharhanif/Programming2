@@ -412,6 +412,7 @@ Even if hashCodes are same, equals decides uniqueness
 Let’s define a Book class.
 
 ###### Case A — hashCode based ONLY on author (BAD DESIGN)
+```
 @Override
 public int hashCode() {
     return author.hashCode();
@@ -422,6 +423,7 @@ public boolean equals(Object obj) {
     Book other = (Book) obj;
     return this.author.equals(other.author);
 }
+```
 Now let's test:
 ```
 Book b1 = new Book("Java Basics", "Alice", 2020);
