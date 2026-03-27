@@ -119,8 +119,8 @@ first field dominates too much
 
 f) Why 7?
     - small prime
- - non-zero
- - avoids trivial patterns
+     - non-zero
+     - avoids trivial patterns
 
 Could also be 17, 23, etc.
 
@@ -130,7 +130,9 @@ These are:
 
     - just different primes
     - sometimes used to add variation
+
 But important:
+
     - You DO NOT need multiple primes
 
 Most correct implementations use:
@@ -149,6 +151,7 @@ h) Best practice:
 simple, consistent, standard
 
 i) Why multiplication matters (simple demo)
+
 Without multiplication
 
     hash = a + b
@@ -156,6 +159,7 @@ Without multiplication
     (2,1) → 3  ❌ collision
 
 With multiplication
+
     hash = 31 * a + b
     (1,2) → 33  
     (2,1) → 63  ✅ different
