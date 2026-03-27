@@ -522,9 +522,9 @@ Book("Java Basics", "Alice", "Pearson")
 Book("Java Basics", "Alice", "O'Reilly")
 ```
 Again:
-
+```
 `equals` includes publisher?	
-
+```
 Result
 
 Yes	separate books
@@ -556,9 +556,9 @@ public int hashCode() {
 All books go into same bucket.
 
 But:
-
+```
 equals() → different
-
+```
 RESULT:
 
 All books still stored.
@@ -574,14 +574,14 @@ HashSet<Book> set = new HashSet<>();
 STEP 0 — Empty HashSet
 
 Think of HashSet as buckets (like an array of lists):
-
+```
 Index (bucket)
 0   →  [ ]
 1   →  [ ]
 2   →  [ ]
 3   →  [ ]
 4   →  [ ]
-
+```
 STEP 1 — Add First Book
 ```
 Book b1 = new Book("Java Basics", "Alice", 2020);
@@ -590,11 +590,11 @@ set.add(b1);
 ```
 What Java does:
 
-Compute hashCode
+    - Compute `hashCode`
 
-Map to bucket index
+    - Map to bucket index
 
-hashCode(b1) → 12345 → index = 2
+    - `hashCode(b1) → 12345 → index = 2`
 
 Result
 ```
@@ -621,22 +621,22 @@ Result
 No collision → directly added
 
 STEP 3 — Collision (Same hashCode)
-
+```
 Book b3 = new Book("Python", "Bob", 2022);
-
+```
 Suppose:
 
-hashCode(b3) → index = 2
+`hashCode(b3) → index = 2`
 
 Now bucket 2 already has b1
 
 Java does:
-
+```
 Compare: b3.equals(b1) ?
-
+```
 Case A — equals = FALSE
 
-b3 ≠ b1
+`b3 ≠ b1`
 
 Add it
 ```
@@ -647,9 +647,9 @@ Add it
 4   →  [ b2 ]
 ```
 Case B — equals = TRUE
-
+```
 b3.equals(b1) → true
-
+```
 DO NOT ADD
 ```
 0   →  [ ]
@@ -700,7 +700,7 @@ Goal: Show how `hashCode() + equals()`
     - actually control behavior inside a Set
     - Example: Using User with HashSet
 
-We’ll use User class (with equals() and hashCode()).
+We’ll use `User` class (with `equals()` and `hashCode()`).
 
 Step 1 — Create Users
 ```
