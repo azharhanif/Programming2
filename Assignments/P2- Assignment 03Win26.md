@@ -35,7 +35,7 @@ Each challenge:
 
 ***
 
-## Task 1
+## Task 1 Mark: 15+ 15+ 15 + (Bonus 10, optional) + 25 = 70  
 
 ### Requirement
 
@@ -103,7 +103,7 @@ Each challenge:
     
     * If you try `iteration` times and none of the matrixes satisfy the condition, return `null`.
 
-## Task 2
+## Task 2 Mark:15
 
 ### Requirement
 
@@ -113,7 +113,7 @@ Define a new exception class: `InvalidNumberException`, which contains two const
 
 ***
 
-## Task 3
+## Task 3 Mark:15
 
 ### Requirement
 
