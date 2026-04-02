@@ -1,4 +1,4 @@
-# Programming 2 - Lab 18
+# Programming 2 - Lab 8 Win 26 (Lab 18)
 
 This template repository is the starter project for Programming 2 Lab 18. Written in Java, Use JUnit for testing.
 
