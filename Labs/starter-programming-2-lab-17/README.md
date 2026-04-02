@@ -1,4 +1,4 @@
-# Programming 2 - Lab 17
+# Programming 2 - Lab 7 Win26 (Lab 17)
 
 This template repository is the starter project for Programming 2 Lab 17. Written in Java, Use JUnit for testing.
 
