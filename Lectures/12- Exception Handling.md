@@ -258,7 +258,7 @@ public class TwoNumberTheSameException extends RuntimeException {
 }
 
 ```
-###### What it actually does
+#### What it actually does
 
 - Calls constructor of parent class → Exception
 
@@ -288,7 +288,7 @@ It becomes:
 ```
 this.detailMessage = "Numbers cannot be the same!";
 ```
-###### Why super(message) is IMPORTANT
+#### Why super(message) is IMPORTANT
 If you DON'T call it:
 ```
 public TwoNumberTheSameException(String message) {
@@ -305,7 +305,7 @@ Without it:
   
 - getMessage() returns null (unless overridden)
 
-###### Advanced version
+#### Advanced version
 ```
 public class TwoNumberTheSameException extends Exception {
 
@@ -370,7 +370,7 @@ public static void m1() throws ArithmeticException, TwoNumberTheSameException {
 ```
 
 And you can use `try-catch` or `throws` to handle the exception.
-###### Approach A — Using `try-catch` (Who handles exception -> method itself)
+#### Approach A — Using `try-catch` (Who handles exception -> method itself)
 Method that throws exception
 ```
 public class Calculator {
@@ -409,7 +409,7 @@ Execution Flow
 5) `e.getMessage()` prints message
 6) Method `returns 0`
 ```
-###### Approach B — Using throws (Who handles exception -> caller (main))
+#### Approach B — Using throws (Who handles exception -> caller (main))
 Method declares exception
 ```
 public class Calculator {
