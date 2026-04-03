@@ -256,6 +256,100 @@ public class TwoNumberTheSameException extends RuntimeException {
         super(message);
     }
 }
+
+```
+###### What it actually does
+
+- Calls constructor of parent class → Exception
+
+- Stores message inside Throwable class
+  
+- Enables:  `e.getMessage()`
+
+Java Exception (actually Throwable) internally does something like:
+```
+class Throwable {
+    private String detailMessage;
+
+    public Throwable(String message) {
+        this.detailMessage = message;
+    }
+
+    public String getMessage() {
+        return detailMessage;
+    }
+}
+```
+So when you write:
+```
+super("Numbers cannot be the same!");
+```
+It becomes:
+```
+this.detailMessage = "Numbers cannot be the same!";
+```
+###### Why super(message) is IMPORTANT
+If you DON'T call it:
+```
+public TwoNumberTheSameException(String message) {
+    // no super(message)
+}
+```
+Then:
+```
+e.getMessage()  // → null
+```
+Without it:
+
+- message is NOT stored
+  
+- getMessage() returns null (unless overridden)
+
+###### Advanced version
+```
+public class TwoNumberTheSameException extends Exception {
+
+    public TwoNumberTheSameException(String message) {
+        super(message);
+    }
+
+    public TwoNumberTheSameException(String message, Throwable cause) {
+        super(message, cause);
+//This calls the parent (Exception) constructor that accepts:
+// - a message
+// - a cause (another exception)
+    }
+}
+```
+This keeps original exception chain (important in real systems)
+```
+public static int divide(int a, int b) throws TwoNumberTheSameException {
+    try {
+        if (a == b) {
+            throw new ArithmeticException("Same numbers detected internally");
+        }
+        return a / b;
+
+    } catch (ArithmeticException e) {
+        // wrap original exception
+        throw new TwoNumberTheSameException("Invalid division attempt", e);
+    }
+}
+```
+In main
+```
+try {
+    divide(5, 5);
+} catch (TwoNumberTheSameException e) {
+    System.out.println("Message: " + e.getMessage());
+
+    System.out.println("Cause: " + e.getCause());
+}
+```
+Output
+```
+Message: Invalid division attempt
+Cause: java.lang.ArithmeticException: Same numbers detected internally
 ```
 
 Once the class is declared, you can create an object of it to represent an exception and then throw it manually. You can use the keyword `throw` to throw an exception manually.
@@ -276,3 +370,74 @@ public static void m1() throws ArithmeticException, TwoNumberTheSameException {
 ```
 
 And you can use `try-catch` or `throws` to handle the exception.
+###### Approach A — Using `try-catch` (Who handles exception -> method itself)
+Method that throws exception
+```
+public class Calculator {
+
+    public static int divide(int a, int b) {
+        try {
+            if (a == b) {
+                throw new TwoNumberTheSameException("Numbers cannot be the same!");
+            }
+            return a / b;
+
+        } catch (TwoNumberTheSameException e) {
+            System.out.println("Exception caught: " + e.getMessage());
+            return 0; // fallback value
+        }
+    }
+}
+```
+Main
+```
+public class Main {
+    public static void main(String[] args) {
+
+        int result = Calculator.divide(5, 5);
+
+        System.out.println("Result = " + result);
+    }
+}
+```
+Execution Flow
+```
+1) `divide(5,5)` is called
+2) Condition `a == b` → TRUE
+3) throw new `TwoNumberTheSameException(...)`
+4) Control jumps to `catch` block
+5) `e.getMessage()` prints message
+6) Method `returns 0`
+```
+###### Approach B — Using throws (Who handles exception -> caller (main))
+Method declares exception
+```
+public class Calculator {
+
+    public static int divide(int a, int b) throws TwoNumberTheSameException {
+
+        // BASE CASE (normal case)
+        if (a != b) {
+            return a / b;
+        }
+
+        // ERROR CASE
+        throw new TwoNumberTheSameException("Numbers cannot be the same!");
+    }
+}
+```
+Main handles it
+```
+public class Main {
+    public static void main(String[] args) {
+
+        try {
+            int result = Calculator.divide(5, 5);
+            System.out.println("Result = " + result);
+
+        } catch (TwoNumberTheSameException e) {
+            System.out.println("Handled in main: " + e.getMessage());
+        }
+    }
+}
+```
