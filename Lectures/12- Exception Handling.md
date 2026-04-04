@@ -321,7 +321,21 @@ public class TwoNumberTheSameException extends Exception {
     }
 }
 ```
-This keeps original exception chain (important in real systems)
+Inside Throwable, there is something like:
+```
+private String detailMessage;
+private Throwable cause;
+```
+When you write:
+```
+super(message, cause);
+```
+Java does:
+```
+this.detailMessage = message;
+this.cause = cause;
+```
+This keeps original `exception chaining`. You don’t lose the original error (important in real systems).
 ```
 public static int divide(int a, int b) throws TwoNumberTheSameException {
     try {
