@@ -13,9 +13,9 @@ Apr-27 23:57:00. **Late submission will directly be marked as 0**.
 
 **Grading**: 
 
-60% on the submitted project code.
+50% on the submitted project code.
 
-40% on the post-submission challange. 
+50% on the post-submission challange. 
 
 **What is post-submission challange?** 
 After final code submission there will be an in class extension challenges built directly on the submitted project. The challange is designed to fit a 30-minute coding task, and will test high-level understanding, not memorization.
