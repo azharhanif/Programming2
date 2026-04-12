@@ -3,8 +3,9 @@
 ## Source connection to class lectures
 This lab is built from two class ideas:
 
-- The exception handling lecture explains the default handler, `try-catch`, `throws`, checked vs unchecked exceptions, meaningful handlers using `e.getMessage()` / `e.getClass()` / `e.getStackTrace()`, and user-defined exceptions. citeturn424200view0turn444764view0
-- The polymorphism lecture uses familiar designs such as `Animal`, `Dog`, and `Cat`, explains runtime method selection, shows that unsafe downcasting can crash with `ClassCastException`, and also emphasizes contract-based polymorphism with interfaces. citeturn444764view0turn424200view0
+- The exception handling lecture explains the default handler, `try-catch`, `throws`, checked vs unchecked exceptions, meaningful handlers using `e.getMessage()` / `e.getClass()` / `e.getStackTrace()`, and user-defined exceptions.
+  
+- The polymorphism lecture uses familiar designs such as `Animal`, `Dog`, and `Cat`, explains runtime method selection, shows that unsafe downcasting can crash with `ClassCastException`, and also emphasizes contract-based polymorphism with interfaces.  
 
 ---
 
@@ -29,7 +30,7 @@ By the end of this lab, you should be able to:
 
 # Part 0 — Warm-up from the polymorphism lecture
 
-The polymorphism lecture shows that an unsafe downcast can crash at runtime with `ClassCastException`. citeturn444764view0
+The polymorphism lecture shows that an unsafe downcast can crash at runtime with `ClassCastException`.  
 
 ## Starter code
 
@@ -93,7 +94,7 @@ You are building a small bank system using familiar OOP ideas.
 - Transfers and withdrawals may fail.
 - Some failures should be represented with **user-defined exceptions**.
 
-This lab follows the lecture idea that `try-catch` gives a local handler, while `throws` passes responsibility to the caller. citeturn424200view0
+This lab follows the lecture idea that `try-catch` gives a local handler, while `throws` passes responsibility to the caller.  
 
 ---
 
@@ -278,7 +279,7 @@ Complete `findByIndex(Account[] accounts, int index)`.
 - In `main`, call it with an invalid index and use `try-catch` to handle the problem.
 
 ### Hint
-The lecture explains that Java's default handler prints exception information, stack trace, and stops execution when the programmer does not provide a handler. citeturn424200view0
+The lecture explains that Java's default handler prints exception information, stack trace, and stops execution when the programmer does not provide a handler.  
 
 ---
 
@@ -425,4 +426,4 @@ Use when you want to say: **the caller must handle this**.
 Use when built-in exception types do not describe the problem clearly enough.
 
 ## Polymorphism connection
-Even in exception-handling labs, familiar parent/child designs such as `Animal`, `Vehicle`, and `Account` make the code easier to read and test because the same method call can behave differently depending on the object type. citeturn444764view0
+Even in exception-handling labs, familiar parent/child designs such as `Animal`, `Vehicle`, and `Account` make the code easier to read and test because the same method call can behave differently depending on the object type.  
