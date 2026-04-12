@@ -2,7 +2,7 @@
 # Programming 2 Lab — Exception Handling with Familiar OOP Designs
 
 ## Lecture connection
-This lab is based on the Exception Handling lecture sections on the default handler, `try-catch`, specific vs general catches, meaningful handlers using `e.getMessage()` / `e.getClass()`, `throws`, and user-defined exceptions. The warm-up also reuses the familiar `Animal` polymorphism idea from the polymorphism lecture. citeturn824109view0turn824109view1
+This lab is based on the Exception Handling lecture sections on the default handler, `try-catch`, specific vs general catches, meaningful handlers using `e.getMessage()` / `e.getClass()`, `throws`, and user-defined exceptions. The warm-up also reuses the familiar `Animal` polymorphism idea from the polymorphism lecture.  
 
 ## Time
 - Warm-up: 10 minutes
@@ -105,7 +105,7 @@ In `Main`, when `calculateAverageFee(...)` causes an exception, your handler sho
 - print `e.getClass()`
 - print `e.getMessage()`
 
-This follows the lecture’s idea of a meaningful handler instead of just assigning a random number. citeturn824109view0
+This follows the lecture’s idea of a meaningful handler instead of just assigning a random number.  
 
 ---
 
