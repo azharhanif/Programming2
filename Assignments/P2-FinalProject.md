@@ -9,11 +9,11 @@ Total: 100 marks
 
 - **in each phase, 50% on the submitted project code.**
 
-- **in each phase 50% on the post-submission challange.**
+- **in each phase 50% on the coding challange.**
 
-**What is post-submission challange?**
+**What is coding challange?**
 
-After final code submission there will be an in class extension challenges built directly on the submitted project. The challange is designed to fit a 30-minute coding task, and will test high-level understanding, not memorization.
+There will be in class extension challenges built directly on the Phase 1, Phase 2, and Phase 3 of the project. The challange is designed to fit a 30-minute coding task, and will test high-level understanding, not memorization.
 
 Each challenge:
 
