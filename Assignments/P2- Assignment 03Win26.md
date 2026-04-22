@@ -35,7 +35,7 @@ Each challenge:
 
 ***
 
-## Task 1 Mark: 15+ 15+ 15 + 15+ (20+20) = 100  
+## Task 1 Mark: 15+ 15+ 15 + 15 (bonus 5) + (20+20) = 100  (plus bonus 5)
 
 ### Requirement
 
@@ -81,7 +81,7 @@ Each challenge:
 // There is a space between each !
 ```
 
-4. **[Bonus Question]** Create a method `void printShape4(int row, char symbol, int currentRowId)` that prints a certain pattern displayed as below. *Note: here, 3 indicates that the longest row will be the 4th row, so that there are 3 rows above it, and 3 rows below it.*
+4. **[Bonus Question Bonus 5 plus orginal 15]** Create a method `void printShape4(int row, char symbol, int currentRowId)` that prints a certain pattern displayed as below. *Note: here, 3 indicates that the longest row will be the 4th row, so that there are 3 rows above it, and 3 rows below it.*
 
    Hint: you can have one general pattern for the upper part, and another general pattern for the lower part.
 ```java
