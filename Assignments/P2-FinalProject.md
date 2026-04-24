@@ -17,10 +17,15 @@ Total: 100 marks
 After students submit a phase:
 
 •	they come to class 
+
 •	instructor gives ONE/ TWO random challenges 
+
 •	challenges must be completed in 15–20-30 minutes 
+
 •	must extend their existing code 
+
 •	no rewriting architecture 
+
 •	tests real understanding 
 
 Each group (2 students in a group) completes the same project in 3 phases: 
