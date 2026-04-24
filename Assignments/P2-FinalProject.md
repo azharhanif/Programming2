@@ -15,7 +15,7 @@ Total: 100 marks
 **RULE FOR CODING CHALLENGES**
 
 After students submit a phase:
-
+```
 •	they come to class 
 
 •	instructor gives ONE/ TWO random challenges 
@@ -27,7 +27,7 @@ After students submit a phase:
 •	no rewriting architecture 
 
 •	tests real understanding 
-
+```
 Each group (2 students in a group) completes the same project in 3 phases: 
 #### Phase 1 — Core OOP Design
 Build the foundational HR management system using core Programming 2 concepts.
