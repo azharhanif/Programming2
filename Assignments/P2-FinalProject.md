@@ -12,18 +12,16 @@ Total: 100 marks
 
 - **in each phase 50% on the coding challange.**
 
-**What is coding challange?**
+**RULE FOR CODING CHALLENGES**
 
-There will be in class extension challenges built directly on the Phase 1, Phase 2, and Phase 3 of the project. The challange is designed to fit a 30-minute coding task, and will test high-level understanding, not memorization.
+After students submit a phase:
 
-Each challenge:
-
-• plugs into the existing submitted solution
-
-• targets a different OOP skill
-
-• is specific enough to grade consistently
-
+•	they come to class 
+•	instructor gives ONE/ TWO random challenges 
+•	challenges must be completed in 15–20-30 minutes 
+•	must extend their existing code 
+•	no rewriting architecture 
+•	tests real understanding 
 
 Each group (2 students in a group) completes the same project in 3 phases: 
 #### Phase 1 — Core OOP Design
