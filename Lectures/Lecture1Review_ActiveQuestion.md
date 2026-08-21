@@ -279,7 +279,7 @@ Only one shared copy exists.
 
 ## Total  Focus
 
-Students should understand:
+Understand:
 
 - References vs objects
 - Arrays vs Strings (`length` vs `length()`)
