@@ -98,7 +98,7 @@ Generally, Java data can be separated into two broad groups:
 
 Primitive data types
 Reference types / objects
-1.1 Primitive Data Types
+#### 1.1 Primitive Data Types
 
 Primitive types are Java's basic built-in data types.
 
@@ -111,14 +111,14 @@ floating	float	4 bytes	float x = 3.14f;
 floating	double	8 bytes	double price = 19.99;
 character	char	2 bytes	char grade = 'A';
 boolean	boolean	implementation-dependent	boolean passed = true;
-1.2 Reference Types
+#### 1.2 Reference Types
 
 Objects are created from classes.
 
 Example:
-
+```
 String name = "Hanif";
-
+```
 Here:
 
 String is a class;
@@ -126,14 +126,15 @@ String is a class;
 name is a reference variable.
 
 Another example:
-
+```
 Student s1 = new Student();
-
+```
 Here:
-
+```
 Student       → class/type
 new Student() → object
 s1            → reference variable
+```
 Important idea
 
 A variable containing an object does not directly contain the entire object.
@@ -150,7 +151,7 @@ s1
 └───────────────┘
 
 This distinction becomes extremely important later when we study:
-
+```
 inheritance
 polymorphism
 shallow/deep copy
@@ -158,33 +159,35 @@ equals()
 hashCode()
 ArrayList
 interfaces
-2. Methods
+```
+### 2. Methods
 
 A method is a named block of code designed to perform a task.
 
 Example:
-
+```
 public static int square(int n) {
     return n * n;
 }
-
+```
 We can call it:
-
+```
 int result = square(5);
-
+```
 The result is:
 
 25
-2.1 Understand a Method Before Writing One
+
+#### 2.1 Understand a Method Before Writing One
 
 Look at:
-
+```
 public static int square(int n) {
     return n * n;
 }
-
+```
 Break it apart:
-
+```
 public      → access modifier
 static      → belongs to the class
 int         → return type
@@ -192,23 +195,26 @@ square      → method name
 (int n)     → parameter
 return      → sends a value back
 n * n       → returned expression
-2.2 Parameter vs Argument
+```
+#### 2.2 Parameter vs Argument
 
 Consider:
-
+```
 public static int square(int n) {
     return n * n;
 }
-
+```
 and:
-
+```
 int x = square(7);
 
 n is a parameter.
 
 7 is an argument.
-
+```
+```
 Method definition:
+
 square(int n)
              ↑
           parameter
@@ -218,19 +224,20 @@ Method call:
 square(7)
        ↑
     argument
-2.3 Trace a Method Call
+```
+#### 2.3 Trace a Method Call
 
 Consider:
-
+```
 public static int add(int a, int b) {
     int result = a + b;
     return result;
 }
-
+```
 Now:
-
+```
 int x = add(4, 7);
-
+```
 Trace it:
 
 a = 4
@@ -255,10 +262,10 @@ System.out.println(x * 2);
 Answer:
 
 16
-2.4 Why Use Methods?
+#### 2.4 Why Use Methods?
 
 Without methods:
-
+```
 int a = 5;
 int squareA = a * a;
 
@@ -269,13 +276,13 @@ int squareB = b * b;
 
 int c = 10;
 int squareC = c * c;
-
+```
 With a method:
-
+```
 public static int square(int n) {
     return n * n;
 }
-
+```
 we can write:
 
 int squareA = square(5);
@@ -283,13 +290,14 @@ int squareB = square(7);
 int squareC = square(10);
 
 Methods provide:
-
+```
 reuse
 organization
 readability
 easier testing
 easier debugging
-2.5 Void Methods
+```
+#### 2.5 Void Methods
 
 A method does not always return a value.
 
