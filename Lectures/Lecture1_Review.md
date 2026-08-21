@@ -1,7 +1,7 @@
 Lectures/1- Review.md
 
 # Programming 2 — Lecture 1
-# Java Review: From "I Can Read the Code" to "I Can Explain the Code"
+## Java Review: From "I Can Read the Code" to "I Can Explain the Code"
 
 
 > **Programming 2 philosophy:**  
@@ -23,7 +23,7 @@ Lectures/1- Review.md
 ---
 
 
-# Learning Objectives
+## Learning Objectives
 
 
 By the end of this lecture, you should be able to:
@@ -49,7 +49,7 @@ By the end of this lecture, you should be able to:
 ---
 
 
-# 0. A New Way to Learn Programming
+### 0. A New Way to Learn Programming
 
 
 A program can be syntactically correct and still be wrong.
@@ -97,7 +97,7 @@ Explain
         ↓
 Modify / Improve
 ```
-# 1. Data Types
+### 1. Data Types
 
 Generally, Java data can be separated into two broad groups:
 
