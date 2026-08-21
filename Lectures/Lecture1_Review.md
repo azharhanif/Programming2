@@ -101,7 +101,7 @@ Reference types / objects
 #### 1.1 Primitive Data Types
 
 Primitive types are Java's basic built-in data types.
-
+```
 Category	Type	Typical Size	Example
 integral	byte	1 byte	byte age = 18;
 integral	short	2 bytes	short year = 2026;
@@ -111,6 +111,7 @@ floating	float	4 bytes	float x = 3.14f;
 floating	double	8 bytes	double price = 19.99;
 character	char	2 bytes	char grade = 'A';
 boolean	boolean	implementation-dependent	boolean passed = true;
+```
 #### 1.2 Reference Types
 
 Objects are created from classes.
