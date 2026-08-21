@@ -96,7 +96,8 @@ Debug
 Explain
         ↓
 Modify / Improve
-1. Data Types
+```
+# 1. Data Types
 
 Generally, Java data can be separated into two broad groups:
 
