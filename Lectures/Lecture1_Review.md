@@ -141,7 +141,7 @@ Important idea
 A variable containing an object does not directly contain the entire object.
 
 Conceptually:
-
+```
 s1
  ↓
 ┌───────────────┐
@@ -150,7 +150,7 @@ s1
 │ id            │
 │ GPA           │
 └───────────────┘
-
+```
 This distinction becomes extremely important later when we study:
 ```
 inheritance
