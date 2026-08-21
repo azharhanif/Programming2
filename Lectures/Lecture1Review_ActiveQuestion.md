@@ -104,7 +104,7 @@ for(int i = 0; i < str.length(); i++) {
 
 Using `<=` eventually causes a `StringIndexOutOfBoundsException`.
 
-### Teaching Point
+### Focus Point
 
 This is an **off-by-one error**.
 
@@ -277,7 +277,7 @@ Only one shared copy exists.
 
 ---
 
-## Total Teaching Focus
+## Total  Focus
 
 Students should understand:
 
