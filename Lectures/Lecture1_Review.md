@@ -303,17 +303,17 @@ easier debugging
 A method does not always return a value.
 
 Example:
-
+```
 public static void printWelcome(String name) {
     System.out.println("Welcome " + name);
 }
-
+```
 Call:
-
+```
 printWelcome("Alice");
-
+```
 Output:
-
+```
 Welcome Alice
 
 There is no:
@@ -321,15 +321,15 @@ There is no:
 return value;
 
 because the method is void.
-
-2.6 Method Overloading
+```
+#### 2.6 Method Overloading
 
 Method overloading means:
 
 Multiple methods in the same class have the same name but different parameter lists.
 
 Example:
-
+```
 public static int max(int a, int b) {
     return a > b ? a : b;
 }
@@ -365,12 +365,13 @@ public static double test(int x) {
 The parameter list is identical.
 
 Changing only the return type does not create an overload.
-
-3. Math Class
+```
+### 3. Math Class
 
 The Math class provides useful mathematical methods.
 
 Method	Purpose	Example
+```
 Math.min(a,b)	smaller value	Math.min(2,5) → 2
 Math.max(a,b)	larger value	Math.max(2,5) → 5
 Math.sqrt(x)	square root	Math.sqrt(25) → 5.0
@@ -380,7 +381,9 @@ Math.ceil(x)	round upward	Math.ceil(3.1) → 4.0
 Math.floor(x)	round downward	Math.floor(3.9) → 3.0
 Math.random()	random double	[0,1)
 Math.PI	π	approximately 3.14159
-3.1 Random Numbers with Math.random()
+```
+#### 3.1 Random Numbers with Math.random()
+```
 double x = Math.random();
 
 The result satisfies:
@@ -421,13 +424,16 @@ cast to int
 + 1
         ↓
 1,2,3,4,5,6
-4. String
+```
+### 4. String
 
 The String index starts at 0.
-
+```
 String:  P r o g r a m
 Index:   0 1 2 3 4 5 6
-4.1 String length
+```
+#### 4.1 String length
+```
 String word = "hello";
 
 
@@ -450,8 +456,9 @@ array.length
 is a field.
 
 Do not confuse them.
-
-4.2 charAt()
+```
+#### 4.2 charAt()
+```
 String word = "hello";
 
 
@@ -490,7 +497,9 @@ System.out.println(word.lastIndexOf('l'));
 Output:
 
 3
-4.5 contains()
+```
+#### 4.5 contains()
+```
 String sentence = "I love programming";
 
 
@@ -499,8 +508,9 @@ System.out.println(sentence.contains("program"));
 Output:
 
 true
-4.6 substring()
-
+```
+#### 4.6 substring()
+```
 Consider:
 
 String word = "Programming";
@@ -533,28 +543,31 @@ means:
 0,1,2,3
 
 not index 4.
-
+```
 Common Error
 
 Students often write:
-
+```
 word.substring(0, word.length() - 1)
-
+```
 when they want the entire String.
+
 
 That removes the final character.
 
+
 To get the entire String:
-
+```
 word.substring(0, word.length())
-
+```
 although simply using:
-
+```
 word
-
+```
 is clearer.
 
-4.7 Changing Case
+#### 4.7 Changing Case
+```
 String name = "Hanif";
 
 
@@ -579,9 +592,10 @@ You need:
 name = name.toUpperCase();
 
 if you want the variable to refer to the new String.
+```
 
-4.8 Comparing Strings
-
+#### 4.8 Comparing Strings
+```
 Do NOT use:
 
 if(name == "Hanif")
@@ -591,9 +605,9 @@ to compare String contents.
 Use:
 
 if(name.equals("Hanif"))
-
+```
 Why?
-
+```
 == compares references.
 
 equals() compares contents when implemented appropriately by the class.
@@ -609,9 +623,9 @@ when name might be null, we can write:
 "Hanif".equals(name)
 
 because the literal "Hanif" is not null.
-
-4.9 String.format()
-
+```
+#### 4.9 String.format()
+```
 Example:
 
 String result = String.format("%s: %d", "Age", 18);
@@ -641,16 +655,19 @@ String.format("%.2f", 3.14159)
 produces:
 
 3.14
-5. Random Class
+```
+### 5. Random Class
 
 The Random class can generate random values.
-
+```
 Random rand = new Random();
 
 You need:
 
 import java.util.Random;
-5.1 nextInt()
+```
+#### 5.1 nextInt()
+```
 int num = rand.nextInt(3);
 
 Possible values:
@@ -692,7 +709,9 @@ number of choices
 step size
 +
 starting value
-6. Scanner
+```
+### 6. Scanner
+```
 Scanner console = new Scanner(System.in);
 
 Need:
@@ -722,9 +741,9 @@ reads the entire line:
 
 Hanif Azhar
 Important Scanner Trap
-
+```
 Consider:
-
+```
 int age = console.nextInt();
 String name = console.nextLine();
 
@@ -739,20 +758,20 @@ console.nextLine();
 String name = console.nextLine();
 
 The first nextLine() consumes the remaining newline.
-
-7. Character Class
+```
+### 7. Character Class
 
 Useful methods:
-
+```
 Character.isUpperCase(c)
 Character.isLowerCase(c)
 Character.isLetter(c)
 Character.isDigit(c)
 Character.toUpperCase(c)
 Character.toLowerCase(c)
-
+```
 Example:
-
+```
 char c = 'A';
 
 
@@ -763,8 +782,9 @@ Output:
 
 true
 false
-7.1 Worked Example: Password Validation
-
+```
+#### 7.1 Worked Example: Password Validation
+```
 Suppose a password is valid if it contains:
 
 uppercase letter
@@ -859,8 +879,9 @@ return true && true && true;
 Result:
 
 true
-7.2 Why Boolean Flags Are Useful
-
+```
+#### 7.2 Why Boolean Flags Are Useful
+```
 A flag remembers whether something has happened.
 
 For example:
@@ -874,16 +895,17 @@ foundDigit = true;
 Even after we move to the next character, the information remains.
 
 This pattern will appear repeatedly in this course.
-
-8. Control Structures
+```
+### 8. Control Structures
 
 There are three fundamental control structures:
-
+```
 Sequence
 Selection
 Iteration
-8.1 Sequence
-
+```
+#### 8.1 Sequence
+```
 Statements execute in order.
 
 int x = 5;
@@ -900,8 +922,9 @@ x = 21
 Output:
 
 21
-8.2 Selection
-
+```
+#### 8.2 Selection
+```
 Selection allows the program to choose which code to execute.
 
 if
@@ -925,9 +948,9 @@ else
 The conditions are checked from top to bottom.
 
 Once one condition is true, the remaining branches are skipped.
-
-8.3 Common if Error
-
+```
+#### 8.3 Common if Error
+```
 Consider:
 
 if(score >= 50)
@@ -946,9 +969,9 @@ if(score >= 50) {
 }
 
 Use braces when they improve clarity.
-
-8.4 Conditional Operator
-
+```
+#### 8.4 Conditional Operator
+```
 Simple:
 
 if(num1 >= num2)
@@ -965,11 +988,11 @@ Structure:
 condition ? valueIfTrue : valueIfFalse
 
 Do not use the conditional operator when the logic becomes difficult to read.
-
-8.5 switch
+```
+#### 8.5 switch
 
 Use switch when comparing one expression against several discrete values.
-
+```
 Example:
 
 switch(operation) {
@@ -1020,18 +1043,19 @@ One
 Two
 
 This is called fall-through.
-
-9. Loops
+```
+### 9. Loops
 
 Loops allow us to repeat code.
 
 Main loop types:
-
+```
 for
 while
 do...while
-9.1 for Loop
-
+```
+#### 9.1 for Loop
+```
 Use a for loop when the iteration structure is known or naturally expressed with a counter.
 
 for(int i = 0; i < 5; i++) {
@@ -1065,7 +1089,9 @@ i++ → 3
 
 
 i = 3 → condition false → stop
-9.2 String + for Loop
+```
+#### 9.2 String + for Loop
+```
 public static void printCharacters(String str) {
 
 
@@ -1086,8 +1112,9 @@ v
 a
 
 is printed without spaces/newlines.
-
-9.3 Special Increment
+```
+#### 9.3 Special Increment
+```
 for(int i = 0; i < 10; i += 2)
     System.out.println(i);
 
@@ -1098,15 +1125,17 @@ Output:
 4
 6
 8
-9.4 Two Loop Variables
+```
+#### 9.4 Two Loop Variables
+```
 for(int i = 0, j = 10; i < j; i++, j--) {
     System.out.println(i + " " + j);
 }
 
 This is useful when processing two ends of a structure.
-
-9.5 while Loop
-
+```
+#### 9.5 while Loop
+```
 Use while when the number of iterations is not necessarily known in advance.
 
 int i = 0;
@@ -1161,8 +1190,9 @@ do {
 } while(!pin.equals(realPin));
 
 This is useful because the program must ask for a PIN at least once.
-
-9.7 Choosing the Correct Loop
+```
+#### 9.7 Choosing the Correct Loop
+```
 Situation	Good choice
 Known counter/number of iterations	for
 Repeat while condition remains true	while
@@ -1171,9 +1201,9 @@ Process every character in a String	usually for
 Ask repeatedly until valid input	often while or do...while
 
 These are guidelines, not absolute laws.
-
-10. Debugging Through Prediction
-
+```
+### 10. Debugging Through Prediction
+```
 Before running code, predict it.
 
 Consider:
@@ -1220,17 +1250,17 @@ What should happen?
 Then run it.
 
 If the output differs from your prediction, you have discovered something worth investigating.
-
-11. OOP Review
-
+```
+### 11. OOP Review
+```
 Object-oriented programming organizes software around objects.
 
 A class describes the structure and behavior.
 
 An object is an instance created from that class.
-
-11.1 Class
-
+```
+#### 11.1 Class
+```
 Example:
 
 public class Clock {
@@ -1251,8 +1281,9 @@ public class Clock {
 }
 
 The class describes what a Clock object contains and can do.
-
-11.2 Object
+```
+#### 11.2 Object
+```
 Clock c1 = new Clock();
 Clock c2 = new Clock();
 
@@ -1272,18 +1303,21 @@ c2 ──→ Clock object
        se
 
 Each object has its own non-static instance data.
-
-12. Constructors
+```
+#### 12. Constructors
 
 A constructor initializes an object.
 
-12.1 Default Constructor
+#### 12.1 Default Constructor
+```
 public Clock() {
     this.hr = 0;
     this.mi = 0;
     this.se = 0;
 }
-12.2 Constructor with Parameters
+```
+#### 12.2 Constructor with Parameters
+```
 public Clock(int hr, int mi, int se) {
     this.hr = hr;
     this.mi = mi;
@@ -1293,8 +1327,9 @@ public Clock(int hr, int mi, int se) {
 Usage:
 
 Clock c = new Clock(8, 30, 15);
-12.3 What Does this Mean?
-
+```
+#### 12.3 What Does this Mean?
+```
 Consider:
 
 public Clock(int hr, int mi, int se) {
@@ -1326,9 +1361,9 @@ this.hr = hr;
 means:
 
 store the parameter hr into this object's hr field.
-
-13. Copy Constructor
-
+```
+### 13. Copy Constructor
+```
 A copy constructor takes an object of the same class.
 
 public Clock(Clock clock) {
@@ -1348,9 +1383,9 @@ c1 → Clock object
 c2 → different Clock object
 
 but their values initially match.
-
-14. toString()
-
+```
+### 14. toString()
+```
 When we write:
 
 System.out.println(c1);
@@ -1367,8 +1402,9 @@ public String toString() {
 Example:
 
 08:16:24
-14.1 Why Override toString()?
-
+```
+#### 14.1 Why Override toString()?
+```
 Without a useful toString(), printing an object may produce something like:
 
 Clock@5acf9800
@@ -1376,9 +1412,9 @@ Clock@5acf9800
 That is generally not useful to a user.
 
 A good toString() provides a readable representation of the object's state.
-
-15. equals()
-
+```
+### 15. equals()
+```
 Suppose:
 
 Clock c1 = new Clock(8,20,30);
@@ -1411,9 +1447,9 @@ and:
 equals()
 
 are not automatically the same thing.
-
-16. Access Modifiers
-
+```
+### 16. Access Modifiers
+```
 Access modifiers control where members can be accessed.
 
 Modifier	Basic idea
@@ -1427,9 +1463,9 @@ For encapsulation, fields are commonly declared:
 private
 
 and accessed through methods.
-
-16. Getters and Setters
-
+```
+### 16. Getters and Setters
+```
 Example:
 
 private double balance;
@@ -1466,9 +1502,9 @@ so that business rules can be enforced.
 This is an important idea:
 
 Encapsulation is not just making fields private. It is controlling how an object's state can change.
-
-17. Shallow Copy vs Deep Copy
-
+```
+### 17. Shallow Copy vs Deep Copy
+```
 Consider:
 
 Student s1 = new Student();
@@ -1504,13 +1540,13 @@ s1 ──→ Student A
 s2 ──→ Student B
 
 Changing Student A does not automatically change Student B.
-
-18. static vs non-static
+```
+### 18. static vs non-static
 
 This distinction is extremely important.
 
-18.1 Non-static
-
+#### 18.1 Non-static
+```
 Belongs to an object.
 
 Example:
@@ -1526,8 +1562,9 @@ Conceptually:
 
 c1.hr = 8
 c2.hr = 15
-18.2 static
-
+```
+#### 18.2 static
+```
 Belongs to the class.
 
 Example:
@@ -1541,9 +1578,9 @@ Use:
 Clock.printBrand();
 
 rather than creating an object merely to access the static method.
-
-18.3 Static Method Rule
-
+```
+#### 18.3 Static Method Rule
+```
 A static method can directly access static members.
 
 Example:
@@ -1559,9 +1596,9 @@ mi
 se
 
 because a static method does not automatically know which Clock object you mean.
-
-18.4 Non-static Method
-
+```
+#### 18.4 Non-static Method
+```
 A non-static method belongs to an object.
 
 public void increaseHr() {
@@ -1581,8 +1618,9 @@ instance/non-static members
 static members
 
 because the method is being executed in the context of a particular object.
-
-19. A Complete Mini Example
+```
+### 19. A Complete Mini Example
+```
 public class Student {
 
 
@@ -1639,9 +1677,9 @@ returns:
 2
 
 because count is static.
-
-20. Read Code Like a Programmer
-
+```
+### 20. Read Code Like a Programmer
+```
 Before running a program, ask:
 
 Question 1
@@ -1675,9 +1713,9 @@ Which object is being modified?
 Question 8
 
 Is a variable storing a value or referring to an object?
-
-21. Worked Trace Challenge
-
+```
+### 21. Worked Trace Challenge
+```
 Predict the output without running this code.
 
 public static int mystery(int n) {
@@ -1717,7 +1755,9 @@ Output:
 The method calculates:
 
 sum of even numbers from 1 through n
-22. Common Mistakes to Watch For
+```
+#### 22. Common Mistakes to Watch For
+```
 Mistake 1: Using == for Strings
 
 Bad:
@@ -1781,8 +1821,9 @@ Correct:
 public static int square(int x) {
     return x * x;
 }
-23. AI-Assisted Programming
-
+```
+### 23. AI-Assisted Programming
+```
 AI tools can produce Java code very quickly.
 
 For example, you might ask:
@@ -1804,19 +1845,21 @@ public static boolean containsDigit(String text) {
 
     return false;
 }
-
+```
 This looks correct.
 
-But a programmer should still ask:
 
+But a programmer should still ask:
+```
 Why does it work?
 What happens if text is empty?
 What happens if text is null?
 Why does the loop use < rather than <=?
 Why does the method return true immediately?
 What happens after return?
-23.1 AI Does Not Remove the Need to Understand Code
-
+```
+#### 23.1 AI Does Not Remove the Need to Understand Code
+```
 Suppose an AI gives you:
 
 for(int i = 0; i <= text.length(); i++)
@@ -1840,9 +1883,9 @@ Therefore:
 text.charAt(4)
 
 causes an exception.
-
-23.2 The AI Verification Cycle
-
+```
+#### 23.2 The AI Verification Cycle
+```
 When using AI:
 
 Prompt
@@ -1866,9 +1909,9 @@ Explain
 Never assume:
 
 "It compiles, therefore it is correct."
-
-23.3 Your Responsibility
-
+```
+#### 23.3 Your Responsibility
+```
 If AI generates:
 
 public static boolean test(String s) {
@@ -1892,9 +1935,9 @@ or:
 Change this method so that it also checks for a digit.
 
 If you cannot answer, you do not yet own the code.
-
-24. Active Learning Questions
-
+```
+#### 24. Active Learning Questions
+```
 Before moving to the next lecture, you should be able to answer these without looking at the notes.
 
 Question 1
@@ -1966,9 +2009,9 @@ assuming the second statement uses a copy constructor?
 Question 8
 
 What is the difference between a static variable and an instance variable?
-
-25. Summary
-
+```
+### 25. Summary
+```
 This lecture reviewed the foundations required for Programming 2.
 
 You should now understand:
@@ -1998,17 +2041,19 @@ Encapsulation
 Copying
    ↓
 static vs non-static
-
+```
 These are not isolated topics.
+
 
 They connect.
 
+
 For example:
-
+```
 ArrayList<Student> students
-
+```
 which we will study soon requires you to understand:
-
+```
 classes
 objects
 references
@@ -2016,9 +2061,9 @@ methods
 constructors
 equals()
 loops
-
+```
 Later topics such as:
-
+```
 Inheritance
 Polymorphism
 Abstract Classes
@@ -2028,17 +2073,20 @@ Comparator
 HashCode
 Recursion
 Exception Handling
-
+```
 will build on these foundations.
 
-Final Principle
+#### Final Principle
 
 Do not measure your programming ability only by whether your program runs.
 
+
 A strong programmer can explain:
 
+```
 what the code does, why it works, what could go wrong, how to test it, and how to change it.
-
+```
 And when AI writes the first version:
-
+```
 Your job becomes even more important: understand it, verify it, debug it, modify it, and improve it.
+```
