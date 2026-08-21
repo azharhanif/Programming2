@@ -57,7 +57,7 @@ For example:
 public static boolean isAdult(int age) {
     return age > 18;
 }
-
+```
 This code compiles.
 
 But if the requirement is:
@@ -67,15 +67,15 @@ A person is an adult when age is 18 or older.
 then the code is logically wrong.
 
 The correct version is:
-
+```
 public static boolean isAdult(int age) {
     return age >= 18;
 }
-
+```
 Therefore, programming requires more than syntax.
 
 We use the following cycle:
-
+```
 Understand the requirement
         ↓
 Design the solution
