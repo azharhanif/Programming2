@@ -681,7 +681,9 @@ name = null    → false
 
 Another safe approach is:
 
-`name != null && name.equals("Hanif")`
+if (name != null && name.equals("Hanif")) {
+    ...
+}
 ```
 This is a good example of defensive programming: write code that behaves safely even when an input may not contain the value you expected.
 
