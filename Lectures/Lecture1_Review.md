@@ -545,9 +545,9 @@ true
 #### 4.6 substring()
 
 Consider:
-
+```
 String word = "Programming";
-
+```
 Remember:
 ```
 P r o g r a m m i n g
@@ -713,15 +713,17 @@ Possible values:
 0, 1, 2
 
 The upper bound is exclusive.
-
-5.2 Dice
+```
+#### 5.2 Dice
+```
 int dice = rand.nextInt(6) + 1;
 
 Possible values:
 
 1,2,3,4,5,6
-5.3 General Pattern
-
+```
+#### 5.3 General Pattern
+```
 For consecutive integers from start through end:
 
 int value = rand.nextInt(end - start + 1) + start;
@@ -733,7 +735,9 @@ int value = rand.nextInt(5) + 3;
 Possible values:
 
 3,4,5,6,7
-5.4 Even Numbers
+```
+#### 5.4 Even Numbers
+```
 int value = rand.nextInt(5) * 2 + 3;
 
 Possible values:
