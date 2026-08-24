@@ -408,7 +408,7 @@ Important:
 1.0 is NOT included.
 ```
 #### 3.2 Random Integer in a Range
-```
+
 Suppose we want:
 
 1, 2, 3, 4, 5, 6
@@ -418,7 +418,29 @@ We can write:
 int dice = (int)(Math.random() * 6) + 1;
 
 Why?
+```
+Symbol
 
+
+Think of it as
+
+[
+
+Closed door → value is inside
+
+(
+
+Open door → value stays outside
+
+So:
+
+[18,65)
+
+means ages 18 through 64, but not 65.
+
+```
+Interval notation: [a,b) means include a, exclude b. Java arrays and most for loops naturally iterate over the interval [0, length), which is why we write i < length instead of i <= length.
+```
 Math.random()
         ↓
 [0,1)
