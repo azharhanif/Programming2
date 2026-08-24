@@ -549,31 +549,31 @@ Consider:
 String word = "Programming";
 
 Remember:
-
+```
 P r o g r a m m i n g
 0 1 2 3 4 5 6 7 8 9 10
-
+```
 Then:
 
-word.substring(0, 4)
+`word.substring(0, 4)`
 
 returns:
 
-"Prog"
+`"Prog"`
 
 The end index is NOT included.
 
 This is called a half-open range:
 
-[start, end)
+`[start, end)`
 
 So:
 
-substring(0,4)
+`substring(0,4)`
 
 means:
 
-0,1,2,3
+`0,1,2,3`
 
 not index 4.
 
@@ -601,7 +601,7 @@ String a = word;                         // Best
 String b = word.substring(0, word.length()); // Correct but unnecessary
 
 ```
-Both contain "Programming".
+Both contain `"Programming"`.
 Correct code is not necessarily good code. Prefer the simpler expression when it communicates the same thing.
 
 #### 4.7 Changing Case
