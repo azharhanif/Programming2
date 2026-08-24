@@ -663,18 +663,28 @@ Why?
 
 equals() compares contents when implemented appropriately by the class.
 
-Safer Pattern
+Note: Avoiding `NullPointerException` when comparing Strings
 
-Instead of:
+If a String reference might be null, calling a method on that reference can cause a `NullPointerException`.
 
-name.equals("Hanif")
+name.equals("Hanif");       // risky if name == null
 
-when name might be null, we can write:
+A safer alternative is to call `equals()` on a known non-null String:
 
-"Hanif".equals(name)
+"Hanif".equals(name);
 
-because the literal "Hanif" is not null.
+Results:
+
+name = "Hanif" → true
+name = "Alice" → false
+name = null    → false
+
+Another safe approach is:
+
+`name != null && name.equals("Hanif")`
 ```
+This is a good example of defensive programming: write code that behaves safely even when an input may not contain the value you expected.
+
 #### 4.9 String.format()
 ```
 Example:
