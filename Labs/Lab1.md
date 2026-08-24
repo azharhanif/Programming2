@@ -117,7 +117,7 @@ Would `"VANIER2026"` pass the test? Explain.
 ### A6
 Would `"vanier2026"` pass? Explain.
 
-> **Instructor checkpoint:** Be prepared to explain your answer before continuing.
+> **checkpoint: explain your answer before continuing** 
 
 ---
 
