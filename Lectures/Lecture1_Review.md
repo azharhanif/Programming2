@@ -1612,21 +1612,21 @@ equals()
 are not automatically the same thing.
 ```
 ### 16. Access Modifiers
-```
+ 
 Access modifiers control where members can be accessed.
+| Modifier                | Basic idea                                          |
+| ----------------------- | --------------------------------------------------- |
+| `private`               | current class                                       |
+| `public`                | accessible broadly                                  |
+| `protected`             | current package + subclasses, with additional rules |
+| default/package-private | current package                                     |
 
-Modifier	Basic idea
-private	current class
-public	accessible broadly
-protected	current package + subclasses, with additional rules
-default/package-private	current package
-
-For encapsulation, fields are commonly declared:
-
-private
-
-and accessed through methods.
 ```
+For encapsulation, fields are commonly declared:
+```
+private
+```
+and accessed through methods.
 ### 16. Getters and Setters
 ```
 Example:
