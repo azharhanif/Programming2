@@ -1355,15 +1355,16 @@ This is useful because the program must ask for a PIN at least once.
 ```
 #### 9.7 Choosing the Correct Loop
 ```
-Situation	Good choice
-Known counter/number of iterations	for
-Repeat while condition remains true	while
-Must execute at least once	do...while
-Process every character in a String	usually for
-Ask repeatedly until valid input	often while or do...while
+| Situation                           | Good choice                   |
+| ----------------------------------- | ----------------------------- |
+| Known counter/number of iterations  | `for`                         |
+| Repeat while condition remains true | `while`                       |
+| Must execute at least once          | `do...while`                  |
+| Process every character in a String | usually `for`                 |
+| Ask repeatedly until valid input    | often `while` or `do...while` |
 
-These are guidelines, not absolute laws.
 ```
+These are guidelines, not absolute laws.
 ### 10. Debugging Through Prediction
 ```
 Before running code, predict it.
