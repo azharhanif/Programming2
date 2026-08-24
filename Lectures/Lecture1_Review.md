@@ -616,20 +616,33 @@ Output:
 
 HANIF
 hanif
-
-Strings are immutable.
-
+```
+Strings are immutable. Means that once a String object has been created, its contents cannot be changed. Methods such as toUpperCase(), toLowerCase(), and trim() do not change the existing String object. They return a new String. If you want to keep the new value, assign it to a variable.
+```
 For example:
+
+String name = "Hanif";
 
 name.toUpperCase();
 
-does not permanently change name.
-
-You need:
+System.out.println(name);   // Hanif
 
 name = name.toUpperCase();
 
-if you want the variable to refer to the new String.
+System.out.println(name);   // HANIF
+```
+Why does Java do this?
+
+Because String objects are immutable: their contents cannot be altered after the object is created.
+
+This becomes very important later when students work with:
+```
+String
+object references
+equals()
+ArrayList
+inheritance and polymorphism
+hashCode()
 ```
 
 #### 4.8 Comparing Strings
