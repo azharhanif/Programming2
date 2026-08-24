@@ -367,7 +367,17 @@ public static double test(int x) {
 
 The parameter list is identical.
 
-Changing only the return type does not create an overload.
+Changing only the return type does not create an overload—and the resulting duplicate methods are not allowed in the same class. Java will report a compile-time error.
+-------------
+X Not Allowed
+-------------
+public int calculate(int x) {
+    return x * 2;
+}
+
+public double calculate(int x) {
+    return x * 2.5;
+}
 ```
 ### 3. Math Class
 
