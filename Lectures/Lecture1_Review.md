@@ -498,7 +498,9 @@ Output:
 
 h
 e
-4.3 indexOf()
+```
+#### 4.3 indexOf()
+```
 String word = "hello";
 
 
@@ -517,7 +519,9 @@ System.out.println(word.indexOf('z'));
 Output:
 
 -1
-4.4 lastIndexOf()
+```
+#### 4.4 lastIndexOf()
+```
 String word = "hello";
 
 
