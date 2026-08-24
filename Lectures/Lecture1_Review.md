@@ -110,7 +110,10 @@ integral	long	8 bytes	long population = 1000000L;
 floating	float	4 bytes	float x = 3.14f;
 floating	double	8 bytes	double price = 19.99;
 character	char	2 bytes	char grade = 'A';
-boolean	boolean	implementation-dependent	boolean passed = true;
+boolean	    boolean	size not specified by Java | true / false	boolean passed = true; It is not an integer type, and Java does not allow:
+boolean b = 1;     // x
+boolean b = 0;     // x
+Unlike C/C++, Java does not treat 0 and 1 as false and true.
 ```
 #### 1.2 Reference Types
 
