@@ -1467,7 +1467,7 @@ c2 ──→ Clock object
 
 Each object has its own non-static instance data.
 ```
-#### 12. Constructors
+### 12. Constructors
 
 A constructor initializes an object.
 
