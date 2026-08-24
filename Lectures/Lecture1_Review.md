@@ -579,7 +579,7 @@ not index 4.
 
 Common Error
 
-Students often write:
+You may often write:
 ```
 word.substring(0, word.length() - 1)
 ```
@@ -617,7 +617,7 @@ Output:
 HANIF
 hanif
 ```
-Strings are immutable. Means that once a String object has been created, its contents cannot be changed. Methods such as toUpperCase(), toLowerCase(), and trim() do not change the existing String object. They return a new String. If you want to keep the new value, assign it to a variable.
+Strings are immutable. Means that once a String object has been created, its contents cannot be changed. Methods such as `toUpperCase()`, `toLowerCase()`, and `trim()` do not change the existing String object. They return a new String. If you want to keep the new value, assign it to a variable.
 ```
 For example:
 
@@ -635,7 +635,7 @@ Why does Java do this?
 
 Because String objects are immutable: their contents cannot be altered after the object is created.
 
-This becomes very important later when students work with:
+This becomes very important later when we work with:
 ```
 String
 object references
