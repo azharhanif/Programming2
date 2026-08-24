@@ -1614,6 +1614,7 @@ are not automatically the same thing.
 ### 16. Access Modifiers
  
 Access modifiers control where members can be accessed.
+```
 | Modifier                | Basic idea                                          |
 | ----------------------- | --------------------------------------------------- |
 | `private`               | current class                                       |
@@ -1623,11 +1624,10 @@ Access modifiers control where members can be accessed.
 
 ```
 For encapsulation, fields are commonly declared:
-```
-private
-```
+`private`
 and accessed through methods.
-### 16. Getters and Setters
+
+### 17. Getters and Setters
 ```
 Example:
 
@@ -1666,7 +1666,7 @@ This is an important idea:
 
 Encapsulation is not just making fields private. It is controlling how an object's state can change.
 ```
-### 17. Shallow Copy vs Deep Copy
+### 18. Shallow Copy vs Deep Copy
 ```
 Consider:
 
@@ -1704,11 +1704,11 @@ s2 ──→ Student B
 
 Changing Student A does not automatically change Student B.
 ```
-### 18. static vs non-static
+### 19. static vs non-static
 
 This distinction is extremely important.
 
-#### 18.1 Non-static
+#### 19.1 Non-static
 ```
 Belongs to an object.
 
@@ -1726,7 +1726,7 @@ Conceptually:
 c1.hr = 8
 c2.hr = 15
 ```
-#### 18.2 static
+#### 19.2 static
 ```
 Belongs to the class.
 
@@ -1742,7 +1742,7 @@ Clock.printBrand();
 
 rather than creating an object merely to access the static method.
 ```
-#### 18.3 Static Method Rule
+#### 19.3 Static Method Rule
 ```
 A static method can directly access static members.
 
@@ -1760,7 +1760,7 @@ se
 
 because a static method does not automatically know which Clock object you mean.
 ```
-#### 18.4 Non-static Method
+#### 19.4 Non-static Method
 ```
 A non-static method belongs to an object.
 
@@ -1782,7 +1782,7 @@ static members
 
 because the method is being executed in the context of a particular object.
 ```
-### 19. A Complete Mini Example
+### 20. A Complete Mini Example
 ```
 public class Student {
 
@@ -1841,7 +1841,7 @@ returns:
 
 because count is static.
 ```
-### 20. Read Code Like a Programmer
+### 21. Read Code Like a Programmer
 ```
 Before running a program, ask:
 
@@ -1877,7 +1877,7 @@ Question 8
 
 Is a variable storing a value or referring to an object?
 ```
-### 21. Worked Trace Challenge
+### 22. Worked Trace Challenge
 ```
 Predict the output without running this code.
 
@@ -1919,7 +1919,7 @@ The method calculates:
 
 sum of even numbers from 1 through n
 ```
-#### 22. Common Mistakes to Watch For
+#### 23. Common Mistakes to Watch For
 ```
 Mistake 1: Using == for Strings
 
@@ -1985,7 +1985,7 @@ public static int square(int x) {
     return x * x;
 }
 ```
-### 23. AI-Assisted Programming
+### 24. AI-Assisted Programming
 ```
 AI tools can produce Java code very quickly.
 
@@ -2021,7 +2021,7 @@ Why does the loop use < rather than <=?
 Why does the method return true immediately?
 What happens after return?
 ```
-#### 23.1 AI Does Not Remove the Need to Understand Code
+#### 24.1 AI Does Not Remove the Need to Understand Code
 ```
 Suppose an AI gives you:
 
@@ -2047,7 +2047,7 @@ text.charAt(4)
 
 causes an exception.
 ```
-#### 23.2 The AI Verification Cycle
+#### 24.2 The AI Verification Cycle
 ```
 When using AI:
 
@@ -2073,7 +2073,7 @@ Never assume:
 
 "It compiles, therefore it is correct."
 ```
-#### 23.3 Your Responsibility
+#### 24.3 Your Responsibility
 ```
 If AI generates:
 
@@ -2099,7 +2099,7 @@ Change this method so that it also checks for a digit.
 
 If you cannot answer, you do not yet own the code.
 ```
-#### 24. Active Learning Questions
+#### 25. Active Learning Questions
 ```
 Before moving to the next lecture, you should be able to answer these without looking at the notes.
 
@@ -2173,7 +2173,7 @@ Question 8
 
 What is the difference between a static variable and an instance variable?
 ```
-### 25. Summary
+### 26. Summary
 ```
 This lecture reviewed the foundations required for Programming 2.
 
