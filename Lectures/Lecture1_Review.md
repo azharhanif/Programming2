@@ -406,9 +406,9 @@ The result satisfies:
 Important:
 
 1.0 is NOT included.
-
-3.2 Random Integer in a Range
-
+```
+#### 3.2 Random Integer in a Range
+```
 Suppose we want:
 
 1, 2, 3, 4, 5, 6
