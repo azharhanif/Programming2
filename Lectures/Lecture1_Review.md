@@ -1111,6 +1111,101 @@ Two
 
 This is called fall-through.
 ```
+##### Why does fall-through happen?
+```
+A `case` acts like a location/label where execution can begin.
+
+Suppose:
+
+```java
+int x = 1;
+
+switch(x) {
+
+    case 1:
+        System.out.println("One");
+
+    case 2:
+        System.out.println("Two");
+}
+```
+Java first evaluates `x` and finds the matching case:
+```
+x = 1
+ ↓
+case 1
+```
+It starts executing at `case 1`.
+
+After printing `"One"`, Java reaches the end of that case.
+
+Because there is no `break`, Java continues executing the next statements:
+```
+case 1
+  ↓
+print "One"
+  ↓
+(no break)
+  ↓
+case 2
+  ↓
+print "Two"
+```
+Therefore the output is:
+```
+One
+Two
+```
+Java does NOT re-check:
+```
+x == 2
+```
+before executing the statements under `case 2`.
+
+The case labels determine where execution starts. They do not automatically act like separate if conditions.
+
+To stop execution after `case 1`:
+```
+case 1:
+    System.out.println("One");
+    break;
+
+```
+`break` exits the switch. Without it, execution can fall through to the next case.
+This is actually why `fall-through` can sometimes be intentional.
+
+Suppose:
+```
+int month = 12;
+
+switch(month) {
+
+    case 12:
+    case 1:
+    case 2:
+        System.out.println("Winter");
+        break;
+
+    case 3:
+    case 4:
+    case 5:
+        System.out.println("Spring");
+        break;
+
+    case 6:
+    case 7:
+    case 8:
+        System.out.println("Summer");
+        break;
+
+    case 9:
+    case 10:
+    case 11:
+        System.out.println("Fall");
+        break;
+}
+```
+
 ### 9. Loops
 
 Loops allow us to repeat code.
