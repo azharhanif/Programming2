@@ -543,7 +543,7 @@ Output:
 true
 ```
 #### 4.6 substring()
-```
+
 Consider:
 
 String word = "Programming";
@@ -576,7 +576,7 @@ means:
 0,1,2,3
 
 not index 4.
-```
+
 Common Error
 
 Students often write:
@@ -593,11 +593,16 @@ To get the entire String:
 ```
 word.substring(0, word.length())
 ```
-although simply using:
+If you want the entire String, just use the String variable itself. substring(0, word.length()) is technically valid but unnecessary. For example,
 ```
-word
+String word = "Programming";
+
+String a = word;                         // Best
+String b = word.substring(0, word.length()); // Correct but unnecessary
+
 ```
-is clearer.
+Both contain "Programming".
+Correct code is not necessarily good code. Prefer the simpler expression when it communicates the same thing.
 
 #### 4.7 Changing Case
 ```
