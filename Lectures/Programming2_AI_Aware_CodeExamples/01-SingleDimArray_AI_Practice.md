@@ -2,7 +2,7 @@
 
 **Repository area:** `Lectures/CodeExamplesInLectures/SingleDimArrayLectureExamples`
 
-The current repository contains examples including `AccountTest`, `InClassLec1`, `InClassLec1V2`, and `ShallowDeep`. citeturn2view3
+The current repository contains examples including `AccountTest`, `InClassLec1`, `InClassLec1V2`, and `ShallowDeep`. 
 
 ## Activity A — Predict before running
 
@@ -52,9 +52,7 @@ public static int countAboveAverage(int[] values)
 Requirements:
 
 - return how many values are strictly greater than the average;
-- handle an empty array according to a documented decision.
-
-Do not copy the answer blindly.
+- observe what happens when you call empty array.
 
 ## Activity D — Human modification
 
