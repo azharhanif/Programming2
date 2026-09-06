@@ -190,10 +190,6 @@ Would you:
 - store it anyway?
 - throw an exception?
 
-Choose one and explain why.
-
-You do not have to use the same strategy as another student, but your choice must be defensible.
-
 ---
 
 # 7. Part E — Array of Objects
