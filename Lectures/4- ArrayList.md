@@ -266,19 +266,19 @@ Visually:
   ↑
 iterator
 ```
-After: `iterator.next();` the iterator moves:
+After: `it.next();` the iterator moves:
 ```
 [Ali] [John] [Sara]
        ↑
     iterator
 ```
-Another: 'iterator.next();` and:
+Another: 'it.next();` and:
 ```
 [Ali] [John] [Sara]
               ↑
            iterator
 ```
-At this stage we will not go into interfaces, concrete iterator classes, internal data structures, etc. We have enught to use iterator object in `ArrayList`.
+At this stage we will not go into interfaces, concrete iterator classes, internal data structures, etc. This lecture is sufficient to use iterator object in `ArrayList`.
 ```
 next():
 "Give me the next element"
@@ -330,7 +330,7 @@ Iterator  = the object helping us do the process
 ```
 #### How to safely remove elements from an `ArrayList` while iterating through it?
 
-##### `removeIf()` — the concise approach
+#### `removeIf()` — the concise approach
 
 The code is:
 ```
@@ -359,10 +359,61 @@ we get:
 ```
 Every element for which the condition is true is removed.
 
-##### What does name -> name.equals("Ali") mean?
+#### Lambada expression
 
-This is a lambda expression.
+Suppose:
+```
+public static int square(int x) {
+    return x * x;
+}
+```
+The `lambda` equivalent is:
+```
+x -> x * x
+```
+It is essentially:
+```
+parameter → what to do with the parameter
+```
+Multiple parameters:
+```
+public static int add(int a, int b) {
+    return a + b;
+}
+```
+Lambda:
+```
+(a, b) -> a + b
+```
+```
+public static boolean larger(int a, int b) {
+    return a > b;
+}
+```
+becomes:
+```
+(a, b) -> a > b
+```
+This becomes particularly useful for later `Comparator` lecture.
 
+Example:
+```
+public static int compareTitles(Movie a, Movie b) {
+    return a.getTitle().compareTo(b.getTitle());
+}
+```
+Conceptually, the behavior is:
+```
+(a, b) -> a.getTitle().compareTo(b.getTitle())
+```
+And eventually we will see later:
+```
+Comparator<Movie> byTitle =
+        (a, b) -> a.getTitle().compareTo(b.getTitle());
+```
+#### What does name -> name.equals("Ali") mean?
+
+This is a `lambda` expression.        
 You can think of:
 ```
 name -> name.equals("Ali")
@@ -398,7 +449,34 @@ true
 REMOVE
 ```
 So removeIf() effectively asks the condition about every element.
+#### Imp: lambda is NOT a loop
 
+For:
+```
+names.removeIf(name -> "Ali".equals(name));
+```
+the lambda:
+```
+name -> "Ali".equals(name)
+```
+does not loop through the list.
+
+`removeIf()` performs the iteration.
+
+The lambda tells `removeIf()`:
+
+"Here is the test I want you to apply to each element."
+
+So:
+```
+removeIf()
+   │
+   ├── gets first name → lambda → true/false
+   ├── gets second name → lambda → true/false
+   ├── gets third name → lambda → true/false
+   └── ...
+```
+This is an important conceptual distinction.
 ##### Why is removeIf() useful?
 
 Compare:
