@@ -65,7 +65,19 @@ ArrayList<Double>
 ArrayList<Boolean>
 ```
 
-Java handles boxing/unboxing in many expressions. Java automatically performs boxing and unboxing in many expressions. Boxing converts a primitive such as int to its wrapper object Integer, which allows us to write `numbers.add(10)` even though an `ArrayList<Integer>` stores objects. Unboxing converts an `Integer` back to an `int`, allowing expressions such as `int x = numbers.get(0)` or `numbers.get(0) + numbers.get(1)`.
+Java handles boxing/unboxing in many expressions. 
+
+Java automatically performs boxing and unboxing in many expressions. 
+
+Boxing converts a primitive such as int to its wrapper object Integer, which allows us to write `numbers.add(10)` even though an `ArrayList<Integer>` stores objects. 
+
+Unboxing converts an `Integer` back to an `int`, allowing expressions such as 
+
+`int x = numbers.get(0)` 
+
+or 
+
+`numbers.get(0) + numbers.get(1)`.
 ```
 ArrayList<Integer> numbers = new ArrayList<>();
 
