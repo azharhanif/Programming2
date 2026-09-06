@@ -251,29 +251,28 @@ names.removeIf(name -> name.equals("Ali"));
 
 Or use an `Iterator` when you need more control.
 
-#### Iterator:
 An Iterator is another object that helps us walk through a collection one element at a time.
 
 For example:
 ```
 Iterator<String> it = names.iterator();
 ```
-Think of the Iterator as a cursor that moves through the ArrayList.
+Think of the Iterator as a cursor that moves through the `ArrayList`.
 
 Visually:
 ```
 [Ali] [John] [Sara]
   ↑
 iterator
-```
+
 After: `it.next();` the iterator moves:
-```
+
 [Ali] [John] [Sara]
        ↑
     iterator
-```
+
 Another: 'it.next();` and:
-```
+
 [Ali] [John] [Sara]
               ↑
            iterator
