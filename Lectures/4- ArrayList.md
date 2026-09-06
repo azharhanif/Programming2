@@ -12,7 +12,6 @@ You should be able to:
 - understand the `remove(int)` versus `remove(Object)` trap;
 - iterate safely;
 - use `ArrayList` with objects and polymorphism;
-- make an informed data-structure choice.
 
 ## 1. Why ArrayList?
 
@@ -637,18 +636,6 @@ animals.add(new Cat());
 ```
 
 This is a major use of polymorphism: one collection can hold different subclasses through a common superclass type.
-
-## 9. Array versus ArrayList
-
-| Requirement | Natural choice |
-|---|---|
-| fixed number of positions | array |
-| frequent add/remove | ArrayList |
-| matrix/grid | array |
-| dynamically sized object collection | ArrayList |
-| need direct primitive array operations | array |
-
-Do not choose a data structure merely because it is familiar. Choose it because its behavior matches the problem.
 
 # Practice
 
