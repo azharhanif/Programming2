@@ -567,13 +567,13 @@ false
 ```
 #### Finally, we can see all three approaches progressively:
 
-Approach 1 — simple `removeIf()`
+##### Approach 1 — simple `removeIf()`
 ```
 names.removeIf(name -> "Ali".equals(name));
 ```
 Use when: you simply want to remove elements satisfying a condition.
 
-Approach 2 — Iterator
+##### Approach 2 — Iterator
 ```
 Iterator<String> iterator = names.iterator();
 
@@ -587,7 +587,7 @@ while (iterator.hasNext()) {
 ```
 Use when: you need more control over the traversal/removal process.
 
-Approach 3 — indexed loop
+##### Approach 3 — indexed loop
 
 For more complex situations, you can also deliberately control the indexes:
 ```
