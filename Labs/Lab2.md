@@ -25,17 +25,6 @@ class that manages a collection
      ↓
 design decisions
 ```
-
-The important question is no longer only:
-
-> "Can I write a loop?"
-
-It becomes:
-
-> "Where should this responsibility live?"
-
----
-
 # 2. Learning Objectives
 
 You should be able to:
