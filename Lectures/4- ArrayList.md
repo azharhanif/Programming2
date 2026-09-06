@@ -212,6 +212,37 @@ for (String name : names) {
     }
 }
 ```
+### Review: Three ways to traverse an `ArrayList`
+
+#### A. Traditional for loop
+```
+for (int i = 0; i < names.size(); i++) {
+    System.out.println(names.get(i));
+}
+```
+
+#### B. Enhanced for loop
+```
+for (String name : names) {
+    System.out.println(name);
+}
+```
+Ques: Where did the index go?
+
+Answer: Java manages it for us.
+
+#### C. Iterator
+```
+Iterator<String> it = names.iterator();
+
+while (it.hasNext()) {
+    String name = it.next();
+    System.out.println(name);
+}
+```
+Ques: What is the Iterator doing for us?
+
+Answer: It keeps track of where we are in the collection and gives us the next element.
 
 A concise safe alternative is:
 
@@ -220,6 +251,84 @@ names.removeIf(name -> name.equals("Ali"));
 ```
 
 Or use an `Iterator` when you need more control.
+
+#### Iterator:
+An Iterator is another object that helps us walk through a collection one element at a time.
+
+For example:
+```
+Iterator<String> it = names.iterator();
+```
+Think of the Iterator as a cursor that moves through the ArrayList.
+
+Visually:
+```
+[Ali] [John] [Sara]
+  ↑
+iterator
+```
+After: `iterator.next();` the iterator moves:
+```
+[Ali] [John] [Sara]
+       ↑
+    iterator
+```
+Another: 'iterator.next();` and:
+```
+[Ali] [John] [Sara]
+              ↑
+           iterator
+```
+At this stage we will not go into interfaces, concrete iterator classes, internal data structures, etc. We have enught to use iterator object in `ArrayList`.
+```
+next():
+"Give me the next element"
+
+hasNext():
+"Is there another element?"
+
+remove():
+"Remove the element I just visited"
+```
+#### Exercise
+Given:
+```
+ArrayList<Integer> numbers =
+    new ArrayList<>(Arrays.asList(10, 20, 30, 40, 50));
+```
+First print the numbers using:
+```
+A. a traditional for loop.
+
+B. an enhanced for loop.
+
+C. an Iterator.
+```
+Now remove every number greater than `25`.
+
+With Iterator:
+```
+Iterator<Integer> it = numbers.iterator();
+
+while (it.hasNext()) {
+    int number = it.next();
+
+    if (number > 25) {
+        it.remove();
+    }
+}
+```
+Result:
+```
+[10, 20]
+```
+Iteration simply means repeatedly visiting elements, while an iterator is the Java object that helps you perform that traversal.
+
+So:
+```
+iteration = the process
+Iterator  = the object helping us do the process
+```
 
 ## 7. ArrayList of objects
 
