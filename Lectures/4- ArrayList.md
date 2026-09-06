@@ -212,7 +212,7 @@ for (String name : names) {
     }
 }
 ```
-### Review: Three ways to traverse an `ArrayList`
+Before I explain how to avoid such exception safely, first review three ways to traverse an `ArrayList`
 
 #### A. Traditional for loop
 ```
@@ -329,7 +329,275 @@ So:
 iteration = the process
 Iterator  = the object helping us do the process
 ```
+#### How to safely remove elements from an `ArrayList` while iterating through it?
 
+##### `removeIf()` — the concise approach
+
+The code is:
+```
+names.removeIf(name -> name.equals("Ali"));
+```
+Suppose we have:
+```
+ArrayList<String> names = new ArrayList<>();
+
+names.add("Ali");
+names.add("John");
+names.add("Ali");
+names.add("Sara");
+```
+The list is:
+```
+[Ali, John, Ali, Sara]
+```
+After:
+```
+names.removeIf(name -> name.equals("Ali"));
+```
+we get:
+```
+[John, Sara]
+```
+Every element for which the condition is true is removed.
+
+##### What does name -> name.equals("Ali") mean?
+
+This is a lambda expression.
+
+You can think of:
+```
+name -> name.equals("Ali")
+```
+as a small function that answers: "Should this particular name be removed?"
+
+For example:
+```
+name = "Ali"
+        ↓
+"Ali".equals("Ali")
+        ↓
+true
+        ↓
+REMOVE
+```
+Then:
+```
+name = "John"
+        ↓
+"John".equals("Ali")
+        ↓
+false
+        ↓
+KEEP
+```
+Then:
+```
+name = "Ali"
+        ↓
+true
+        ↓
+REMOVE
+```
+So removeIf() effectively asks the condition about every element.
+
+##### Why is removeIf() useful?
+
+Compare:
+```
+names.removeIf(name -> name.equals("Ali"));
+```
+with manually searching for "Ali".
+
+You don't need to manage:
+```
+the index
+shifting elements
+changing the loop counter
+accidentally skipping an element
+an Iterator
+```
+Java handles the removal operation for you.
+
+For a simple condition, this is usually the cleanest solution.
+
+##### Example with numbers
+
+The same idea works with `Integer`.
+```
+ArrayList<Integer> numbers = new ArrayList<>();
+
+numbers.add(10);
+numbers.add(15);
+numbers.add(20);
+numbers.add(25);
+numbers.add(30);
+```
+Remove all numbers greater than 20:
+```
+numbers.removeIf(n -> n > 20);
+```
+Result:
+```
+[10, 15, 20]
+```
+Here:
+```
+n -> n > 20
+```
+means:
+
+For each number `n`, return true if `n` is greater than `20`.
+
+##### You can make the lambda more complicated
+
+For example:
+```
+names.removeIf(name -> name.length() < 4);
+```
+This removes names shorter than four characters.
+
+Or:
+```
+names.removeIf(name -> name.startsWith("A"));
+```
+This removes names beginning with A.
+
+Or:
+```
+numbers.removeIf(n -> n % 2 == 0);
+```
+This removes all even numbers.
+
+So the general pattern is:
+```
+list.removeIf(element -> condition);
+```
+The important idea is:
+
+If the condition returns true, the element is removed.
+
+##### What about Iterator?
+
+Or use an Iterator when you need more control.
+
+An Iterator gives you explicit control over walking through an `ArrayList` and safely removing the current element.
+
+For example:
+```
+ArrayList<String> names = new ArrayList<>();
+
+names.add("Ali");
+names.add("John");
+names.add("Ali");
+names.add("Sara");
+
+Iterator<String> iterator = names.iterator();
+
+while (iterator.hasNext()) {
+    String name = iterator.next();
+
+    if (name.equals("Ali")) {
+        iterator.remove();
+    }
+}
+```
+After the loop:
+```
+[John, Sara]
+```
+#### Why not simply use names.remove(name)?
+
+Don't do:
+```
+Iterator<String> iterator = names.iterator();
+
+while (iterator.hasNext()) {
+    String name = iterator.next();
+
+    if (name.equals("Ali")) {
+        names.remove(name);       // ❌
+    }
+}
+```
+You're modifying the `ArrayList` directly while an iterator is managing the list.
+
+Instead:
+```
+iterator.remove();                 // ✅
+```
+The iterator knows that the removal is happening and can keep its position consistent.
+#### A subtle issue with null
+
+At the end your AI-assisted exercise specifically mentions testing null, so it is relevant.
+
+```
+names.removeIf(name -> name.equals("Ali"));
+```
+can fail if name is null.
+
+For example:
+```
+names.add(null);
+```
+Then:
+```
+name.equals("Ali")
+```
+tries to call `.equals()` on null.
+
+That produces:
+```
+NullPointerException
+```
+A safer version is:
+```
+names.removeIf(name -> "Ali".equals(name));
+```
+Why?
+
+Because `"Ali"` is definitely not null.
+
+So:
+```
+"Ali".equals(null)
+```
+simply returns:
+```
+false
+```
+#### Finally, we can see all three approaches progressively:
+
+Approach 1 — simple `removeIf()`
+```
+names.removeIf(name -> "Ali".equals(name));
+```
+Use when: you simply want to remove elements satisfying a condition.
+
+Approach 2 — Iterator
+```
+Iterator<String> iterator = names.iterator();
+
+while (iterator.hasNext()) {
+    String name = iterator.next();
+
+    if ("Ali".equals(name)) {
+        iterator.remove();
+    }
+}
+```
+Use when: you need more control over the traversal/removal process.
+
+Approach 3 — indexed loop
+
+For more complex situations, you can also deliberately control the indexes:
+```
+for (int i = names.size() - 1; i >= 0; i--) {
+    if ("Ali".equals(names.get(i))) {
+        names.remove(i);
+    }
+}
+```
+The `backward` direction is important here because removing an element doesn't disturb the indexes of the elements you've already examined, rather than throwing an exception.
 ## 7. ArrayList of objects
 
 ```java
