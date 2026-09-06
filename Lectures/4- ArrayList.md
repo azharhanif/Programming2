@@ -476,7 +476,7 @@ removeIf()
    └── ...
 ```
 This is an important conceptual distinction.
-##### Why is removeIf() useful?
+#### Why is removeIf() useful?
 
 Compare:
 ```
@@ -496,7 +496,7 @@ Java handles the removal operation for you.
 
 For a simple condition, this is usually the cleanest solution.
 
-##### Example with numbers
+#### Example with numbers
 
 The same idea works with `Integer`.
 ```
@@ -524,7 +524,7 @@ means:
 
 For each number `n`, return true if `n` is greater than `20`.
 
-##### You can make the lambda more complicated
+#### You can make the lambda more complicated
 
 For example:
 ```
@@ -552,7 +552,7 @@ The important idea is:
 
 If the condition returns true, the element is removed.
 
-##### What about Iterator?
+#### What about Iterator?
 
 Or use an Iterator when you need more control.
 
