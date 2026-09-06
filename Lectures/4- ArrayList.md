@@ -173,25 +173,13 @@ Therefore:`nums.remove(1);` means, Remove the element at index 1.
 
 It does not mean remove the value `1`.
 
-If you want to remove the integer value `1`, write:
+The result is: '[10, 30]' because `1` is interpreted as an index.
+
+If you want to remove the integer value `1`, write: 
 ```
 nums.remove(Integer.valueOf(1));
 ```
 Now Java knows you are asking for the `remove(Object)` version.
-
-The result is:
-
-```text
-[10, 30]
-```
-
-because `1` is interpreted as an index.
-
-So, to remove the value `1`:
-
-```java
-nums.remove(Integer.valueOf(1));
-```
 
 This distinction is a frequent debugging trap.
 
