@@ -65,7 +65,22 @@ ArrayList<Double>
 ArrayList<Boolean>
 ```
 
-Java handles boxing/unboxing in many expressions.
+Java handles boxing/unboxing in many expressions. Java automatically performs boxing and unboxing in many expressions. Boxing converts a primitive such as int to its wrapper object Integer, which allows us to write `numbers.add(10)` even though an `ArrayList<Integer>` stores objects. Unboxing converts an `Integer` back to an `int`, allowing expressions such as `int x = numbers.get(0)` or `numbers.get(0) + numbers.get(1)`.
+```
+ArrayList<Integer> numbers = new ArrayList<>();
+
+numbers.add(10);                 // boxing: int → Integer
+
+int x = numbers.get(0);          // unboxing: Integer → int
+
+int sum = numbers.get(0) + 5;    // unboxing
+```
+The `boxing/unboxing → ArrayList → remove(Integer)` trap connection?
+```
+numbers.remove(1);               // index 1
+numbers.remove(Integer.valueOf(1)); // value 1
+```
+
 
 ## 3. Main operations
 
@@ -135,6 +150,24 @@ nums.add(30);
 
 nums.remove(1);
 ```
+You may think:
+
+"Remove the value 1."
+
+But because `nums` is an `ArrayList<Integer>`, there are two overloaded `remove` methods:
+```
+remove(int index)
+remove(Object object)
+```
+Therefore:`nums.remove(1);` means, Remove the element at index 1. 
+
+It does not mean remove the value `1`.
+
+If you want to remove the integer value `1`, write:
+```
+nums.remove(Integer.valueOf(1));
+```
+Now Java knows you are asking for the `remove(Object)` version.
 
 The result is:
 
@@ -144,13 +177,13 @@ The result is:
 
 because `1` is interpreted as an index.
 
-To remove the value `1`:
+So, to remove the value `1`:
 
 ```java
 nums.remove(Integer.valueOf(1));
 ```
 
-This distinction is a frequent exam and debugging trap.
+This distinction is a frequent debugging trap.
 
 ## 5. Looping
 
