@@ -438,76 +438,8 @@ At least one test must be a boundary/edge case.
 
 ---
 
-# 15. Part M — Extension: Case-Insensitive Search
 
-Add:
-
-```java
-public ArrayList<Student> findStudentsByName(
-        String keyword)
-```
-
-The search is case-insensitive.
-
-For example:
-
-```text
-"ali"
-```
-
-could match:
-
-```text
-Alina
-Khalid
-Saliha
-```
-
-Return a new `ArrayList<Student>` containing the matching students.
-
----
-
-# 16. Part N — Final Design Challenge
-
-Imagine the registry will eventually support:
-
-```text
-Student
-Teacher
-Administrator
-```
-
-Do **not** implement inheritance yet.
-
-Instead answer:
-
-1. What information belongs only to Student?
-2. What information might eventually be common to all three?
-3. Why might putting everything inside `StudentRegistry` become a design problem?
-4. Which parts of today's design would you want to keep reusable?
-
-This is preparation for the inheritance/polymorphism material that follows.
-
----
-
-# 17. Responsible AI Activity
-
-You may ask an AI tool:
-
-> "Compare using an array versus an ArrayList for this StudentRegistry."
-
-Do not simply paste its answer.
-
-You must:
-
-1. identify two claims;
-2. verify them using Java documentation or your own experiment;
-3. decide whether the recommendation applies to this lab;
-4. explain your decision.
-
----
-
-# 18. Submission Checklist
+# 15. Submission Checklist
 
 - [ ] Array challenge
 - [ ] reference/copy explanation
@@ -518,10 +450,6 @@ You must:
 - [ ] design-choice questions
 - [ ] `StudentRegistry`
 - [ ] JUnit tests
-- [ ] case-insensitive search
-- [ ] final design challenge
-- [ ] AI reflection
-- [ ] project compiles and tests pass
 
 ---
 
@@ -538,6 +466,5 @@ You must:
 | Design choices | 8 |
 | StudentRegistry | 15 |
 | JUnit tests | 10 |
-| Search extension | 5 |
-| Final design challenge | 5 |
-| **Total** | **90** |
+
+| **Total** | **80** |
