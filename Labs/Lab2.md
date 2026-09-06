@@ -1,4 +1,4 @@
-# Lab 2 — From Arrays to Objects and ArrayList
+# Lab 2 — From Arrays to Objects and ArrayList (group of 2 students allowed)
 
 **Programming 2 — New Semester**  
 **Estimated time: 75–90 minutes for the core lab + 30–45 minutes for the design challenge**  
