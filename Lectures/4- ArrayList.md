@@ -69,28 +69,26 @@ Java handles boxing/unboxing in many expressions.
 
 Java automatically performs boxing and unboxing in many expressions. 
 
-Boxing converts a primitive such as int to its wrapper object Integer, which allows us to write `numbers.add(10)` even though an `ArrayList<Integer>` stores objects. 
+Boxing converts a primitive such as int to its wrapper object Integer, which allows us to write `nums.add(10)` even though an `ArrayList<Integer>` stores objects. 
 
 Unboxing converts an `Integer` back to an `int`, allowing expressions such as 
 
-`int x = numbers.get(0)` 
+`int x = nums.get(0)`  or 
 
-or 
-
-`numbers.get(0) + numbers.get(1)`.
+`nums.get(0) + nums.get(1)`.
 ```
-ArrayList<Integer> numbers = new ArrayList<>();
+ArrayList<Integer> nums = new ArrayList<>();
 
-numbers.add(10);                 // boxing: int → Integer
+nums.add(10);                 // boxing: int → Integer
 
-int x = numbers.get(0);          // unboxing: Integer → int
+int x = nums.get(0);          // unboxing: Integer → int
 
-int sum = numbers.get(0) + 5;    // unboxing
+int sum = nums.get(0) + 5;    // unboxing
 ```
 The `boxing/unboxing → ArrayList → remove(Integer)` trap connection?
 ```
-numbers.remove(1);               // index 1
-numbers.remove(Integer.valueOf(1)); // value 1
+nums.remove(1);               // index 1
+nums.remove(Integer.valueOf(1)); // value 1
 ```
 
 
