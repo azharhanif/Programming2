@@ -182,7 +182,7 @@ Therefore:`nums.remove(1);` means, Remove the element at index 1.
 
 It does not mean remove the value `1`.
 
-The result is: '[10, 30]' because `1` is interpreted as an index.
+The result is: `[10, 30]` because `1` is interpreted as an index.
 
 If you want to remove the integer value `1`, write: 
 ```
