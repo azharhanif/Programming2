@@ -46,7 +46,7 @@ ArrayList<String> names = new ArrayList<>();
 The type parameter says what the list is allowed to contain.
 
 ```java
-names.add("Ali");
+names.add("John");
 names.add("Mina");
 ```
 
@@ -106,7 +106,7 @@ nums.remove(Integer.valueOf(1)); // value 1
 ```java
 ArrayList<String> names = new ArrayList<>();
 
-names.add("Ali");
+names.add("John");
 names.add("Mina");
 ```
 
@@ -216,7 +216,7 @@ This can cause `ConcurrentModificationException`:
 
 ```java
 for (String name : names) {
-    if (name.equals("Ali")) {
+    if (name.equals("John")) {
         names.remove(name);
     }
 }
@@ -259,7 +259,7 @@ Answer: It keeps track of where we are in the collection and gives us the next e
 A concise safe alternative is:
 
 ```java
-names.removeIf(name -> name.equals("Ali"));
+names.removeIf(name -> name.equals("John"));
 ```
 
 (I will visit `removeIf` later in a minute) Or use an `Iterator` when you need more control.
@@ -274,19 +274,19 @@ Think of the Iterator as a cursor that moves through the `ArrayList`.
 
 Visually:
 ```
-[Ali] [John] [Sara]
+[John] [John] [Sara]
   ↑
 iterator
 
 After: `it.next();` the iterator moves:
 
-[Ali] [John] [Sara]
+[John] [John] [Sara]
        ↑
     iterator
 
 Another: 'it.next();` and:
 
-[Ali] [John] [Sara]
+[John] [John] [Sara]
               ↑
            iterator
 ```
@@ -373,7 +373,7 @@ So conceptually:
 ```
         Iterator
            ↓
-[Ali] [John] [Ali] [Sara]
+[John] [John] [John] [Sara]
            ↑
        traversing
 
@@ -399,24 +399,24 @@ Java detects this situation and throws:
 
 The code is:
 ```
-names.removeIf(name -> name.equals("Ali"));
+names.removeIf(name -> name.equals("John"));
 ```
 Suppose we have:
 ```
 ArrayList<String> names = new ArrayList<>();
 
-names.add("Ali");
 names.add("John");
-names.add("Ali");
+names.add("John");
+names.add("John");
 names.add("Sara");
 ```
 The list is:
 ```
-[Ali, John, Ali, Sara]
+[John, John, John, Sara]
 ```
 After:
 ```
-names.removeIf(name -> name.equals("Ali"));
+names.removeIf(name -> name.equals("John"));
 ```
 we get:
 ```
@@ -476,20 +476,20 @@ And eventually we will see later:
 Comparator<Movie> byTitle =
         (a, b) -> a.getTitle().compareTo(b.getTitle());
 ```
-#### What does name -> name.equals("Ali") mean?
+#### What does name -> name.equals("John") mean?
 
 This is a `lambda` expression.        
 You can think of:
 ```
-name -> name.equals("Ali")
+name -> name.equals("John")
 ```
 as a small function that answers: "Should this particular name be removed?"
 
 For example:
 ```
-name = "Ali"
+name = "John"
         ↓
-"Ali".equals("Ali")
+"John".equals("John")
         ↓
 true
         ↓
@@ -499,7 +499,7 @@ Then:
 ```
 name = "John"
         ↓
-"John".equals("Ali")
+"John".equals("John")
         ↓
 false
         ↓
@@ -507,7 +507,7 @@ KEEP
 ```
 Then:
 ```
-name = "Ali"
+name = "John"
         ↓
 true
         ↓
@@ -518,11 +518,11 @@ So removeIf() effectively asks the condition about every element.
 
 For:
 ```
-names.removeIf(name -> "Ali".equals(name));
+names.removeIf(name -> "John".equals(name));
 ```
 the lambda:
 ```
-name -> "Ali".equals(name)
+name -> "John".equals(name)
 ```
 does not loop through the list.
 
@@ -546,9 +546,9 @@ This is an important conceptual distinction.
 
 Compare:
 ```
-names.removeIf(name -> name.equals("Ali"));
+names.removeIf(name -> name.equals("John"));
 ```
-with manually searching for "Ali".
+with manually searching for "John".
 
 You don't need to manage:
 ```
@@ -628,9 +628,9 @@ For example:
 ```
 ArrayList<String> names = new ArrayList<>();
 
-names.add("Ali");
 names.add("John");
-names.add("Ali");
+names.add("John");
+names.add("John");
 names.add("Sara");
 
 Iterator<String> iterator = names.iterator();
@@ -638,7 +638,7 @@ Iterator<String> iterator = names.iterator();
 while (iterator.hasNext()) {
     String name = iterator.next();
 
-    if (name.equals("Ali")) {
+    if (name.equals("John")) {
         iterator.remove();
     }
 }
@@ -656,7 +656,7 @@ Iterator<String> iterator = names.iterator();
 while (iterator.hasNext()) {
     String name = iterator.next();
 
-    if (name.equals("Ali")) {
+    if (name.equals("John")) {
         names.remove(name);       // ❌
     }
 }
@@ -673,7 +673,7 @@ The iterator knows that the removal is happening and can keep its position consi
 At the end your AI-assisted exercise specifically mentions testing null, so it is relevant.
 
 ```
-names.removeIf(name -> name.equals("Ali"));
+names.removeIf(name -> name.equals("John"));
 ```
 can fail if name is null.
 
@@ -683,7 +683,7 @@ names.add(null);
 ```
 Then:
 ```
-name.equals("Ali")
+name.equals("John")
 ```
 tries to call `.equals()` on null.
 
@@ -693,15 +693,15 @@ NullPointerException
 ```
 A safer version is:
 ```
-names.removeIf(name -> "Ali".equals(name));
+names.removeIf(name -> "John".equals(name));
 ```
 Why?
 
-Because `"Ali"` is definitely not null.
+Because `"John"` is definitely not null.
 
 So:
 ```
-"Ali".equals(null)
+"John".equals(null)
 ```
 simply returns:
 ```
@@ -711,7 +711,7 @@ false
 
 ##### Approach 1 — simple `removeIf()`
 ```
-names.removeIf(name -> "Ali".equals(name));
+names.removeIf(name -> "John".equals(name));
 ```
 Use when: you simply want to remove elements satisfying a condition.
 
@@ -722,7 +722,7 @@ Iterator<String> iterator = names.iterator();
 while (iterator.hasNext()) {
     String name = iterator.next();
 
-    if ("Ali".equals(name)) {
+    if ("John".equals(name)) {
         iterator.remove();
     }
 }
@@ -734,7 +734,7 @@ Use when: you need more control over the traversal/removal process.
 For more complex situations, you can also deliberately control the indexes:
 ```
 for (int i = names.size() - 1; i >= 0; i--) {
-    if ("Ali".equals(names.get(i))) {
+    if ("John".equals(names.get(i))) {
         names.remove(i);
     }
 }
@@ -745,7 +745,7 @@ The `backward` direction is important here because removing an element doesn't d
 ```java
 ArrayList<Student> students = new ArrayList<>();
 
-students.add(new Student("Ali", 101));
+students.add(new Student("John", 101));
 students.add(new Student("Mina", 102));
 ```
 
