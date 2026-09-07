@@ -171,7 +171,7 @@ nums.remove(1);
 ```
 You may think:
 
-"Remove the value 1."
+`Remove the value 1`.
 
 But because `nums` is an `ArrayList<Integer>`, there are two overloaded `remove` methods:
 ```
@@ -226,14 +226,14 @@ Java detects that an `ArrayList` was structurally changed while an iterator was 
 The important word is structurally: adding or removing elements changes the structure of the list.
 Before I explain how to avoid such exception safely, first review three ways to traverse an `ArrayList`
 
-#### A. Traditional for loop
+##### A. Traditional for loop
 ```
 for (int i = 0; i < names.size(); i++) {
     System.out.println(names.get(i));
 }
 ```
 
-#### B. Enhanced for loop
+##### B. Enhanced for loop
 ```
 for (String name : names) {
     System.out.println(name);
@@ -243,7 +243,7 @@ Ques: Where did the index go?
 
 Answer: Java manages it for us.
 
-#### C. Iterator
+##### C. Iterator
 ```
 Iterator<String> it = names.iterator();
 
@@ -301,7 +301,7 @@ hasNext():
 remove():
 "Remove the element I just visited"
 ```
-#### Exercise
+##### Exercise
 Given:
 ```
 ArrayList<Integer> numbers =
