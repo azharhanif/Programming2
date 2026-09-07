@@ -64,9 +64,19 @@ ArrayList<Double>
 ArrayList<Boolean>
 ```
 
-Java handles boxing/unboxing in many expressions. 
+An `ArrayList` uses Java generics, and generic type parameters must be reference types, not primitive types. 
 
-Java automatically performs boxing and unboxing in many expressions. 
+Java's generic type system was designed around reference types, not primitive types.
+
+`ArrayList<T>` uses a generic type parameter `T`, and Java's generics do not accept primitive types as type arguments.
+
+Therefore we cannot write `ArrayList<int>`. 
+
+Java provides wrapper classes such as `Integer`, `Double`, and `Character` so primitive values can be represented as objects. 
+
+Java automatically converts between the primitive and wrapper using boxing and unboxing. 
+
+That's why `ArrayList<Integer>` works and we can still conveniently write numbers.add(10).
 
 Boxing converts a primitive such as int to its wrapper object Integer, which allows us to write `nums.add(10)` even though an `ArrayList<Integer>` stores objects. 
 
