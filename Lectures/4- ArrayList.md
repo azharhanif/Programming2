@@ -46,7 +46,7 @@ ArrayList<String> names = new ArrayList<>();
 The type parameter says what the list is allowed to contain.
 
 ```java
-names.add("John");
+names.add("Stacy");
 names.add("Mina");
 ```
 
@@ -106,7 +106,7 @@ nums.remove(Integer.valueOf(1)); // value 1
 ```java
 ArrayList<String> names = new ArrayList<>();
 
-names.add("John");
+names.add("Stacy");
 names.add("Mina");
 ```
 
@@ -216,7 +216,7 @@ This can cause `ConcurrentModificationException`:
 
 ```java
 for (String name : names) {
-    if (name.equals("John")) {
+    if (name.equals("Stacy")) {
         names.remove(name);
     }
 }
@@ -259,7 +259,7 @@ Answer: It keeps track of where we are in the collection and gives us the next e
 A concise safe alternative is:
 
 ```java
-names.removeIf(name -> name.equals("John"));
+names.removeIf(name -> name.equals("Stacy"));
 ```
 
 (I will visit `removeIf` later in a minute) Or use an `Iterator` when you need more control.
@@ -274,19 +274,19 @@ Think of the Iterator as a cursor that moves through the `ArrayList`.
 
 Visually:
 ```
-[John] [John] [Sara]
+[Stacy] [John] [Sara]
   ↑
 iterator
 
 After: `it.next();` the iterator moves:
 
-[John] [John] [Sara]
+[Stacy] [John] [Sara]
        ↑
     iterator
 
 Another: 'it.next();` and:
 
-[John] [John] [Sara]
+[Stacy] [John] [Sara]
               ↑
            iterator
 ```
@@ -373,7 +373,7 @@ So conceptually:
 ```
         Iterator
            ↓
-[John] [John] [John] [Sara]
+[Stacy] [John] [Stacy] [Sara]
            ↑
        traversing
 
@@ -399,24 +399,24 @@ Java detects this situation and throws:
 
 The code is:
 ```
-names.removeIf(name -> name.equals("John"));
+names.removeIf(name -> name.equals("Stacy"));
 ```
 Suppose we have:
 ```
 ArrayList<String> names = new ArrayList<>();
 
+names.add("Stacy");
 names.add("John");
-names.add("John");
-names.add("John");
+names.add("Stacy");
 names.add("Sara");
 ```
 The list is:
 ```
-[John, John, John, Sara]
+[Stacy, John, Stacy, Sara]
 ```
 After:
 ```
-names.removeIf(name -> name.equals("John"));
+names.removeIf(name -> name.equals("Stacy"));
 ```
 we get:
 ```
@@ -476,20 +476,20 @@ And eventually we will see later:
 Comparator<Movie> byTitle =
         (a, b) -> a.getTitle().compareTo(b.getTitle());
 ```
-#### What does name -> name.equals("John") mean?
+#### What does name -> name.equals("Stacy") mean?
 
 This is a `lambda` expression.        
 You can think of:
 ```
-name -> name.equals("John")
+name -> name.equals("Stacy")
 ```
 as a small function that answers: "Should this particular name be removed?"
 
 For example:
 ```
-name = "John"
+name = "Stacy"
         ↓
-"John".equals("John")
+"Stacy".equals("Stacy")
         ↓
 true
         ↓
@@ -497,9 +497,9 @@ REMOVE
 ```
 Then:
 ```
-name = "John"
+name = "Stacy"
         ↓
-"John".equals("John")
+"Stacy".equals("John")
         ↓
 false
         ↓
@@ -507,7 +507,9 @@ KEEP
 ```
 Then:
 ```
-name = "John"
+name = "Stacy"
+        ↓
+"Stacy".equals("Stacy")
         ↓
 true
         ↓
@@ -518,11 +520,11 @@ So removeIf() effectively asks the condition about every element.
 
 For:
 ```
-names.removeIf(name -> "John".equals(name));
+names.removeIf(name -> "Stacy".equals(name));
 ```
 the lambda:
 ```
-name -> "John".equals(name)
+name -> "Stacy".equals(name)
 ```
 does not loop through the list.
 
@@ -546,9 +548,9 @@ This is an important conceptual distinction.
 
 Compare:
 ```
-names.removeIf(name -> name.equals("John"));
+names.removeIf(name -> name.equals("Stacy"));
 ```
-with manually searching for "John".
+with manually searching for "Stacy".
 
 You don't need to manage:
 ```
@@ -628,9 +630,9 @@ For example:
 ```
 ArrayList<String> names = new ArrayList<>();
 
+names.add("Stacy");
 names.add("John");
-names.add("John");
-names.add("John");
+names.add("Stacy");
 names.add("Sara");
 
 Iterator<String> iterator = names.iterator();
@@ -638,7 +640,7 @@ Iterator<String> iterator = names.iterator();
 while (iterator.hasNext()) {
     String name = iterator.next();
 
-    if (name.equals("John")) {
+    if (name.equals("Stacy")) {
         iterator.remove();
     }
 }
@@ -656,7 +658,7 @@ Iterator<String> iterator = names.iterator();
 while (iterator.hasNext()) {
     String name = iterator.next();
 
-    if (name.equals("John")) {
+    if (name.equals("Stacy")) {
         names.remove(name);       // ❌
     }
 }
@@ -673,7 +675,7 @@ The iterator knows that the removal is happening and can keep its position consi
 At the end your AI-assisted exercise specifically mentions testing null, so it is relevant.
 
 ```
-names.removeIf(name -> name.equals("John"));
+names.removeIf(name -> name.equals("Stacy"));
 ```
 can fail if name is null.
 
@@ -683,7 +685,7 @@ names.add(null);
 ```
 Then:
 ```
-name.equals("John")
+name.equals("Stacy")
 ```
 tries to call `.equals()` on null.
 
@@ -693,15 +695,15 @@ NullPointerException
 ```
 A safer version is:
 ```
-names.removeIf(name -> "John".equals(name));
+names.removeIf(name -> "Stacy".equals(name));
 ```
 Why?
 
-Because `"John"` is definitely not null.
+Because `"Stacy"` is definitely not null.
 
 So:
 ```
-"John".equals(null)
+"Stacy".equals(null)
 ```
 simply returns:
 ```
@@ -711,7 +713,7 @@ false
 
 ##### Approach 1 — simple `removeIf()`
 ```
-names.removeIf(name -> "John".equals(name));
+names.removeIf(name -> "Stacy".equals(name));
 ```
 Use when: you simply want to remove elements satisfying a condition.
 
@@ -722,7 +724,7 @@ Iterator<String> iterator = names.iterator();
 while (iterator.hasNext()) {
     String name = iterator.next();
 
-    if ("John".equals(name)) {
+    if ("Stacy".equals(name)) {
         iterator.remove();
     }
 }
@@ -734,7 +736,7 @@ Use when: you need more control over the traversal/removal process.
 For more complex situations, you can also deliberately control the indexes:
 ```
 for (int i = names.size() - 1; i >= 0; i--) {
-    if ("John".equals(names.get(i))) {
+    if ("Stacy".equals(names.get(i))) {
         names.remove(i);
     }
 }
@@ -745,7 +747,7 @@ The `backward` direction is important here because removing an element doesn't d
 ```java
 ArrayList<Student> students = new ArrayList<>();
 
-students.add(new Student("John", 101));
+students.add(new Student("Stacy", 101));
 students.add(new Student("Mina", 102));
 ```
 
