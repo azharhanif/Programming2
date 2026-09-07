@@ -221,6 +221,9 @@ for (String name : names) {
     }
 }
 ```
+Java detects that an `ArrayList` was structurally changed while an iterator was in the middle of traversing it, and it stops the operation by throwing `ConcurrentModificationException`.
+
+The important word is structurally: adding or removing elements changes the structure of the list.
 Before I explain how to avoid such exception safely, first review three ways to traverse an `ArrayList`
 
 #### A. Traditional for loop
