@@ -340,7 +340,60 @@ So:
 iteration = the process
 Iterator  = the object helping us do the process
 ```
-#### How to safely remove elements from an `ArrayList` while iterating through it?
+#### What about the `ConcurrentModificationException` we saw in the previous enhanced for loop?
+
+The surprising part is that the enhanced for loop in the specific example didn't explicitly create an Iterator.
+
+But an enhanced for loop uses an iterator internally for an `ArrayList`.
+
+So:
+```
+for (String name : names)
+```
+is conceptually similar to:
+```
+Iterator<String> it = names.iterator();
+
+while (it.hasNext()) {
+    String name = it.next();
+    ...
+}
+```
+You don't see the iterator, but Java is using one behind the scenes.
+
+Now look at what we exactly did when Java complanied `ConcurrentModificationException`
+
+Inside the loop:
+```
+names.remove(name);
+```
+The code is directly modifying the `ArrayList`.
+
+So conceptually:
+```
+        Iterator
+           ↓
+[Ali] [John] [Ali] [Sara]
+           ↑
+       traversing
+
+           ↓
+
+names.remove(...)
+           ↓
+ArrayList changes
+```
+The iterator is thinking:
+
+"I'm walking through the list according to the structure I started with."
+
+But the `ArrayList` has suddenly changed underneath it.
+
+Java detects this situation and throws:
+
+`ConcurrentModificationException`
+
+## 6.1 How to safely remove elements from an `ArrayList` while iterating through it?
 
 #### `removeIf()` — the concise approach
 
