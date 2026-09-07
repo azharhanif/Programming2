@@ -100,7 +100,6 @@ nums.remove(1);               // index 1
 nums.remove(Integer.valueOf(1)); // value 1
 ```
 
-
 ## 3. Main operations
 
 ```java
@@ -376,7 +375,6 @@ So conceptually:
 [Stacy] [John] [Stacy] [Sara]
            ↑
        traversing
-
            ↓
 
 names.remove(...)
@@ -477,8 +475,8 @@ Comparator<Movie> byTitle =
         (a, b) -> a.getTitle().compareTo(b.getTitle());
 ```
 #### What does name -> name.equals("Stacy") mean?
+This is a `lambda` expression.   
 
-This is a `lambda` expression.        
 You can think of:
 ```
 name -> name.equals("Stacy")
@@ -576,7 +574,7 @@ numbers.add(20);
 numbers.add(25);
 numbers.add(30);
 ```
-Remove all numbers greater than 20:
+Remove all numbers greater than `20`:
 ```
 numbers.removeIf(n -> n > 20);
 ```
