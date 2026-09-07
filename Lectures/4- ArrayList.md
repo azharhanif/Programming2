@@ -262,7 +262,7 @@ A concise safe alternative is:
 names.removeIf(name -> name.equals("Ali"));
 ```
 
-Or use an `Iterator` when you need more control.
+(I will visit `removeIf` later in a minute) Or use an `Iterator` when you need more control.
 
 An Iterator is another object that helps us walk through a collection one element at a time.
 
