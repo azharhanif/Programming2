@@ -246,7 +246,7 @@ Think about who can access each member:
 
 In Java, `protected` also provides access to classes in the same package. 
 
-A `protected` member is available to the base class and its subclasses, but is not part of the ordinary public interface.
+A `protected` member is available to the base class and its subclasses but is not part of the ordinary public interface.
 
 `protected` can allow subclasses to access inherited members.
 
@@ -408,7 +408,7 @@ class SavingsAccount extends BankAccount {
 }
 ```
 Notice the design:
-
+```
 BankAccount
     │
     ├── private balance
@@ -419,7 +419,7 @@ BankAccount
              ↑
              │
        SavingsAccount
-
+```
 An ordinary user cannot call:
 ```
 account.addToBalance(1000);    // ❌
