@@ -60,9 +60,51 @@ class Library {
 A Library **has** Books.
 
 Do not use inheritance simply because two classes are related in English.
+```
+| Classes                   | Relationship                 | Inheritance? |
+| ------------------------- | ---------------------------- | ------------ |
+| `Manager` → `Employee`    | Manager **is an** Employee   | ✅            |
+| `Dog` → `Animal`          | Dog **is an** Animal         | ✅            |
+| `Car` → `Vehicle`         | Car **is a** Vehicle         | ✅            |
+| `Car` → `Engine`          | Car **has an** Engine        | ❌            |
+| `Library` → `Book`        | Library **has** Books        | ❌            |
+| `Student` → `College`     | Student **attends** College  | ❌            |
+| `Teacher` → `Course`      | Teacher **teaches** Course   | ❌            |
+| `Person` → `Address`      | Person **has an** Address    | ❌            |
+| `Department` → `Employee` | Department **has** Employees | ❌            |
+```
+Inheritance means the child is a specialized form of the parent. 
 
----
+If the relationship is `has-a`, `uses-a`, `contains-a`, `works-with`, `teaches`, `attends`, `owns`, or `interacts-with`, inheritance is usually not the right relationship.
+But "is-a" alone isn't always enough
 
+##### Consider:
+
+`Penguin IS AN Animal`
+
+That's true.
+
+So:
+
+`class Penguin extends Animal`
+
+is reasonable.
+
+But suppose `Animal` has:
+```
+public void fly() {
+    ...
+}
+```
+Then we have a design problem because penguins don't fly.
+
+This shows that inheritance isn't merely about finding an English `is-a` relationship.
+
+We also need to ask:
+
+Does the child genuinely satisfy the expectations of the parent?
+
+This is your teaser for later encounter with polymorphism.
 ## 3. A basic example
 
 ```java
