@@ -59,7 +59,12 @@ class Library {
 
 A Library **has** Books.
 
-Do not use inheritance simply because two classes are related in English.
+Do not use inheritance simply because two classes are related in English. 
+
+Before using extends, say the relationship as a sentence:
+```
+A [child] is a [parent].
+```
 ```
 | Classes                   | Relationship                 | Inheritance? |
 | ------------------------- | ---------------------------- | ------------ |
