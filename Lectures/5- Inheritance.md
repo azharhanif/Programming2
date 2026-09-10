@@ -209,23 +209,447 @@ A subclass object contains its inherited state as well as its own state.
 
 ---
 
-## 6. `protected`
+## 6. `protected`: Controlled Access for Subclasses
+Suppose we have:
+```
+class Employee {
+
+    public String publicName;
+
+    protected double salary;
+
+    private String employeeId;
+}
+```
+Think about who can access each member:
+```
+| Member       | Inside `Employee` | `Manager extends Employee` | Other class |
+| ------------ | ----------------- | -------------------------- | ----------- |
+| `publicName` | ✅                 | ✅                          | ✅           |
+| `salary`     | ✅                 | ✅                          | ❌           |
+| `employeeId` | ✅                 | ❌                          | ❌           |
+```
+       
+             ACCESS
+               │
+       ┌───────┼────────┐
+       ↓       ↓        ↓
+    private  protected  public
+       │       │        │
+       │       │        └── everyone
+       │       │
+       │       └── base + subclasses
+       │
+       └── base class only
+
+##### Important Java detail
+
+In Java, `protected` also provides access to classes in the same package. 
+
+A `protected` member is available to the base class and its subclasses, but is not part of the ordinary public interface.
 
 `protected` can allow subclasses to access inherited members.
 
 However, prefer good encapsulation over making everything protected.
 
-Often the superclass should expose behavior through methods:
-
-```java
-public String getName() {
-    return name;
-}
+However, again,
+```
+protected is generally not "more encapsulated" than private.
+private provides stronger information hiding.
+The advantage of protected is that it provides controlled access specifically for an inheritance hierarchy, without making the member public.
 ```
 
-rather than allowing subclasses to freely modify the field.
 
----
+## 6.2 Protected DATA — concrete example
+
+Consider:
+```
+class Vehicle {
+    protected int speed;
+
+    public Vehicle() {
+        speed = 0;
+    }
+
+    public void showSpeed() {
+        System.out.println(speed);
+    }
+}
+```
+Now:
+```
+class Car extends Vehicle {
+
+    public void accelerate() {
+        speed += 10;
+    }
+}
+```
+This is allowed:
+```
+Car car = new Car();
+
+car.accelerate();
+car.accelerate();
+
+car.showSpeed();
+```
+Output:
+```
+20
+```
+Why can Car access speed?
+
+Because:
+```
+Car IS A Vehicle
+```
+and speed was deliberately made available to subclasses.
+## 6.3 Compare with private
+
+Now change:
+```
+protected int speed;
+```
+to:
+```
+private int speed;
+```
+Then this will not compile:
+```
+class Car extends Vehicle {
+
+    public void accelerate() {
+        speed += 10;       // ❌
+    }
+}
+```
+The field belongs to `Vehicle`, but `Car` cannot directly access it because it is private.
+
+This is an important distinction:
+
+The private member is still part of the `Vehicle` object. It is not "lost" when `Car` inherits from `Vehicle`. 
+
+It is simply inaccessible directly from `Car`.
+## 6.4 So why not always use private?
+
+Suppose the base class wants subclasses to participate in maintaining an internal value.
+
+For example:
+```
+class BankAccount {
+    private double balance;
+
+    public BankAccount(double balance) {
+        this.balance = balance;
+    }
+}
+```
+Now imagine:
+```
+class SavingsAccount extends BankAccount {
+    public void addInterest() {
+        // How do I modify balance?
+    }
+}
+```
+Because `balance` is private, the subclass cannot directly access it.
+
+We could provide:
+```
+public double getBalance()
+```
+and:
+```
+public void setBalance(double balance)
+```
+But now we have potentially exposed the state to every other class.
+
+For example:
+```
+account.setBalance(-1000000);
+```
+That could be terrible design.
+## 6.5 This is where a protected METHOD can be better
+
+Instead of exposing the data publicly, the base class can provide a protected operation specifically for subclasses:
+```
+class BankAccount {
+
+    private double balance;
+
+    public BankAccount(double balance) {
+        this.balance = balance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    protected void addToBalance(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+}
+```
+Now:
+```
+class SavingsAccount extends BankAccount {
+
+    public SavingsAccount(double balance) {
+        super(balance);
+    }
+
+    public void addInterest() {
+        double interest = getBalance() * 0.03;
+        addToBalance(interest);
+    }
+}
+```
+Notice the design:
+
+BankAccount
+    │
+    ├── private balance
+    │
+    ├── public getBalance()
+    │
+    └── protected addToBalance()
+             ↑
+             │
+       SavingsAccount
+
+An ordinary user cannot call:
+```
+account.addToBalance(1000);    // ❌
+```
+But `SavingsAccount` can:
+```
+addToBalance(interest);        // ✅
+```
+This is a very good example of controlled encapsulation.
+
+The base class says:
+
+"I will allow my subclasses to perform this operation, but I don't want the general public to perform it."
+
+That's exactly where protected is useful.
+## 6.6 Why a protected method can be better than a protected field
+
+This is an important distinction.
+
+##### Option A — protected field
+```
+class BankAccount {
+    protected double balance;
+}
+```
+Now the subclass can do anything:
+```
+balance = -500000;
+balance = 0;
+balance *= 2;
+balance += 100000;
+```
+The base class has very little control.
+
+##### Option B — private field + protected method
+```
+class BankAccount {
+
+    private double balance;
+
+    protected void addToBalance(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+}
+```
+Now the base class controls how the subclass can modify the state.
+
+That is usually better encapsulation.
+## 6.7 A very concrete example: Employee bonus
+
+Revisit `Employee/Manager` inheritance example.
+
+Start with:
+```
+class Employee {
+
+    private double salary;
+
+    public Employee(double salary) {
+        this.salary = salary;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+}
+```
+Suppose `Manager` needs to calculate a bonus based on salary.
+
+It can use:
+```
+getSalary()
+```
+No need for protected.
+```
+class Manager extends Employee {
+
+    public Manager(double salary) {
+        super(salary);
+    }
+
+    public double calculateBonus() {
+        return getSalary() * 0.10;
+    }
+}
+```
+This is actually better encapsulation than:
+```
+protected double salary;
+```
+because the subclass doesn't need direct access to the data.
+
+## 6.8 So when is protected genuinely useful?
+
+Here's a better example.
+
+Suppose the base class has an internal operation that is useful only as part of implementing subclasses.
+```
+class Employee {
+
+    private double salary;
+
+    protected double calculateBaseBonus() {
+        return salary * 0.05;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+}
+```
+Then:
+```
+class Manager extends Employee {
+
+    public double calculateBonus() {
+        return calculateBaseBonus() + 2000;
+    }
+}
+```
+External code cannot do:
+```
+manager.calculateBaseBonus();   // ❌
+```
+because it is an implementation tool for the inheritance hierarchy.
+
+But:
+```
+Manager
+    ↓
+calculateBonus()
+    ↓
+calculateBaseBonus()
+```
+works.
+
+This is a strong example of why protected exists.
+## 6.9 A tricky example students should predict
+
+Consider:
+```
+class Person {
+
+    private String name;
+    protected int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    protected void printAge() {
+        System.out.println(age);
+    }
+}
+```
+and:
+```
+class Student extends Person {
+
+    public Student(String name, int age) {
+        super(name, age);
+    }
+
+    public void birthday() {
+        age++;
+    }
+
+    public void showAge() {
+        printAge();
+    }
+}
+```
+Then:
+```
+Student s = new Student("Ali", 19);
+
+s.birthday();
+s.showAge();
+```
+Output:
+```
+20
+```
+But:
+```
+s.age = 50;          // ❌ from ordinary external code
+s.printAge();        // ❌ from ordinary external code
+```
+This demonstrates both protected data and protected methods in the same example.
+## 6.10 Think about encapsulation
+
+Question:
+
+Which design is better?
+```
+Design A
+--------
+class Person {
+    protected int age;
+}
+
+Design B
+--------
+class Person {
+
+    private int age;
+
+    protected void increaseAge() {
+        age++;
+    }
+}
+```
+`Design B` gives the base class more control.
+
+For example, the base class could enforce:
+```
+protected void increaseAge() {
+    if (age < 150) {
+        age++;
+    }
+}
+```
+The subclass doesn't get unrestricted access to the variable.
+
+This leads to the principle:
+
+If a subclass only needs an operation, prefer a `protected` method over a `protected field`.
 
 ## 7. Method overriding
 
