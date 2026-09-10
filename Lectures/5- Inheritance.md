@@ -246,19 +246,364 @@ Think about who can access each member:
 
 In Java, `protected` also provides access to classes in the same package. 
 
-A `protected` member is available to the base class and its subclasses but is not part of the ordinary public interface.
+`protected` has two meanings depending on where the accessing code lives:
 
-`protected` can allow subclasses to access inherited members.
+-> A subclass can access it.
 
-However, prefer good encapsulation over making everything protected.
+-> Any class in the same package can access it.
 
-However, again,
+That second rule is often confusing.
+
+##### A. First: what is a package?
+
+A package is a way of organizing related Java classes.
+
+Think of it like a folder:
 ```
-protected is generally not "more encapsulated" than private.
-private provides stronger information hiding.
-The advantage of protected is that it provides controlled access specifically for an inheritance hierarchy, without making the member public.
+src/
+└── college/
+    └── employees/
+        ├── Employee.java
+        ├── Manager.java
+        └── Payroll.java
 ```
+All three classes could belong to:
 
+package college.employees;
+
+The package gives these classes a common namespace and, importantly, creates an access boundary.
+
+You can think of it as:
+```
+Package = a group of classes that are considered part of the same implementation family.
+```
+##### B. Why do we need packages in our Employee / Manager design?
+
+Suppose we have:
+
+class Employee {
+    protected double salary;
+}
+
+class Manager extends Employee {
+    public void giveRaise() {
+        salary += 1000;
+    }
+}
+
+We already understand why Manager can access salary:
+
+Employee
+   │
+   │ protected salary
+   ↓
+Manager
+
+because Manager is a subclass of Employee.
+
+But imagine our employee system becomes larger:
+```
+college.hr
+    Employee
+    Manager
+    Developer
+    Payroll
+    EmployeeValidator
+    TaxCalculator
+```
+```
+package college.hr;
+`college.hr` is just a package name chosen by the programmer. Java doesn't know that hr means Human Resources.
+```
+```
+college
+├── hr
+│   ├── Employee.java
+│   └── Manager.java
+│
+├── finance
+│   ├── Payroll.java
+│   └── Budget.java
+│
+└── students
+    ├── Student.java
+    └── Course.java
+```
+Some of these classes are not subclasses of Employee, but they are part of the same HR implementation.
+
+That's where packages become useful.
+##### C. Same package gives protected access
+
+Suppose:
+```
+Employee.java
+package college.hr;
+
+public class Employee {
+    protected double salary;
+
+    public Employee(double salary) {
+        this.salary = salary;
+    }
+}
+Manager.java
+package college.hr;
+
+public class Manager extends Employee {
+
+    public Manager(double salary) {
+        super(salary);
+    }
+
+    public void giveRaise() {
+        salary += 1000;
+    }
+}
+```
+No surprise here.
+
+`Manager` can access salary because it is a subclass.
+
+But now:
+```
+Payroll.java
+package college.hr;
+
+public class Payroll {
+
+    public void increaseSalary(Employee employee) {
+        employee.salary += 500;
+    }
+}
+```
+This also works because `Payroll` is in the same package as `Employee`.
+
+Notice something important:
+```
+                college.hr package
+        ┌─────────────────────────────┐
+        │                             │
+        │  Employee                   │
+        │     protected salary        │
+        │          ↑                  │
+        │          │                  │
+        │  Manager ─┘                 │
+        │                             │
+        │  Payroll ───────────────────┘
+        │                             │
+        └─────────────────────────────┘
+```
+`Payroll` is not a subclass.
+
+It gets access because it belongs to the same package.
+
+Maybe your design choice is:
+
+I don't want every class in the entire program to manipulate `salary`, 
+but I trust the classes inside my HR package.
+
+That's one reason Java's `protected` includes package access.
+##### D. Compare private, protected, and public
+```
+Modifier	Same class	Same package	Subclass in different package	Outside
+private	    ✅	        ❌	            ❌	                            ❌
+protected	✅	        ✅	            ✅	                            ❌
+public	    ✅	        ✅	            ✅	                            ✅
+```
+But there is an important nuance:
+
+A subclass in a different package can access a protected member through inheritance, 
+
+but not arbitrarily through an Employee object reference.
+
+Suppose we have two different packages:
+```
+college.hr
+    Employee.java
+
+college.management
+    Manager.java
+```
+Now `Employee` is in `college.hr
+```
+package college.hr;
+
+public class Employee {
+    protected double salary;
+
+    public Employee(double salary) {
+        this.salary = salary;
+    }
+}
+```
+salary is protected.
+
+Also, `Manager` is in a DIFFERENT package
+```
+package college.management;
+
+import college.hr.Employee;
+
+public class Manager extends Employee {
+
+    public Manager(double salary) {
+        super(salary);
+    }
+
+    public void giveRaise() {
+        salary += 1000;   // ✅ allowed
+    }
+}
+```
+Even though `Manager` is in:
+```
+college.management
+```
+and Employee is in:
+```
+college.hr
+```
+this works because:
+
+`Manager extends Employee`
+
+In other words:
+
+A subclass is allowed to access inherited protected members even when the subclass is in a different package.
+
+But here's the tricky part
+```
+A different-package subclass gets protected access through inheritance, not general access to every Employee object.
+```
+For example:
+```
+package college.management;
+
+public class Manager extends Employee {
+
+    public void test() {
+        salary = 100000;     // ✅
+    }
+}
+```
+But this:
+```
+public void test(Employee e) {
+    e.salary = 100000;      // ❌
+}
+```
+is not allowed when Manager is in a different package.
+
+Why?
+
+Because e is just an Employee reference. 
+
+The subclass is allowed to access its inherited protected member, 
+
+but it doesn't get unrestricted access to the protected member through arbitrary Employee objects.
+
+Think of it this way
+```
+Employee
+   │
+   │ protected salary
+   ↓
+Manager
+
+Manager says:
+
+"I inherited salary, so I can use it as part of myself."
+
+Therefore:
+
+salary = 100000;   // ✅
+```
+But this:
+```
+Employee e = ...;
+e.salary = 100000; // ❌
+
+is essentially saying:
+
+"I'm going to reach into some other Employee object and directly manipulate its protected data."
+```
+Java doesn't allow that across packages.
+
+##### E. Why did Java design it this way?
+
+Because protected is intended to support `inheritance`, while still preventing arbitrary outside access.
+
+So:
+```
+private
+   ↓
+Only Employee
+
+protected
+   ↓
+Employee
++ subclasses
++ same-package classes
+
+public
+   ↓
+Everybody
+```
+But for a subclass in another package, the `protected` access is specifically tied to the subclass relationship.
+
+##### F. superclass/subclass design
+
+Layer 1 — private
+
+The superclass keeps its internal state private.
+```
+public class Employee {
+    private double salary;
+}
+```
+Meaning:
+```
+"Only Employee itself should directly manipulate salary."
+```
+This gives the strongest encapsulation.
+
+Layer 2 — protected
+
+Suppose we deliberately want subclasses to participate in some behavior.
+
+Better design:
+```
+public class Employee {
+    private double salary;
+
+    protected double calculateBaseBonus() {
+        return salary * 0.05;
+    }
+}
+```
+Now:
+```
+public class Manager extends Employee {
+
+    public double calculateBonus() {
+        return calculateBaseBonus() + 2000;
+    }
+}
+```
+This is good inheritance design because:
+```
+Employee
+   │
+   │ private salary
+   │
+   └── protected calculateBaseBonus()
+                ↑
+                │
+             Manager
+```
+`Manager` doesn't need direct access to `salary`.
+
+It receives a controlled capability from `Employee`.
 
 ## 6.2 Protected DATA — concrete example
 
