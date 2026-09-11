@@ -760,7 +760,7 @@ Different package
          └── access salary of arbitrary Employee
                   ❌
 ```
-## 6.2 superclass/subclass design
+## 6.2 `superclass`/`subclass` design
 
 Layer 1 — private
 
@@ -814,7 +814,7 @@ Employee
 
 It receives a controlled capability from `Employee`.
 
-## 6.3 So why not always use private?
+## 6.3 So why not always use `private`?
 
 Suppose the base class wants subclasses to participate in maintaining an internal value.
 
@@ -853,7 +853,7 @@ For example:
 account.setBalance(-1000000);
 ```
 That could be terrible design.
-## 6.4 This is where a protected METHOD can be better
+## 6.4 This is where a `protected` METHOD can be better
 
 Instead of exposing the data publicly, the base class can provide a protected operation specifically for subclasses:
 ```
@@ -918,11 +918,11 @@ The base class says:
 "I will allow my subclasses to perform this operation, but I don't want the general public to perform it."
 
 That's exactly where protected is useful.
-## 6.5 Why a protected method can be better than a protected field
+## 6.5 Why a `protected` method can be better than a `protected` field
 
 This is an important distinction.
 
-##### Option A — protected field
+##### A. Option A — protected field
 ```
 class BankAccount {
     protected double balance;
@@ -937,7 +937,7 @@ balance += 100000;
 ```
 The base class has very little control.
 
-##### Option B — private field + protected method
+##### B. Option B — private field + protected method
 ```
 class BankAccount {
 
@@ -954,7 +954,7 @@ Now the base class controls how the subclass can modify the state.
 
 That is usually better encapsulation.
 
-## 6.8 A tricky example 
+#### C. A Tricky example 
 
 Consider:
 ```
@@ -1007,7 +1007,7 @@ s.age = 50;          // ❌ from ordinary external code
 s.printAge();        // ❌ from ordinary external code
 ```
 This demonstrates both protected data and protected methods in the same example.
-## 6.9 Think about encapsulation
+#### D. Think about encapsulation
 
 Question:
 
