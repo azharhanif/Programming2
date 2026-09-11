@@ -153,7 +153,7 @@ d.bark();  // Dog's own method
 
 `super` refers to the superclass portion of the current object.
 
-### Constructor
+#### Constructor
 
 ```java
 public Dog(String name) {
@@ -169,7 +169,7 @@ Animal(String name)
 
 before the Dog constructor finishes.
 
-### Method
+#### Method
 
 If the subclass overrides a method:
 
@@ -438,7 +438,7 @@ There are two different packages:
 college.hr
 college.management
 ```
-#### A. Employee in package college.hr
+#### A. `Employee` in package `college.hr`
 ```
 Employee.java
 package college.hr;
@@ -461,7 +461,8 @@ Because `salary` is `protected`, it can be accessed by:
 - `Employee` itself
 - classes in college.hr
 - subclasses of Employee, even if those subclasses are in another package
-2. Manager is a subclass in a different package
+#### B. `Manager` is a subclass in a different package
+```
 Manager.java
 package college.management;
 
@@ -481,36 +482,35 @@ public class Manager extends Employee {
         System.out.println("Manager salary: " + salary);
     }
 }
-
+```
 This is perfectly legal.
 
 Even though:
-
+```
 Employee → college.hr
 
 Manager → college.management
+```
+`Manager` can directly use: `salary`
 
-Manager can directly use:
-
-salary
-
-because Manager inherits the protected member.
+because `Manager` inherits the protected member.
 
 For example:
-
+```
 Manager manager = new Manager(80000);
 
 manager.giveRaise();
 
 manager.showManagerSalary();
-
+```
 Output:
-
+```
 Manager salary: 81000.0
-3. Now the confusing part
+```
+#### C. Now the confusing part
 
-Suppose we create another class in college.management:
-
+Suppose we create another class in `college.management`:
+```
 TestManager.java
 package college.management;
 
@@ -522,25 +522,24 @@ public class TestManager {
         e.salary = 100000;
     }
 }
-
+```
 This produces a compile-time error.
 
 Why?
 
-Because TestManager:
+Because `TestManager`:
 
-is not a subclass of Employee
-is in a different package from Employee
+- is not a subclass of Employee
+- is in a different package from Employee
 
 Therefore it cannot access:
-
+```
 e.salary
-4. But what if TestManager itself extends Employee?
+```
+#### D. But what if `TestManager` itself extends `Employee`?
 
-This is where it gets interesting.
-
-Change TestManager to:
-
+Change `TestManager` to:
+```
 TestManager.java
 package college.management;
 
@@ -557,13 +556,13 @@ public class TestManager extends Employee {
         salary = 100000;    // ✅ allowed
     }
 }
-
+```
 This works.
 
 Why?
 
-Because TestManager is a subclass.
-
+Because `TestManager` is a subclass.
+```
 college.hr
     Employee
        ↑
@@ -571,21 +570,22 @@ college.hr
        │
 college.management
     TestManager
-
+```
 So this is allowed:
-
+```
 salary = 100000;
-5. But here's the surprising part
+```
+#### E. The surprising part
 
-Now put this inside TestManager:
-
+Now put this inside `TestManager`:
+```
 public void testAccess(Employee e) {
 
     e.salary = 100000;    // ❌ NOT allowed
 }
-
+```
 The complete class would be:
-
+```
 package college.management;
 
 import college.hr.Employee;
@@ -606,68 +606,71 @@ public class TestManager extends Employee {
         e.salary = 100000;  // ❌ compile-time error
     }
 }
+```
+This is the rule that creates easy confusion.
 
-This is the rule that is easy to miss.
-
-6. Why does Java allow one but reject the other?
+#### F. Why does Java allow one but reject the other?
 
 Look carefully at the two statements:
 
 This is allowed:
+```
 salary = 100000;
-
+```
 Here, salary means:
 
-the protected salary inherited by this TestManager object.
+the protected `salary` inherited by this `TestManager` object.
 
 The subclass is accessing its own inherited member.
 
 This is NOT allowed:
+```
 e.salary = 100000;
+```
+Here, `e` is an `Employee` object.
 
-Here, e is an Employee object.
-
-The subclass is trying to reach into another Employee object and directly access its protected member.
+The subclass is trying to reach into another `Employee` object and directly access its protected member.
 
 Java does not allow that when the subclass and superclass are in different packages.
 
-7. Let's make the difference visible
+#### G. What is the difference?
 
 Imagine:
-
+```
 TestManager manager = new TestManager(90000);
 
 Employee employee = new Employee(70000);
-
-Inside TestManager:
-
+```
+Inside `TestManager`:
+```
 salary = 100000;
-
+```
 means essentially:
-
+```
 manager's inherited salary
         ↑
         │
    TestManager
-
+```
 Allowed.
 
 But:
-
+```
 employee.salary = 100000;
-
+```
 means:
-
+```
 Employee object
        ↑
        │
    employee.salary
-
-That's an arbitrary Employee object.
+```
+That's an arbitrary `Employee` object.
 
 Not allowed across packages.
 
-8. A complete example you can actually show students
+#### H. A detail example
+```
 Employee.java
 package college.hr;
 
@@ -683,6 +686,7 @@ public class Employee {
         System.out.println("Salary: " + salary);
     }
 }
+
 Manager.java
 package college.management;
 
@@ -706,41 +710,41 @@ public class Manager extends Employee {
         employee.salary = 100000;
     }
 }
-
+```
 The last method:
-
+```
 public void changeEmployeeSalary(Employee employee) {
     employee.salary = 100000;
 }
-
+```
 will not compile.
 
 But:
-
+```
 public void changeMySalary() {
     salary = 100000;
 }
-
+```
 will compile.
 
-9. Why this rule actually makes sense
+#### I. Why this rule actually makes sense
 
-Think about what protected is trying to accomplish.
+Think about what `protected` is trying to accomplish.
 
-Employee is saying:
+`Employee` is saying:
 
 "My subclasses can use this part of my implementation."
 
-So Manager gets access to the inherited salary that belongs to the Manager object.
+So `Manager` gets access to the inherited `salary` that belongs to the `Manager` object.
 
-But Employee is not saying:
+But `Employee` is not saying:
 
-"Any subclass can now manipulate the protected fields of every Employee object in the program."
+"Any subclass can now manipulate the protected fields of every `Employee` object in the program."
 
 That would make protected much less restrictive across package boundaries.
 
-So the mental model is:
-
+So the model is:
+```
 Different package
         │
         ▼
@@ -755,7 +759,8 @@ Different package
          │
          └── access salary of arbitrary Employee
                   ❌
-#### F. superclass/subclass design
+```
+## 6.2 superclass/subclass design
 
 Layer 1 — private
 
