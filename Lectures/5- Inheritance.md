@@ -814,78 +814,7 @@ Employee
 
 It receives a controlled capability from `Employee`.
 
-## 6.2 Protected DATA — concrete example
-
-Consider:
-```
-class Vehicle {
-    protected int speed;
-
-    public Vehicle() {
-        speed = 0;
-    }
-
-    public void showSpeed() {
-        System.out.println(speed);
-    }
-}
-```
-Now:
-```
-class Car extends Vehicle {
-
-    public void accelerate() {
-        speed += 10;
-    }
-}
-```
-This is allowed:
-```
-Car car = new Car();
-
-car.accelerate();
-car.accelerate();
-
-car.showSpeed();
-```
-Output:
-```
-20
-```
-Why can Car access speed?
-
-Because:
-```
-Car IS A Vehicle
-```
-and speed was deliberately made available to subclasses.
-## 6.3 Compare with private
-
-Now change:
-```
-protected int speed;
-```
-to:
-```
-private int speed;
-```
-Then this will not compile:
-```
-class Car extends Vehicle {
-
-    public void accelerate() {
-        speed += 10;       // ❌
-    }
-}
-```
-The field belongs to `Vehicle`, but `Car` cannot directly access it because it is private.
-
-This is an important distinction:
-
-The private member is still part of the `Vehicle` object. It is not "lost" when `Car` inherits from `Vehicle`. 
-
-It is simply inaccessible directly from `Car`.
-## 6.4 So why not always use private?
+## 6.3 So why not always use private?
 
 Suppose the base class wants subclasses to participate in maintaining an internal value.
 
@@ -924,7 +853,7 @@ For example:
 account.setBalance(-1000000);
 ```
 That could be terrible design.
-## 6.5 This is where a protected METHOD can be better
+## 6.4 This is where a protected METHOD can be better
 
 Instead of exposing the data publicly, the base class can provide a protected operation specifically for subclasses:
 ```
@@ -989,7 +918,7 @@ The base class says:
 "I will allow my subclasses to perform this operation, but I don't want the general public to perform it."
 
 That's exactly where protected is useful.
-## 6.6 Why a protected method can be better than a protected field
+## 6.5 Why a protected method can be better than a protected field
 
 This is an important distinction.
 
@@ -1024,7 +953,7 @@ class BankAccount {
 Now the base class controls how the subclass can modify the state.
 
 That is usually better encapsulation.
-## 6.7 A very concrete example: Employee bonus
+## 6.6 Another detailed example: Employee bonus
 
 Revisit `Employee/Manager` inheritance example.
 
@@ -1068,7 +997,7 @@ protected double salary;
 ```
 because the subclass doesn't need direct access to the data.
 
-## 6.8 So when is protected genuinely useful?
+## 6.7 So when is protected genuinely useful?
 
 Here's a better example.
 
@@ -1113,7 +1042,7 @@ calculateBaseBonus()
 works.
 
 This is a strong example of why protected exists.
-## 6.9 A tricky example students should predict
+## 6.8 A tricky example 
 
 Consider:
 ```
@@ -1166,7 +1095,7 @@ s.age = 50;          // ❌ from ordinary external code
 s.printAge();        // ❌ from ordinary external code
 ```
 This demonstrates both protected data and protected methods in the same example.
-## 6.10 Think about encapsulation
+## 6.9 Think about encapsulation
 
 Question:
 
