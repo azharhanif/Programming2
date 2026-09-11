@@ -267,9 +267,7 @@ src/
         ├── Manager.java
         └── Payroll.java
 ```
-All three classes could belong to:
-
-package college.employees;
+All three classes could belong to: `package college.employees;`
 
 The package gives these classes a common namespace and, importantly, creates an access boundary.
 
