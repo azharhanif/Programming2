@@ -330,7 +330,7 @@ college
 Some of these classes are not subclasses of `Employee`, but they are part of the same `HR` implementation.
 
 That's where packages become useful.
-##### C. Same package gives protected access
+#### C. Same package gives protected access
 
 Suppose:
 ```
@@ -402,7 +402,7 @@ I don't want every class in the entire program to manipulate `salary`,
 but I trust the classes inside my HR package.
 ```
 That's one reason Java's `protected` includes package access.
-##### D. Compare private, protected, and public
+#### D. Compare private, protected, and public
 ```
 Modifier	Same class	Same package	Subclass in different package	Outside
 private	    ✅	        ❌	            ❌	                            ❌
@@ -413,7 +413,7 @@ But there is an important nuance:
 
 A subclass in a different package can access a protected member through inheritance, 
 
-but not arbitrarily through an Employee object reference.
+but not arbitrarily through an `Employee` object reference.
 
 Suppose we have two different packages:
 ```
@@ -423,7 +423,7 @@ college.hr
 college.management
     Manager.java
 ```
-Now `Employee` is in `college.hr
+Now `Employee` is in `college.hr`
 ```
 package college.hr;
 
@@ -435,7 +435,7 @@ public class Employee {
     }
 }
 ```
-salary is protected.
+`salary` is protected.
 
 Also, `Manager` is in a DIFFERENT package
 ```
@@ -462,9 +462,7 @@ and Employee is in:
 ```
 college.hr
 ```
-this works because:
-
-`Manager extends Employee`
+this works because: `Manager extends Employee`
 
 In other words:
 
@@ -472,7 +470,8 @@ A subclass is allowed to access inherited protected members even when the subcla
 
 But here's the tricky part
 ```
-A different-package subclass gets protected access through inheritance, not general access to every Employee object.
+A different-package subclass gets protected access through inheritance,
+not general access to every `Employee` object.
 ```
 For example:
 ```
@@ -491,15 +490,13 @@ public void test(Employee e) {
     e.salary = 100000;      // ❌
 }
 ```
-is not allowed when Manager is in a different package.
+is not allowed when `Manager` is in a different package. Why?
 
-Why?
-
-Because e is just an Employee reference. 
+Because `e` is just an `Employee` reference. 
 
 The subclass is allowed to access its inherited protected member, 
 
-but it doesn't get unrestricted access to the protected member through arbitrary Employee objects.
+but it doesn't get unrestricted access to the protected member through arbitrary `Employee` objects.
 
 Think of it this way
 ```
@@ -524,11 +521,11 @@ e.salary = 100000; // ❌
 
 is essentially saying:
 
-"I'm going to reach into some other Employee object and directly manipulate its protected data."
+"I'm going to reach into some other `Employee` object and directly manipulate its protected data."
 ```
 Java doesn't allow that across packages.
 
-##### E. Why did Java design it this way?
+#### E. Why did Java design it this way?
 
 Because protected is intended to support `inheritance`, while still preventing arbitrary outside access.
 
