@@ -275,7 +275,7 @@ You can think of it as:
 ```
 Package = a group of classes that are considered part of the same implementation family.
 ```
-##### B. Why do we need packages in our Employee / Manager design?
+##### B. Why do we need packages? Employee / Manager Example
 
 Suppose we have:
 
