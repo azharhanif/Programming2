@@ -414,31 +414,55 @@ But there is an important nuance:
 A subclass in a different package can access a protected member through inheritance, 
 
 but not arbitrarily through an `Employee` object reference.
+## 6.1 Tricky `protected` rule across packages
+`protected` members are accessible within the same package and by subclasses in other packages. 
 
-Suppose we have two different packages:
+However, for a subclass in a different package, 
+
+`protected` access is through inheritance—not unrestricted access to arbitrary superclass objects.
+
+Suppose we have this structure:
+```
+src/
+├── college/
+│   └── hr/
+│       └── Employee.java
+│
+└── college/
+    └── management/
+        ├── Manager.java
+        └── TestManager.java
+```
+There are two different packages:
 ```
 college.hr
-    Employee.java
-
 college.management
-    Manager.java
 ```
-Now `Employee` is in `college.hr`
+#### A. Employee in package college.hr
 ```
+Employee.java
 package college.hr;
 
 public class Employee {
+
     protected double salary;
 
     public Employee(double salary) {
         this.salary = salary;
     }
+
+    public void showSalary() {
+        System.out.println("Salary: " + salary);
+    }
 }
 ```
-`salary` is protected.
+Because `salary` is `protected`, it can be accessed by:
 
-Also, `Manager` is in a DIFFERENT package
-```
+- `Employee` itself
+- classes in college.hr
+- subclasses of Employee, even if those subclasses are in another package
+2. Manager is a subclass in a different package
+Manager.java
 package college.management;
 
 import college.hr.Employee;
@@ -450,104 +474,288 @@ public class Manager extends Employee {
     }
 
     public void giveRaise() {
-        salary += 1000;   // ✅ allowed
+        salary = salary + 1000;
+    }
+
+    public void showManagerSalary() {
+        System.out.println("Manager salary: " + salary);
     }
 }
-```
-Even though `Manager` is in:
-```
-college.management
-```
-and Employee is in:
-```
-college.hr
-```
-this works because: `Manager extends Employee`
 
-In other words:
+This is perfectly legal.
 
-A subclass is allowed to access inherited protected members even when the subclass is in a different package.
+Even though:
 
-But here's the tricky part
-```
-A different-package subclass gets protected access through inheritance,
-not general access to every `Employee` object.
-```
+Employee → college.hr
+
+Manager → college.management
+
+Manager can directly use:
+
+salary
+
+because Manager inherits the protected member.
+
 For example:
-```
+
+Manager manager = new Manager(80000);
+
+manager.giveRaise();
+
+manager.showManagerSalary();
+
+Output:
+
+Manager salary: 81000.0
+3. Now the confusing part
+
+Suppose we create another class in college.management:
+
+TestManager.java
 package college.management;
+
+import college.hr.Employee;
+
+public class TestManager {
+
+    public void changeEmployeeSalary(Employee e) {
+        e.salary = 100000;
+    }
+}
+
+This produces a compile-time error.
+
+Why?
+
+Because TestManager:
+
+is not a subclass of Employee
+is in a different package from Employee
+
+Therefore it cannot access:
+
+e.salary
+4. But what if TestManager itself extends Employee?
+
+This is where it gets interesting.
+
+Change TestManager to:
+
+TestManager.java
+package college.management;
+
+import college.hr.Employee;
+
+public class TestManager extends Employee {
+
+    public TestManager(double salary) {
+        super(salary);
+    }
+
+    public void testAccess() {
+
+        salary = 100000;    // ✅ allowed
+    }
+}
+
+This works.
+
+Why?
+
+Because TestManager is a subclass.
+
+college.hr
+    Employee
+       ↑
+       │ extends
+       │
+college.management
+    TestManager
+
+So this is allowed:
+
+salary = 100000;
+5. But here's the surprising part
+
+Now put this inside TestManager:
+
+public void testAccess(Employee e) {
+
+    e.salary = 100000;    // ❌ NOT allowed
+}
+
+The complete class would be:
+
+package college.management;
+
+import college.hr.Employee;
+
+public class TestManager extends Employee {
+
+    public TestManager(double salary) {
+        super(salary);
+    }
+
+    public void testAccess() {
+
+        salary = 100000;    // ✅ allowed
+    }
+
+    public void testOtherEmployee(Employee e) {
+
+        e.salary = 100000;  // ❌ compile-time error
+    }
+}
+
+This is the rule that is easy to miss.
+
+6. Why does Java allow one but reject the other?
+
+Look carefully at the two statements:
+
+This is allowed:
+salary = 100000;
+
+Here, salary means:
+
+the protected salary inherited by this TestManager object.
+
+The subclass is accessing its own inherited member.
+
+This is NOT allowed:
+e.salary = 100000;
+
+Here, e is an Employee object.
+
+The subclass is trying to reach into another Employee object and directly access its protected member.
+
+Java does not allow that when the subclass and superclass are in different packages.
+
+7. Let's make the difference visible
+
+Imagine:
+
+TestManager manager = new TestManager(90000);
+
+Employee employee = new Employee(70000);
+
+Inside TestManager:
+
+salary = 100000;
+
+means essentially:
+
+manager's inherited salary
+        ↑
+        │
+   TestManager
+
+Allowed.
+
+But:
+
+employee.salary = 100000;
+
+means:
+
+Employee object
+       ↑
+       │
+   employee.salary
+
+That's an arbitrary Employee object.
+
+Not allowed across packages.
+
+8. A complete example you can actually show students
+Employee.java
+package college.hr;
+
+public class Employee {
+
+    protected double salary;
+
+    public Employee(double salary) {
+        this.salary = salary;
+    }
+
+    public void showSalary() {
+        System.out.println("Salary: " + salary);
+    }
+}
+Manager.java
+package college.management;
+
+import college.hr.Employee;
 
 public class Manager extends Employee {
 
-    public void test() {
-        salary = 100000;     // ✅
+    public Manager(double salary) {
+        super(salary);
+    }
+
+    public void giveRaise() {
+        salary = salary + 1000;
+    }
+
+    public void changeMySalary() {
+        salary = 100000;
+    }
+
+    public void changeEmployeeSalary(Employee employee) {
+        employee.salary = 100000;
     }
 }
-```
-But this:
-```
-public void test(Employee e) {
-    e.salary = 100000;      // ❌
+
+The last method:
+
+public void changeEmployeeSalary(Employee employee) {
+    employee.salary = 100000;
 }
-```
-is not allowed when `Manager` is in a different package. Why?
 
-Because `e` is just an `Employee` reference. 
+will not compile.
 
-The subclass is allowed to access its inherited protected member, 
+But:
 
-but it doesn't get unrestricted access to the protected member through arbitrary `Employee` objects.
+public void changeMySalary() {
+    salary = 100000;
+}
 
-Think of it this way
-```
-Employee
-   │
-   │ protected salary
-   ↓
-Manager
+will compile.
 
-Manager says:
+9. Why this rule actually makes sense
 
-"I inherited salary, so I can use it as part of myself."
+Think about what protected is trying to accomplish.
 
-Therefore:
+Employee is saying:
 
-salary = 100000;   // ✅
-```
-But this:
-```
-Employee e = ...;
-e.salary = 100000; // ❌
+"My subclasses can use this part of my implementation."
 
-is essentially saying:
+So Manager gets access to the inherited salary that belongs to the Manager object.
 
-"I'm going to reach into some other `Employee` object and directly manipulate its protected data."
-```
-Java doesn't allow that across packages.
+But Employee is not saying:
 
-#### E. Why did Java design it this way?
+"Any subclass can now manipulate the protected fields of every Employee object in the program."
 
-Because protected is intended to support `inheritance`, while still preventing arbitrary outside access.
+That would make protected much less restrictive across package boundaries.
 
-So:
-```
-private
-   ↓
-Only Employee
+So the mental model is:
 
-protected
-   ↓
-Employee
-+ subclasses
-+ same-package classes
-
-public
-   ↓
-Everybody
-```
-But for a subclass in another package, the `protected` access is specifically tied to the subclass relationship.
-
-##### F. superclass/subclass design
+Different package
+        │
+        ▼
+      Employee
+         ↑
+         │ extends
+         │
+      Manager
+         │
+         ├── access inherited salary of Manager
+         │        ✅
+         │
+         └── access salary of arbitrary Employee
+                  ❌
+#### F. superclass/subclass design
 
 Layer 1 — private
 
