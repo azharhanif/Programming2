@@ -242,7 +242,7 @@ Think about who can access each member:
        │
        └── base class only
 
-##### Important Java detail
+#### Note: Important Java detail
 
 In Java, `protected` also provides access to classes in the same package. 
 
@@ -254,7 +254,7 @@ In Java, `protected` also provides access to classes in the same package.
 
 That second rule is often confusing.
 
-##### A. First: what is a package?
+#### A. First: what is a package?
 
 A package is a way of organizing related Java classes.
 
@@ -275,7 +275,7 @@ You can think of it as:
 ```
 Package = a group of classes that are considered part of the same implementation family.
 ```
-##### B. Why do we need packages? Employee / Manager Example
+#### B. Why do we need packages? Employee / Manager Example
 
 Suppose we have:
 ```
@@ -289,7 +289,7 @@ class Manager extends Employee {
     }
 }
 ```
-We already understand why Manager can access salary:
+We already understand why `Manager` can access `salary`:
 ```
 Employee
    │
@@ -297,7 +297,7 @@ Employee
    ↓
 Manager
 ```
-because Manager is a subclass of Employee.
+because `Manager` is a subclass of `Employee`.
 
 But imagine our employee system becomes larger:
 ```
@@ -311,7 +311,7 @@ college.hr
 ```
 ```
 package college.hr;
-`college.hr` is just a package name chosen by the programmer. Java doesn't know that hr means Human Resources.
+`college.hr` is just a package name chosen by the programmer. Java doesn't know that `hr` means `Human Resources`.
 ```
 ```
 college
@@ -327,7 +327,7 @@ college
     ├── Student.java
     └── Course.java
 ```
-Some of these classes are not subclasses of Employee, but they are part of the same HR implementation.
+Some of these classes are not subclasses of `Employee`, but they are part of the same `HR` implementation.
 
 That's where packages become useful.
 ##### C. Same package gives protected access
@@ -344,6 +344,7 @@ public class Employee {
         this.salary = salary;
     }
 }
+
 Manager.java
 package college.hr;
 
@@ -383,8 +384,8 @@ Notice something important:
         │                             │
         │  Employee                   │
         │     protected salary        │
-        │          ↑                  │
-        │          │                  │
+        │           ↑                 │
+        │           │                 │
         │  Manager ─┘                 │
         │                             │
         │  Payroll ───────────────────┘
@@ -396,10 +397,10 @@ Notice something important:
 It gets access because it belongs to the same package.
 
 Maybe your design choice is:
-
+```
 I don't want every class in the entire program to manipulate `salary`, 
 but I trust the classes inside my HR package.
-
+```
 That's one reason Java's `protected` includes package access.
 ##### D. Compare private, protected, and public
 ```
