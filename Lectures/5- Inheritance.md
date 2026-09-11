@@ -278,7 +278,7 @@ Package = a group of classes that are considered part of the same implementation
 ##### B. Why do we need packages? Employee / Manager Example
 
 Suppose we have:
-
+```
 class Employee {
     protected double salary;
 }
@@ -288,15 +288,15 @@ class Manager extends Employee {
         salary += 1000;
     }
 }
-
+```
 We already understand why Manager can access salary:
-
+```
 Employee
    │
    │ protected salary
    ↓
 Manager
-
+```
 because Manager is a subclass of Employee.
 
 But imagine our employee system becomes larger:
