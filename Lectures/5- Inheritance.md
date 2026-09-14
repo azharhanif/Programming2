@@ -301,9 +301,9 @@ Think about who can access each member:
        │       │        │
        │       │        └── everyone
        │       │
-       │       └── base + subclasses
+       │       └── superclass + subclasses
        │
-       └── base class only
+       └── superclass only
 
 #### Note: Important Java detail
 
