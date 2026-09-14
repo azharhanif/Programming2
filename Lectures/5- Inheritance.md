@@ -271,7 +271,7 @@ Inheritance doesn't mean the `Manager` object "borrows" an `Employee` object.
 
 The `Manager` object has the inherited `Employee` fields as part of its object `state`, in addition to its own fields.
 
-Note the distinction between object `state` and object `memory` layout
+Note the distinction between subclass object `state` and subclass object `memory` layout
 ## 6. `protected`: Controlled Access for Subclasses
 Suppose we have:
 ```
