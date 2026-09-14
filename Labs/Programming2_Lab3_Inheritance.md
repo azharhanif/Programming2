@@ -40,26 +40,7 @@ You will practice inheritance while deciding whether superclass data should rema
 
 ---
 
-# 2. Learning Objectives
-
-By the end of this lab, you should be able to:
-
-- identify a superclass and subclass;
-- implement inheritance with `extends`;
-- use `super(...)` for constructor chaining;
-- explain the order in which superclass and subclass constructors execute;
-- override inherited methods using `@Override`;
-- explain why private fields are not directly accessible in subclasses;
-- use getters/setters or protected methods to provide controlled access;
-- distinguish a `protected` field from a `protected` method;
-- explain the additional package-access rule associated with `protected`;
-- choose between `private` and `protected` based on encapsulation;
-- recognize when inheritance is inappropriate;
-- test inherited and overridden behavior using JUnit.
-
----
-
-# 3. Part A — Warm-Up: Is It Really Inheritance?
+# 2. Part A — Warm-Up: Is It Really Inheritance?
 
 For each relationship, decide whether inheritance is appropriate.
 
@@ -153,9 +134,7 @@ Manager
 Employee
 ```
 
-Question:
-
-> Can every Manager be treated as an Employee?
+**Can every Manager be treated as an Employee?**
 
 Yes.
 
@@ -163,7 +142,7 @@ This is a stronger reason for inheritance than simply saying that the words are 
 
 ---
 
-# 4. Part B — Basic Inheritance
+# 3. Part B — Basic Inheritance
 
 Create the following classes.
 
@@ -249,9 +228,9 @@ Use `@Override`.
 Before running your program, predict:
 
 ```java
-Manager m = new Manager("Amina", 80000, 5000);
+Manager m = new Manager("John", 80000, 5000);
 ```
-
+## Questions
 What should these produce?
 
 ```java
@@ -265,7 +244,7 @@ Then run your program and check your predictions.
 
 ---
 
-# 5. Part C — Constructor Chaining
+# 4. Part C — Constructor Chaining
 
 Add print statements temporarily to the constructors.
 
@@ -292,7 +271,7 @@ public Manager(String name, double salary, double managementAllowance) {
 Create:
 
 ```java
-Manager m = new Manager("Amina", 80000, 5000);
+Manager m = new Manager("Amanda", 80000, 5000);
 ```
 
 ### Question
@@ -315,7 +294,7 @@ Explain why.
 
 ---
 
-# 6. Part D — The Encapsulation Decision
+# 5. Part D — The Encapsulation Decision
 
 Now consider this design:
 
@@ -339,10 +318,8 @@ class Manager extends Employee {
 ```
 
 This works.
-
-But ask:
-
-> **Should `salary` really be protected?**
+## Questions
+> **Should `salary` really be protected? Why?**
 
 ### Experiment
 
@@ -374,7 +351,7 @@ class Manager extends Employee {
 }
 ```
 
-Run:
+Run in a Driver/Main class:
 
 ```java
 Manager manager = new Manager(80000);
@@ -405,7 +382,7 @@ Explain your answer.
 
 ---
 
-# 7. Part E — Private Field, Controlled Access
+# 6. Part E — Private Field, Controlled Access
 
 Now redesign `Employee`.
 
@@ -527,13 +504,11 @@ The superclass controls how the data can change.
 
 ### Explain
 
-Which design would you choose for a real payroll system?
-
-Why?
+Which design would you choose for a real payroll system? Give a real life example scenario for your choice.
 
 ---
 
-# 8. Part F — Protected Field vs Protected Method
+# 7. Part F — Protected Field vs Protected Method
 
 Consider these two designs.
 
@@ -576,20 +551,11 @@ The subclass can request a salary increase, but the superclass controls the stat
 
 ## Question
 
-Complete this table.
-
-| Design | Can subclass access the data directly? | Can superclass enforce rules? | Encapsulation |
-|---|---|---|---|
-| `protected double salary` | ? | ? | ? |
-| `private double salary` + `protected increaseSalary()` | ? | ? | ? |
-
-Then explain:
-
-> **Why can a protected method sometimes be a better inheritance design than a protected field?**
+ > **Why can a protected method sometimes be a better inheritance design than a protected field?**
 
 ---
 
-# 9. Part G — Private Fields and Inheritance
+# 8. Part G — Private Fields and Inheritance
 
 Create:
 
@@ -677,7 +643,7 @@ protected String name;
 
 ---
 
-# 10. Part H — The Tricky `protected` Rule
+# 9. Part H — The Tricky `protected` Rule
 
 Java's `protected` has an additional rule.
 
@@ -812,9 +778,9 @@ Your answer should mention:
 
 ---
 
-# 11. Part I — Same Package Experiment
+# 10. Part I — Same Package Experiment
 
-Move `TestManager` out of the way and create:
+Create `Payroll` class:
 
 ```java
 package college.hr;
@@ -849,7 +815,7 @@ Then answer:
 
 ---
 
-# 12. Part J — Design Challenge: Employee Hierarchy
+# 11. Part J — Design Challenge: Employee Hierarchy
 
 Extend your employee system.
 
@@ -946,101 +912,7 @@ You must justify each choice.
 A strong design will probably keep most state private and expose behavior through methods.
 
 ---
-
-# 13. Part K — Tricky Inheritance Design
-
-Consider this proposed design:
-
-```java
-class Employee {
-
-    protected double salary;
-
-    public Employee(double salary) {
-        this.salary = salary;
-    }
-}
-
-class Manager extends Employee {
-
-    public Manager(double salary) {
-        super(salary);
-    }
-
-    public void resetSalary() {
-        salary = 0;
-    }
-}
-```
-
-### Questions
-
-1. Does this compile?
-2. Is it good object-oriented design?
-3. What problem could `resetSalary()` create?
-4. How would you redesign the superclass?
-5. Should `salary` be private?
-6. If salary is private, what controlled operation should the superclass provide to a subclass?
-
----
-
-# 14. Part L — Inheritance or Composition?
-
-For each design below, decide whether inheritance is appropriate.
-
-### 1
-
-```text
-Manager is an Employee
-```
-
-### 2
-
-```text
-Employee has an Address
-```
-
-### 3
-
-```text
-Car is a Vehicle
-```
-
-### 4
-
-```text
-Library has Books
-```
-
-### 5
-
-```text
-Developer is an Employee
-```
-
-### 6
-
-```text
-Department has Employees
-```
-
-For each answer, write:
-
-```text
-Inheritance
-```
-
-or:
-
-```text
-Composition / containment
-```
-
-and give a one-sentence explanation.
-
----
-
-# 15. Part M — JUnit Testing
+# 12. Part M — JUnit Testing
 
 Create JUnit tests for your employee hierarchy.
 
@@ -1098,98 +970,9 @@ giveRaise(-1000)
 and verify that your chosen validation rule is respected.
 
 ---
-
-# 16. Part N — AI-Assisted Design Review
-
-You may use an AI tool as a first implementation or design assistant.
-
-Ask:
-
-> **"Create an Employee superclass and Manager subclass in Java. Then analyze the design specifically for private versus protected fields and protected methods. Explain constructor chaining, super, overriding, encapsulation, and whether inheritance represents an is-a relationship. Then propose a better-encapsulated version."**
-
-Do not simply submit the AI-generated code.
-
-You must inspect it.
-
-### Verify the AI's solution
-
-Answer:
-
-1. Which fields did the AI make `private`?
-2. Which fields did it make `protected`?
-3. Do you agree with those choices?
-4. Could a subclass put the object into an invalid state?
-5. Would a protected method be better than a protected field?
-6. Where is `super(...)` used?
-7. Which method is overridden?
-8. Is the inheritance relationship genuinely an is-a relationship?
-9. What did you change after reviewing the AI solution?
-
-Your final code must reflect **your own design decision**, not simply the AI's first answer.
-
 ---
 
-# 17. Part O — Final Reflection
-
-Answer the following in your own words.
-
-### Question 1
-
-Why is:
-
-```java
-private double salary;
-```
-
-generally more encapsulated than:
-
-```java
-protected double salary;
-```
-
-?
-
-### Question 2
-
-Why might a superclass provide:
-
-```java
-protected void increaseSalary(double amount)
-```
-
-instead of:
-
-```java
-protected double salary;
-```
-
-?
-
-### Question 3
-
-What is one situation where `protected` is useful?
-
-### Question 4
-
-What is one situation where `protected` would be a poor design choice?
-
-### Question 5
-
-What does `protected` mean when a subclass is in a different package?
-
-### Question 6
-
-Why can a same-package class access a protected member even if it is not a subclass?
-
-### Question 7
-
-Complete this principle:
-
-> Use inheritance when ________________________________.
-
----
-
-# 18. Submission Checklist
+# 13. Submission Checklist
 
 - [ ] `Employee` superclass implemented
 - [ ] `Manager` subclass implemented
@@ -1205,54 +988,7 @@ Complete this principle:
 - [ ] same-package protected-access experiment completed
 - [ ] inheritance vs composition questions completed
 - [ ] JUnit tests written
-- [ ] AI-assisted design review completed
-- [ ] final reflection completed
-- [ ] project compiles and tests pass
+
 
 ---
 
-# 19. Final Design Principle
-
-The goal of this lab is **not** to memorize:
-
-```text
-private = no
-protected = yes
-```
-
-Instead, think about responsibility.
-
-```text
-                    Employee
-                       │
-             ┌─────────┴─────────┐
-             │                   │
-          private              protected
-             │                   │
-      protect internal     intentionally expose
-           state            selected access
-             │                   │
-             └─────────┬─────────┘
-                       ↓
-              subclass behavior
-```
-
-A strong inheritance design asks:
-
-> **What should the superclass keep private, and what behavior should it intentionally make available to subclasses?**
-
-In general:
-
-```text
-private field
-      +
-controlled method
-      ↓
-stronger encapsulation
-```
-
-is preferable to exposing mutable state simply because a subclass needs access to it.
-
-And remember:
-
-> **`protected` does not mean "better than private." It means that access is intentionally extended beyond the class, including to subclasses and same-package classes.**
