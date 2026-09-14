@@ -1219,9 +1219,6 @@ public void setAge(int age) {
     this.age = age;
 }
 ```
-
-or another controlled design.
-
 ---
 
 ## 10. Inheritance and object design
