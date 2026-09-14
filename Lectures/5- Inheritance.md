@@ -1219,6 +1219,100 @@ public void setAge(int age) {
     this.age = age;
 }
 ```
+#### Private Methods: Internal Helper Methods
+
+Not every method needs to be `public` or `protected`. 
+
+**Example: Employee salary calculation**
+```
+class Employee {
+    private String name;
+    private double salary;
+
+    public Employee(String name, double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public double calculateAnnualBonus() {
+        return calculateBonus();
+    }
+
+    private double calculateBonus() {
+        return salary * 0.05;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+}
+```
+The important part is:
+```
+public double calculateAnnualBonus() {
+    return calculateBonus();
+}
+```
+and:
+```
+private double calculateBonus() {
+    return salary * 0.05;
+}
+```
+**Why make calculateBonus() private?**
+
+Because `calculateBonus()` is an internal helper.
+
+We want outside code to say:
+```
+Employee e = new Employee("Sara", 70000);
+
+System.out.println(e.calculateAnnualBonus());
+```
+But we don't necessarily want outside code to call:
+```
+e.calculateBonus();   // ERROR
+```
+The calculation is an implementation detail of `Employee`
+```
+             Employee
+        ┌──────────────────┐
+Outside │ public           │
+code →  │ calculateAnnual  │
+        │ Bonus()          │
+        └────────┬─────────┘
+                 │
+                 ↓
+        ┌──────────────────┐
+        │ private          │
+        │ calculateBonus() │
+        └──────────────────┘
+```
+The public method is the door that other code is allowed to use.
+
+The private method is something happening inside the room.
+
+Now if `Manager` is a subclass of `Employee`:
+```
+class Manager extends Employee {
+    public void showBonus() {
+        System.out.println(calculateBonus());  // ERROR
+    //is not allowed because calculateBonus() is private.
+    }
+}
+```
+A method that is only needed internally by the class should often be `private`. 
+
+This keeps implementation details hidden and prevents other classes or subclasses from depending on them.
+
+Think encapsulation beyond instance fields:
+```
+We can, (if appropiate in our design), encapsulate behavior (e.g., method), not just data.
+```
 ---
 
 ## 10. Inheritance and object design
