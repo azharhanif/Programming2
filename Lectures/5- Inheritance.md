@@ -415,7 +415,7 @@ college
     ├── Student.java
     └── Course.java
 ```
-Some of these classes are not subclasses of `Employee`, but they are part of the same `HR` implementation.
+Some of these classes are not subclasses of `Employee`, but they are part of the same `hr` implementation.
 
 That's where packages become useful.
 #### C. Same package gives protected access
@@ -447,9 +447,7 @@ public class Manager extends Employee {
     }
 }
 ```
-No surprise here.
-
-`Manager` can access salary because it is a subclass.
+No surprise here. `Manager` can access salary because it is a subclass.
 
 But now:
 ```
@@ -490,7 +488,7 @@ I don't want every class in the entire program to manipulate `salary`,
 but I trust the classes inside my HR package.
 ```
 That's one reason Java's `protected` includes package access.
-#### D. Compare private, protected, and public
+## 6.1 Tricky `protected` rule across packages
 ```
 Modifier	Same class	Same package	Subclass in different package	Outside
 private	    ✅	        ❌	            ❌	                            ❌
@@ -498,16 +496,16 @@ protected	✅	        ✅	            ✅	                            ❌
 public	    ✅	        ✅	            ✅	                            ✅
 ```
 But there is an important nuance:
-
+```
 A subclass in a different package can access a protected member through inheritance, 
 
-but not arbitrarily through an `Employee` object reference.
-## 6.1 Tricky `protected` rule across packages
+but not arbitrarily through a superclass (e.g., `Employee`) object reference.
+```
 `protected` members are accessible within the same package and by subclasses in other packages. 
 
 However, for a subclass in a different package, 
 
-`protected` access is through inheritance—not unrestricted access to arbitrary superclass objects.
+`protected` access is through inheritance —**not unrestricted** access to arbitrary superclass objects (references).
 
 Suppose we have this structure:
 ```
