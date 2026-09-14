@@ -210,7 +210,7 @@ Animal fields initialized
 Dog constructor continues
 ```
 
-A subclass object contains its inherited state as well as its own state.
+A subclass object contains its inherited `state` as well as its own `state`.
 
 Suppose we have:
 ```
@@ -227,7 +227,7 @@ Now:
 ```
 Manager m = new Manager("Sara", 70000, "Science");
 ```
-The state of a subclass object consists of the values of its own instance fields together 
+The `state` of a subclass object consists of the values of its own instance fields together 
 
 with the inherited instance fields that belong to the superclass portion of the object.
 ```
@@ -236,23 +236,42 @@ with the inherited instance fields that belong to the superclass portion of the 
 
         Employee fields
         ┌─────────────────────┐
-        │ name = "Sara"       │
-        │ salary = 70,000     │
-        └─────────────────────┘
-                  +
-        Manager fields
-        ┌─────────────────────┐
-        │ department="Science"│
-        └─────────────────────┘
+        │ name = "Sara"       │    |
+        │ salary = 70,000     │    |
+        └─────────────────────┘    |
+                  +              <-| Subclass state
+        Manager fields             |
+        ┌─────────────────────┐    |
+        │ department="Science"│    |
+        └─────────────────────┘    |
                   ↓
         ┌─────────────────────┐
         │ COMPLETE OBJECT     │
         │                     │
-        │ name = "Sara"       │
+        │ name = "Sara"       │    <- Memory layout
         │ salary = 70,000     │
         │ department="Science"│
         └─────────────────────┘
 ```
+#### A useful way to visualize inheritance
+```
+                  Manager object
+                       │
+          ┌────────────┴────────────┐
+          │                         │
+    inherited part             own part
+    (Employee)                 (Manager)
+          │                         │
+     ┌────────────┐            ┌─────────────┐
+     │ name       │            │ department  │
+     │ salary     │            └─────────────┘
+     └────────────┘
+```
+Inheritance doesn't mean the `Manager` object "borrows" an `Employee` object. 
+
+The `Manager` object has the inherited `Employee` fields as part of its object `state`, in addition to its own fields.
+
+Note the distinction between object `state` and object `memory` layout
 ## 6. `protected`: Controlled Access for Subclasses
 Suppose we have:
 ```
