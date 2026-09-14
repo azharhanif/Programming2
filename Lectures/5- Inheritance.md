@@ -332,8 +332,33 @@ src/
 ```
 All three classes could belong to: `package college.employees;`
 
-The package gives these classes a common namespace and, importantly, creates an access boundary.
+The package gives these classes a common namespace and, importantly, creates an **access boundary**.
 
+A package organizes related classes under a common name. 
+
+The package name also helps Java distinguish classes that have the same simple class name.
+Example:
+```
+college.admission.Student
+college.registration.Student
+```
+This does not mean we normally duplicate the same class. 
+
+These would be two different classes with different responsibilities.
+Visual Example:
+```
+                 College System
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+      Admission               Registration
+          │                       │
+       Student                 Student
+          │                       │
+ applicationNumber          studentNumber
+ highSchool                 program
+ admissionAverage           semester
+ ```
 You can think of it as:
 ```
 Package = a group of classes that are considered part of the same implementation family.
