@@ -989,7 +989,7 @@ BankAccount
              │
        SavingsAccount
 ```
-An ordinary user cannot call:
+An ordinary public user, e.g., a driver/test class method cannot call:
 ```
 account.addToBalance(1000);    // ❌
 ```
@@ -997,14 +997,14 @@ But `SavingsAccount` can:
 ```
 addToBalance(interest);        // ✅
 ```
-This is a very good example of controlled encapsulation.
+This is a very good example of controlled **encapsulation**.
 
-The base class says:
+The superclass says:
 
 "I will allow my subclasses to perform this operation, but I don't want the general public to perform it."
 
 That's exactly where protected is useful.
-## 6.5 Why a `protected` method can be better than a `protected` field
+## 6.4 Why a `protected` method can be better than a `protected` field
 
 This is an important distinction.
 
@@ -1021,7 +1021,7 @@ balance = 0;
 balance *= 2;
 balance += 100000;
 ```
-The base class has very little control.
+The superclass has limited control over `balance`.
 
 ##### B. Option B — private field + protected method
 ```
@@ -1036,11 +1036,11 @@ class BankAccount {
     }
 }
 ```
-Now the base class controls how the subclass can modify the state.
+Now the superclass controls how the subclass can modify it's `state`, i.e., `balance` here.
 
-That is usually better encapsulation.
+That is usually better `encapsulation`.
 
-#### C. A Tricky example 
+#### C. Focus on Encapsulation, protected data and protected methods in the same example 
 
 Consider:
 ```
@@ -1078,7 +1078,7 @@ class Student extends Person {
 ```
 Then:
 ```
-Student s = new Student("Ali", 19);
+Student s = new Student("Sara", 19);
 
 s.birthday();
 s.showAge();
@@ -1089,13 +1089,12 @@ Output:
 ```
 But:
 ```
-s.age = 50;          // ❌ from ordinary external code
-s.printAge();        // ❌ from ordinary external code
+s.age = 50;          // ❌ from a driver/test class  
+s.printAge();        // ❌ from a driver/test class 
 ```
 This demonstrates both protected data and protected methods in the same example.
-#### D. Think about encapsulation
 
-Question:
+**Question**:
 
 Which design is better?
 ```
@@ -1104,7 +1103,8 @@ Design A
 class Person {
     protected int age;
 }
-
+```
+```
 Design B
 --------
 class Person {
@@ -1116,9 +1116,9 @@ class Person {
     }
 }
 ```
-`Design B` gives the base class more control.
+`Design B` gives the superclass more control.
 
-For example, the base class could enforce:
+For example, the superclass could enforce:
 ```
 protected void increaseAge() {
     if (age < 150) {
@@ -1126,11 +1126,11 @@ protected void increaseAge() {
     }
 }
 ```
-The subclass doesn't get unrestricted access to the variable.
+The subclass doesn't get unrestricted access to the instance variable, `age`.
 
-This leads to the principle:
+This leads to the encapsulation principle:
 
-If a subclass only needs an operation, prefer a `protected` method over a `protected field`.
+If a subclass only needs an operation or behavior access, prefer a `protected` method over a `protected field`.
 
 ## 7. Method overriding
 
