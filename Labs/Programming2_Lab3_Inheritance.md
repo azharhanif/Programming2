@@ -163,12 +163,6 @@ This is a stronger reason for inheritance than simply saying that the words are 
 
 ---
 
-## Question
-
-For each of the four examples above, explain in one sentence why inheritance is or is not appropriate.
-
----
-
 # 4. Part B — Basic Inheritance
 
 Create the following classes.
