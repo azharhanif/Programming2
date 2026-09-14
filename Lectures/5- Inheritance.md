@@ -848,7 +848,7 @@ Different package
 ```
 ## 6.2 `superclass`/`subclass` design
 
-Layer 1 — private
+#### Layer 1 — private
 
 The superclass keeps its internal state private.
 ```
@@ -862,9 +862,9 @@ Meaning:
 ```
 This gives the strongest encapsulation.
 
-Layer 2 — protected
+#### Layer 2 — protected
 
-Suppose we deliberately want subclasses to participate in some behavior.
+Suppose we deliberately want subclasses to participate in some **behavior** (e.g., methods).
 
 Better design:
 ```
@@ -896,13 +896,13 @@ Employee
                 │
              Manager
 ```
-`Manager` doesn't need direct access to `salary`.
+subclass `Manager` doesn't need direct access to superclass instance field `salary`.
 
-It receives a controlled capability from `Employee`.
+subclass receives a controlled capability from superclass `Employee`.
 
-## 6.3 So why not always use `private`?
+#### So why not always use `private`?
 
-Suppose the base class wants subclasses to participate in maintaining an internal value.
+Suppose the superclass wants subclasses to participate in maintaining an internal **value** (e.g., instance field).
 
 For example:
 ```
@@ -932,16 +932,16 @@ and:
 ```
 public void setBalance(double balance)
 ```
-But now we have potentially exposed the state to every other class.
+But now we have potentially exposed the superclass object `state` to every other class.
 
 For example:
 ```
 account.setBalance(-1000000);
 ```
 That could be terrible design.
-## 6.4 This is where a `protected` METHOD can be better
+## 6.3 How a `protected` METHOD can be better
 
-Instead of exposing the data publicly, the base class can provide a protected operation specifically for subclasses:
+Instead of exposing the instance field data publicly with `getter` and `setters`, the superclass can allow a controlled behavior, e.g., protected method specifically for subclasses:
 ```
 class BankAccount {
 
