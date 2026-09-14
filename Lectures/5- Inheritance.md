@@ -821,7 +821,7 @@ Think about what `protected` is trying to accomplish.
 
 "My subclasses can use this part of my implementation."
 
-So `Manager` gets access to the inherited `salary` that belongs to the `Manager` object `state' (see **Section 5** above).
+So `Manager` gets access to the inherited `salary` that belongs to the `Manager` object `state` (see **Section 5** above).
 
 But `Employee` is not saying:
 
