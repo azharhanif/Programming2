@@ -420,14 +420,13 @@ Your program must:
 
 # Private vs Protected — Design Requirement
 ### 20 marks
-This assignment is intentionally simple.
 
 For the Employee, choose at least one `private` method and at least one `protected` field based on what was discussed in Lecture 5.
 
 You must add **3–5 lines of comments** explaining your choice.
 
 
-The important part is that you explain.
+The important part is that you explain how your choice can be tested in a **driver/test** class.
 
 ---
 
