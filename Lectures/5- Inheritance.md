@@ -1314,33 +1314,6 @@ Think encapsulation beyond instance fields:
 We can, (if appropiate in our design), encapsulate behavior (e.g., method), not just data.
 ```
 ---
-
-## 10. Inheritance and object design
-
-Before writing:
-
-```java
-class B extends A
-```
-
-ask:
-
-> Is every B genuinely an A?
-
-If not, inheritance is probably the wrong design.
-
-For example:
-
-```text
-Car extends Vehicle     → reasonable
-Dog extends Animal      → reasonable
-Library extends Book    → wrong
-```
-
-A library contains books; it is not a book.
-
----
-
 # Practice
 
 ## Practice 1
