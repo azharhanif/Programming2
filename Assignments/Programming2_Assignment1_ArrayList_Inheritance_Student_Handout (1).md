@@ -12,8 +12,8 @@
 
 | Component | Marks |
 |---|---:|
-| Submitted project code | 60 |
-| Post-submission challenge | 40 |
+| Submitted project code | 50 |
+| Post-submission challenge | 50 |
 | **Total** | **100** |
 
 ## What is the post-submission challenge?
@@ -37,8 +37,8 @@ Each challenge:
 
 This assignment contains **two separate problems**:
 
-- **Problem 1 — ArrayList:** 50 marks
-- **Problem 2 — Inheritance:** 50 marks
+- **Problem 1 — ArrayList:** 40 marks
+- **Problem 2 — Inheritance:** 60 marks
 
 You are not required to combine the two problems.
 
@@ -72,7 +72,7 @@ Both students in a group are responsible for understanding the submitted code. E
 ---
 
 # Problem 1 — Student Name List
-## ArrayList — 50 marks
+## ArrayList — 40 marks (50% marks on submitted code)
 
 A college wants a simple program to keep track of student names.
 
@@ -108,7 +108,7 @@ Initialize it in the constructor.
 ---
 
 ## Part 1.2 — Add Names
-### 10 marks
+### 5 marks
 
 Create:
 
@@ -131,7 +131,7 @@ names.add("John");
 ---
 
 ## Part 1.3 — Display Names
-### 10 marks
+### 5 marks
 
 Create:
 
@@ -152,7 +152,7 @@ for (String name : names) {
 ---
 
 ## Part 1.4 — Find a Name
-### 10 marks
+### 5 marks
 
 Create:
 
@@ -174,7 +174,7 @@ Test both cases:
 ---
 
 ## Part 1.5 — Remove a Name
-### 10 marks
+### 5 marks
 
 Create:
 
@@ -215,7 +215,7 @@ Display the size before and after removing a name.
 ---
 
 ## Required Test Program
-
+### 10 marks
 Create:
 
 ```java
@@ -240,7 +240,7 @@ Keep the output simple and clear.
 ---
 
 # Problem 2 — Employees
-## Inheritance — 50 marks
+## Inheritance — 60 marks (50% on submitted code)
 
 A small company has employees.
 
@@ -276,7 +276,7 @@ is appropriate.
 ---
 
 ## Part 2.1 — Employee
-### 15 marks
+### 10 marks
 
 Create:
 
@@ -312,7 +312,7 @@ that displays the employee's information.
 ---
 
 ## Part 2.2 — Manager
-### 15 marks
+### 10 marks
 
 Create:
 
@@ -349,7 +349,7 @@ Create a getter for `department`.
 ---
 
 ## Part 2.3 — Override toString
-### 10 marks
+### 5 marks
 
 Override:
 
@@ -370,7 +370,7 @@ Use `@Override`.
 ---
 
 ## Part 2.4 — Simple Employee Method
-### 10 marks
+### 5 marks
 
 Add this method to `Employee`:
 
@@ -398,7 +398,7 @@ Your Manager object should also be able to use this inherited method.
 ---
 
 # Required Test Program
-
+### 10 marks
 Create:
 
 ```java
@@ -418,26 +418,16 @@ Your program must:
 
 ---
 
-# Private vs Protected — Small Design Requirement
-
+# Private vs Protected — Design Requirement
+### 20 marks
 This assignment is intentionally simple.
 
-For the Employee fields, choose either `private` or `protected` based on what was discussed in Lecture 5.
+For the Employee, choose at least one `private` method and at least one `protected` field based on what was discussed in Lecture 5.
 
 You must add **3–5 lines of comments** explaining your choice.
 
-For example:
 
-```java
-// I chose private because Employee should control
-// its own data. Manager can use the public methods
-// without directly changing the fields.
-private double salary;
-```
-
-There is no requirement to create a complicated design.
-
-The important part is that you can explain your choice.
+The important part is that you explain.
 
 ---
 
@@ -504,7 +494,7 @@ If you are working as a pair, include both student IDs in the appropriate files.
 
 ---
 
-# Post-Submission Challenge — 40 marks
+# Post-Submission Challenge — 50% of Total marks
 
 The instructor will give extension challenges during class after the project submission.
 
@@ -534,23 +524,22 @@ The exact challenge will be given in class.
 
 # Simple Marking Rubric
 
-## Submitted Project — 60 marks
+## Submitted Project — 50 marks
 
 | Category | Marks |
 |---|---:|
-| Problem 1 — ArrayList | 30 |
-| Problem 2 — Inheritance | 25 |
-| Code organization / testing | 5 |
-| **Total** | **60** |
+| Problem 1 — ArrayList | 20 |
+| Problem 2 — Inheritance | 30 |
+| **Total** | **50** |
 
-## Post-Submission Challenge — 40 marks
+## Post-Submission Challenge — 50 marks
 
 | Category | Marks |
 |---|---:|
 | Correctly modifies submitted code | 20 |
 | Uses the required Lecture 4/5 concept correctly | 10 |
-| Explains the change / demonstrates understanding | 10 |
-| **Total** | **40** |
+| Explains the change / demonstrates understanding | 20 |
+| **Total** | **50** |
 
 ---
 
