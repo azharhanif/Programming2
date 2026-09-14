@@ -81,7 +81,7 @@ A [child] is a [parent].
 Inheritance means the child is a specialized form of the parent. 
 
 If the relationship is `has-a`, `uses-a`, `contains-a`, `works-with`, `teaches`, `attends`, `owns`, or `interacts-with`, inheritance is usually not the right relationship.
-But "is-a" alone isn't always enough
+But `is-a` alone isn't always enough
 
 ##### Consider:
 
