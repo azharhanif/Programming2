@@ -212,8 +212,47 @@ Dog constructor continues
 
 A subclass object contains its inherited state as well as its own state.
 
----
+Suppose we have:
+```
+class Employee {
+    private String name;
+    private double salary;
+}
 
+class Manager extends Employee {
+    private String department;
+}
+```
+Now:
+```
+Manager m = new Manager("Sara", 70000, "Science");
+```
+The state of a subclass object consists of the values of its own instance fields together 
+
+with the inherited instance fields that belong to the superclass portion of the object.
+```
+        STATE OF A MANAGER OBJECT
+        ══════════════════════════
+
+        Employee fields
+        ┌─────────────────────┐
+        │ name = "Sara"       │
+        │ salary = 70,000     │
+        └─────────────────────┘
+                  +
+        Manager fields
+        ┌─────────────────────┐
+        │ department="Science"│
+        └─────────────────────┘
+                  ↓
+        ┌─────────────────────┐
+        │ COMPLETE OBJECT     │
+        │                     │
+        │ name = "Sara"       │
+        │ salary = 70,000     │
+        │ department="Science"│
+        └─────────────────────┘
+```
 ## 6. `protected`: Controlled Access for Subclasses
 Suppose we have:
 ```
