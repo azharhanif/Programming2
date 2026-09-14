@@ -107,9 +107,14 @@ This shows that inheritance isn't merely about finding an English `is-a` relatio
 
 We also need to ask:
 
-Does the child genuinely satisfy the expectations of the parent?
+Does the child genuinely satisfy the expectations (methods in the parent class) of the parent?
 
-This is your teaser for later encounter with polymorphism.
+Before using `extends`, ask: 
+```
+"Is every Penguin genuinely an Animal, 
+and does the parent class describe behavior that makes sense for every Penguin?"
+```
+More on this later in the polymorphism lecture.
 ## 3. A basic example
 
 ```java
