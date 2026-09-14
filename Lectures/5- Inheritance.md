@@ -447,7 +447,7 @@ public class Manager extends Employee {
     }
 }
 ```
-No surprise here. `Manager` can access salary because it is a subclass.
+No surprise here. `Manager` can access `salary` because it is a subclass.
 
 But now:
 ```
@@ -545,8 +545,8 @@ public class Employee {
 Because `salary` is `protected`, it can be accessed by:
 
 - `Employee` itself
-- classes in college.hr
-- subclasses of Employee, even if those subclasses are in another package
+- classes in `college.hr`
+- subclasses of `Employee`, even if those subclasses are in another package
 #### B. `Manager` is a subclass in a different package
 ```
 Manager.java
@@ -609,14 +609,14 @@ public class TestManager {
     }
 }
 ```
-This produces a compile-time error.
+This produces a **compile-time** error.
 
 Why?
 
 Because `TestManager`:
 
-- is not a subclass of Employee
-- is in a different package from Employee
+- is not a subclass of `Employee`
+- is in a different package from `Employee`
 
 Therefore it cannot access:
 ```
@@ -697,13 +697,13 @@ This is the rule that creates easy confusion.
 
 #### F. Why does Java allow one but reject the other?
 
-Look carefully at the two statements:
+Look **carefully** at the two statements:
 
 This is allowed:
 ```
 salary = 100000;
 ```
-Here, salary means:
+Here, `salary` means:
 
 the protected `salary` inherited by this `TestManager` object.
 
@@ -821,11 +821,11 @@ Think about what `protected` is trying to accomplish.
 
 "My subclasses can use this part of my implementation."
 
-So `Manager` gets access to the inherited `salary` that belongs to the `Manager` object.
+So `Manager` gets access to the inherited `salary` that belongs to the `Manager` object `state' (see **Section 5** above).
 
 But `Employee` is not saying:
 
-"Any subclass can now manipulate the protected fields of every `Employee` object in the program."
+"Any subclass can now manipulate the protected fields of every `Employee` object `state` in the program."
 
 That would make protected much less restrictive across package boundaries.
 
