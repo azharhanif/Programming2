@@ -100,7 +100,7 @@ Note:
 
 They are two different kinds of variables.
 
-#### 1. Member (instance) variable
+#### A. Member (instance) variable
 
 When you have:
 ```
@@ -125,7 +125,7 @@ HEAP
 ```
 So: the **object's instance data** is associated with the object in the heap.
 
-#### 2. Local variable
+#### B. Local variable
 
 Now look at the method:
 ```
@@ -163,7 +163,7 @@ HEAP                         Employee object
                              │ salary = 50000│
                              └───────────────┘
 ```
-#### 3. And parameters are also local to the method
+#### C. And parameters are also local to the method
 
 Consider:
 ```
@@ -299,7 +299,7 @@ In that context:
 - `toString()` is much better for the polymorphism demonstration.
 
 
-#### `toString()` — good example
+#### A. `toString()` — good example
 
 `Employee` has:
 ```
@@ -325,7 +325,7 @@ System.out.println(e);
 ```
 The reference is `Employee`, but the actual object is `Manager`, so `Manager`'s overridden `toString()` executes.
 
-#### Question 1 — Access
+#### B. Question 1 — Access
 ```
 e.getDepartment();
 ```
@@ -333,7 +333,7 @@ Why doesn't this compile?
 
 - Because the reference type is `Employee`, and `Employee` does not declare `getDepartment()`.
 
-#### Question 2 — Behavior
+#### C. Question 2 — Behavior
 ```
 System.out.println(e);
 ```
@@ -396,13 +396,11 @@ class Dog extends Animal {
 Animal a = new Dog();
 ```
 
-This is not allowed:
+Now, the reference type `Animal` does not declare `bark()`. So, this is not allowed:
 
 ```java
 a.bark(); // ❌
 ```
-
-The reference type `Animal` does not declare `bark()`.
 
 But:
 
