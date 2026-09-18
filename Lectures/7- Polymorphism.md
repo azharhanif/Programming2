@@ -1090,72 +1090,67 @@ Downcasting = treating that known Prince/frog as the Prince again
 - `instanceof` is not itself part of downcasting.
 
 - It is a safety check that can be performed before a downcast when the actual type isn't already known.
+```
+Frog #1 → actually Prince
+     ↓
+instanceof → true
+     ↓
+Kiss → downcast succeeds
 
-6.2 The Java Version of the Story
 
-Suppose:
+Frog #2 → never Prince
+     ↓
+instanceof → false
+     ↓
+No kiss / no downcast
+```
+## 6.2 The Java Version of the Story
 
-Employee e =
-    new Manager("Sarah", 70000, "Science");
+The Frog Prince Casting Story
+```
+Upcasting:
+Prince → Frog
+"I can safely treat the Prince as a frog."
 
-The reference says:
+instanceof:
+"Wait... is THIS frog actually my Prince?" 
 
-Employee
+Downcasting:
+Princess's Kiss 
+"Yes! This particular frog was already the Prince."
 
-but the actual object is:
-
-Manager
-
-Therefore we can safely downcast:
-
-Manager m = (Manager) e;
-
-The analogy is:
-
-The reference says:
-
-        "I see a Frog."
-
-But we discover:
-
-        "This particular Frog is actually the Prince."
-
-So:
-
-        Frog → Prince
-
-In Java:
-
-Employee reference
-       ↓
-actually refers to a Manager
-       ↓
-Manager reference
-6.3 But Not Every Frog Is the Prince
+Invalid downcasting:
+"This frog was never the Prince." → ClassCastException
+```
+Note the phrase **this particular frog** because it reinforces the most important technical concept: 
+```
+the cast depends on the actual object, not simply on the reference type.
+```
+## 6.3 But Not Every `Frog` Is the `Prince`
 
 Now consider:
-
+```
 Employee e = new Programmer("Mike");
-
+```
 The reference type is:
 
-Employee
+`Employee`
 
 but the actual object is:
 
-Programmer
+`Programmer`
 
 If we try:
-
+```
 Manager m = (Manager) e;
-
+```
 Java cannot make this work.
 
 Why?
 
-Because this particular Employee object was never a Manager.
+- Because this particular `Employee` object was never a `Manager`.
 
-This is the most important idea in downcasting:
+This is the most important idea in **downcasting**:
 
 Not every superclass object is actually an instance of the subclass.
 
@@ -1163,26 +1158,26 @@ Or, using the analogy:
 
 Not every frog is secretly the Prince.
 
-6.4 Why Do We Need an Explicit Cast?
+## 6.4 Why Do We Need an Explicit Cast?
 
 Consider:
-
+```
 Employee e = new Manager("Sarah");
-
+```
 Java knows:
 
-Employee reference → Manager object
+`Employee` reference → `Manager` object
 
-But Java cannot assume that every Employee is a Manager.
+But Java cannot assume that every `Employee` is a `Manager`.
 
 For example:
-
+```
 Employee e = new Programmer("Mike");
-
+```
 Therefore, when we write:
-
+```
 Manager m = (Manager) e;
-
+```
 we are explicitly telling Java:
 
 "I believe that this particular object is actually a Manager."
@@ -1191,26 +1186,26 @@ Java then checks that assumption at runtime.
 
 If the assumption is wrong:
 
-ClassCastException
-6.5 instanceof: Find Out Whether This Frog Is the Prince
+`ClassCastException`
+## 6.5 instanceof: Find Out Whether This Frog Is the Prince
 
 Before downcasting when the actual object type is uncertain, we can use:
-
+```
 if (e instanceof Manager) {
     Manager m = (Manager) e;
     m.holdMeeting();
 }
-
+```
 The first question is:
-
+```
 e instanceof Manager
-
+```
 which means:
 
 "Is the object currently referred to by e actually a Manager?"
 
 Using the analogy:
-
+```
 Is THIS particular frog the Prince?
 
           ↓
@@ -1221,226 +1216,52 @@ Is THIS particular frog the Prince?
 
      YES → safe to downcast
      NO  → don't downcast
-
+```
 The Princess doesn't kiss every frog and assume it will become the Prince.
 
-She first needs the particular frog that actually is the Prince.
+She first needs the particular frog that actually is the `Prince`.
 
-6.6 instanceof Checks the Actual Object
-
-Consider:
-
-Employee e = new Manager("Sarah");
-
-Then:
-
-e instanceof Manager
-
-is:
-
-true
-
-even though e was declared as:
-
-Employee e
-
-Why?
-
-Because instanceof is interested in the actual object.
-
-Reference type: Employee
-        │
-        ▼
-Actual object: Manager
-
-e instanceof Manager
-        ↓
-       true
-6.7 Downcasting Does Not Change the Object
-
-Consider:
-
-Employee e = new Manager("Sarah");
-
-Manager m = (Manager) e;
-
-The cast does not create another object.
-
-There is still only one Manager object:
-
-STACK / REFERENCES                 HEAP
-
-e ─────────────────┐
-                   │
-m ─────────────────┼────────► Manager object
-                   │          ┌─────────────────────┐
-                   └─────────►│ name = Sarah        │
-                              │ salary = 70000      │
-                              │ department = Science│
-                              └─────────────────────┘
-
-The cast changes the reference type, not the object.
-
-6.8 The Most Important Tricky Case
-
-Consider these two pieces of code:
-
-Case A
-Employee e = new Manager("Sarah");
-
-Manager m = (Manager) e;
-
-✅ Works.
-
-Why?
-
-Actual object = Manager
-Target type   = Manager
-Case B
-Employee e = new Programmer("Mike");
-
-Manager m = (Manager) e;
-
-❌ Runtime error.
-
-Why?
-
-Actual object = Programmer
-Target type   = Manager
-
-The cast cannot transform a Programmer into a Manager.
-
-Using the analogy:
-
-Case A:
-
-Frog → actually Prince
-Princess kisses → Prince ✓
-
-
-Case B:
-
-Frog → never was Prince
-Princess kisses → still not Prince ❌
-6.9 Common Student Mistakes
-Mistake 1 — "Casting converts the object."
-Manager m = (Manager) e;
-
-❌ No.
-
-The cast does not transform the object.
-
-It changes the type of the reference used to access it.
-
-Mistake 2 — "Every Employee can become a Manager."
-Employee e = new Employee("John");
-
-Manager m = (Manager) e;
-
-❌ No.
-
-Not every Employee is a Manager.
-
-Manager IS-A Employee
-
-but:
-
-Employee is NOT necessarily a Manager
-
-Or in the analogy:
-
-Not every frog was the Prince.
-
-Mistake 3 — Thinking the cast creates a new Manager object
-Manager m = (Manager) e;
-
-❌ No new object is created.
-
-The reference m points to the same object.
-
-Mistake 4 — Casting when polymorphism already solves the problem
+#### Common Mistake — Casting when polymorphism already solves the problem
 
 Suppose:
-
+```
 class Employee {
     public void work() {
         System.out.println("Employee working");
     }
 }
-
-and Manager overrides work().
+```
+and `Manager` overrides `work()`.
 
 Then:
-
+```
 Employee e = new Manager("Sarah");
 e.work();
-
-already gives us the Manager's behavior.
+```
+already gives us the `Manager`'s behavior.
 
 We do not need:
-
+```
 Manager m = (Manager) e;
 m.work();
-
+```
 The first example is polymorphism.
 
 The second example uses downcasting unnecessarily.
+```
+Use polymorphism when you want common behavior. 
 
-Use polymorphism when you want common behavior. Use downcasting when you genuinely need subclass-specific functionality.
-
-6.10 Upcasting vs. Downcasting
-	Upcasting	Downcasting
-Direction	Subclass → Superclass	Superclass → Subclass
-Example	Employee e = manager;	Manager m = (Manager) e;
-Explicit cast?	Usually no	Yes
-Generally safe?	Yes	Only if actual object is target subclass
-Can cause ClassCastException?	No	Yes
-Main purpose	Polymorphism	Access subclass-specific functionality
-⭐ The Frog Prince Rule
-
-Keep this as the memorable conclusion to the two sections:
-
-Upcasting: The Prince becomes a frog — we now look at that specific Prince through the more general "frog" reference.
-
-Downcasting: The Princess wants to know whether this particular frog is actually the Prince. If it is, her kiss can reveal the Prince again.
-
-But the kiss cannot turn every frog into the Prince, because the other frogs were never the Prince.
-
-And the Java equivalent:
-
+Use downcasting when you genuinely need subclass-specific functionality.
+```
+## 6.10 Upcasting vs. Downcasting
+	
 Upcasting is safe because every subclass object is also a superclass object.
 
 Downcasting is safe only when the particular object being referenced really is an instance of the target subclass.
 
 ---
 
-## 7. Why polymorphism matters
-
-Without polymorphism, you might write:
-
-```java
-if (animal instanceof Dog) {
-    ...
-} else if (animal instanceof Cat) {
-    ...
-}
-```
-
-everywhere.
-
-With polymorphism:
-
-```java
-animal.speak();
-```
-
-lets each subclass define its behavior.
-
-This reduces conditional logic and makes systems easier to extend.
-
----
-
-## 8. Constructor parameters can also be polymorphic
+## 7. Constructor parameters can also be polymorphic
 
 If:
 
