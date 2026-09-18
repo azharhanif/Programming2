@@ -509,7 +509,7 @@ John is working.
 Sarah is managing.
 Mike is programming.
 ```
-#### A. Why does Java call different versions of work()?
+## 4.2 Why does Java call different versions of work()?
 
 Because `work()` is overridden.
 
@@ -535,7 +535,7 @@ depending on the actual object.
 
 This is runtime polymorphism.
 
-#### B Tricky Case: The Collection Type Does NOT Change the Objects
+## 4.3 Tricky Case: The Collection Type Does NOT Change the Objects
 
 Consider:
 ```
@@ -568,7 +568,7 @@ It does not mean:
 
 "Every object stored here must actually be an `Employee` object created with `new Employee()`."
 
-#### C. Tricky Case: Reference Type Inside the Loop
+## 4.4 Tricky Case: Reference Type Inside the Loop
 
 Consider:
 ```
@@ -600,7 +600,7 @@ This is an important idea:
 
 - The same reference type can refer to different object types at different times.
 
-#### C. Common Mistake: "The Loop Variable Changes Type"
+## 4.5 Common Mistake: "The Loop Variable Changes Type"
 
 It doesn't.
 
@@ -630,7 +630,7 @@ The reference type remains `Employee`.
 
 The actual object can vary.
 
-#### D. Tricky Case: `Manager`-Specific Methods
+## 4.6 Tricky Case: `Manager`-Specific Methods
 
 Suppose `Manager` has:
 ```
@@ -659,9 +659,11 @@ The actual object being referred to might be a `Manager`,
 
 but the compiler cannot assume that every `Employee` is a `Manager`.
 
-#### E. Tricky Case: instanceof
+## 4.7 — instanceof and a Preview of Downcasting
 
-If we really need to identify a particular subclass:
+If we need to access a method that exists only in `Manager`, we need to first determine whether the object is actually a `Manager`.
+
+For example:
 ```
 for (Employee e : employees) {
 
@@ -671,25 +673,59 @@ for (Employee e : employees) {
     }
 }
 ```
-Here:
+The expression:
 ```
-e `instanceof` Manager
+e instanceof Manager
 ```
 asks:
 
-"Does the object currently referred to by `e` actually belong to the `Manager` type?"
+"Is the object currently referred to by e actually a `Manager`?"
 
-If yes, we can safely cast it:
+If the answer is yes, we can cast the `Employee` reference to a `Manager` reference:
 ```
 Manager m = (Manager) e;
 ```
-Then:
+This is called downcasting because we are moving from the more general type (`Employee`) to the more specific type (`Manager`).
 ```
-m.holdMeeting();
-```
-is available.
+        Employee
+           ▲
+           │
+        Manager
 
-#### F. Important design warning
+Employee reference
+       │
+       ▼
+Manager reference
+       │
+       ▼
+Manager object
+```
+#### A note about casting
+
+You have already seen the idea of assigning a subclass object to a superclass reference:
+```
+Employee e = new Manager("Sarah");
+```
+This is called upcasting:
+```
+Manager → Employee
+```
+It is safe because every `Manager` is an `Employee`.
+
+The reverse:
+```
+Manager m = (Manager) e;
+```
+is called downcasting:
+```
+Employee → Manager
+```
+It requires an explicit cast because not every `Employee` is a `Manager`.
+
+More on Casting later. Here, we only need enough casting to understand why `instanceof` may be followed by a downcast.
+
+
+## 4.8 Important design warning
 
 Do not automatically use `instanceof` every time you encounter polymorphism.
 
@@ -710,7 +746,7 @@ else if (e instanceof Programmer) {
 ```
 when the behavior can naturally be handled through overriding.
 
-#### G Common Mistake: Wrong Collection Type
+## 4.9 Common Mistake: Wrong Collection Type
 
 This will not work:
 ```
