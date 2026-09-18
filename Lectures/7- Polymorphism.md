@@ -30,7 +30,316 @@ reference/declared type → Animal
 actual object type      → Dog
 ```
 
-This is legal because a Dog is an Animal.
+This is legal because a `Dog` is an `Animal`.
+
+## 1.1 Object-state / memory-map diagram
+
+From our previous `Employee` / `Manager` example on inheritance, we recall:
+```
+new `Manager(...)` creates one `Manager` object.
+The object has its own state, including the state defined by `Employee`.
+```
+For example:
+```
+Employee guy = new Employee("Guy", 50000);
+
+Manager sarah = new Manager("Sarah", 70000, "Science");
+```
+Now the two object states look like:
+
+```
+STACK / REFERENCES                  HEAP / OBJECTS
+
+guy ───────────────────────────►  ┌─────────────────┐
+                                  │ Employee: Guy   │
+                                  │ name = "Guy"    │
+                                  │ salary = 50000  │
+                                  └─────────────────┘
+
+
+sarah ─────────────────────────► ┌──────────────────────────┐
+                                 │ Manager: Sarah            │
+                                 │                           │
+                                 │ Employee state:           │
+                                 │   name = "Sarah"          │
+                                 │   salary = 70000          │
+                                 │                           │
+                                 │ Manager state:            │
+                                 │   department = "Science" │
+                                 └──────────────────────────┘
+```
+Note: 
+
+-`STACK` and `HEAP` are distinct areas/concepts in Java runtime memory,
+
+-`STACK` is a region of a program's runtime memory used mainly for method calls and local variables/references.
+
+-`HEAP` means the part of Java's runtime memory where objects created with `new`.
+
+ ```
+             JAVA RUNTIME MEMORY
+        ┌──────────────────────────┐
+        │                          │
+        │        STACK             │
+        │  ────────────────────    │
+        │  Method calls            │
+        │  Local variables         │
+        │  Object references       │
+        │                          │
+        ├──────────────────────────┤
+        │                          │
+        │        HEAP              │
+        │  ────────────────────    │
+        │  Objects created with    │
+        │  new                     │
+        │  Object instance data    │
+        │                          │
+        └──────────────────────────┘
+```
+-"local variable" does not mean "member/instance variable." 
+
+They are two different kinds of variables.
+
+#### 1. Member (instance) variable
+
+When you have:
+```
+class Employee {
+    private String name;
+    private double salary;
+}
+```
+and:
+```
+Employee guy = new Employee("Guy", 50000);
+```
+the instance variables belong to the `Employee` object:
+```
+HEAP
+┌────────────────────────┐
+│ Employee object        │
+│                        │
+│ name   = "Guy"         │
+│ salary = 50000         │
+└────────────────────────┘
+```
+So: the **object's instance data** is associated with the object in the heap.
+
+#### 2. Local variable
+
+Now look at the method:
+```
+public static void main(String[] args) {
+
+    Employee guy = new Employee("Guy", 50000);
+
+    int x = 10;
+    double amount = 2000;
+
+}
+```
+Here:
+```
+int x = 10;
+double amount = 2000;
+```
+are local variables.
+
+They don't belong to an `Employee` object.
+
+They belong to the execution of `main()`
+Conceptually:
+```
+STACK — main() execution
+┌─────────────────────┐
+│ guy      ───────────┼──────────┐
+│ x = 10              │          │
+│ amount = 2000       │          │
+└─────────────────────┘          │
+                                 ▼
+HEAP                         Employee object
+                             ┌───────────────┐
+                             │ name = "Guy"  │
+                             │ salary = 50000│
+                             └───────────────┘
+```
+#### 3. And parameters are also local to the method
+
+Consider:
+```
+public void giveRaise(double amount) {
+    salary = salary + amount;
+}
+```
+There are two very different variables here: 
+- `salary` is an instance variable belonging to the `Employee` object.
+
+- `amount` is a parameter/local variable belonging to the execution of `giveRaise()`.
+
+Conceptually:
+```
+STACK — giveRaise()
+┌─────────────────┐
+│ amount = 2000   │
+└────────┬────────┘
+         │
+         ▼
+HEAP
+┌──────────────────────┐
+│ Employee object      │
+│ salary = 50000       │
+└──────────────────────┘
+```
+When `giveRaise()` finishes, its execution frame disappears, so `amount` is no longer needed.
+
+## 1.2 From Object to Polymorphism
+Consider:
+```
+Employee e = new Manager("Sarah", 70000, "Science");
+```
+Now the diagram:
+```
+STACK / REFERENCE                 HEAP / OBJECT
+
+e
+│
+│  reference type:
+│  Employee
+│
+└──────────────────────────────►
+                              ┌───────────────────────────────┐
+                              │ Manager object                │
+                              ├───────────────────────────────┤
+                              │ Employee-defined state        │
+                              │   name   = "Sarah"            │
+                              │   salary = 70000              │
+                              │                               │
+                              │ Manager-defined state         │
+                              │   department = "Science"      │
+                              └───────────────────────────────┘
+
+```
+- Reference type determines what members the program can access through the reference.
+  
+- Actual object type determines overridden method behavior at runtime.
+
+For example:
+```
+e.getSalary();       // ✅ Employee declares getSalary()
+e.giveRaise(2000);   // ✅ Employee declares giveRaise()
+e.getDepartment();   // ❌ Employee does not declare getDepartment()
+```
+But if `Manager` overrides `toString()` when there is also another `toString()` in `Employee`:
+```
+System.out.println(e);
+```
+the `Manager` version of `toString()` executes because the actual object is a `Manager`.
+
+Suppose `Employee` has:
+```
+public String getDepartment() {
+    return "No department";
+}
+```
+and `Manager` overrides it:
+```
+@Override
+public String getDepartment() {
+    return department;
+}
+```
+Now:
+```
+e.getDepartment();
+```
+compiles, because `getDepartment()` exists in the reference type `Employee`.
+
+And if `Manager` overrides it, the `Manager` version executes, because the actual object is a `Manager`.
+
+So:
+```
+   ACCESS                         BEHAVIOR
+
+Employee e ───────────────► Manager object
+     │                            │
+     │                            │
+     ▼                            ▼
+What can I call?             Which override runs?
+Employee methods             Manager implementation
+```
+The reference type determines which methods you are allowed to access at compile time. 
+
+The actual object's class determines which overridden implementation executes at runtime.
+
+Now, 
+```
+`Employee` does not promise that every `Employee` has a department. A `Manager` does.
+
+The `Employee` reference only exposes the `Employee` interface.
+```
+So, it is natural design that `Employee` **should not have** `getDepartment()`, **just to avoid** polymorphism concept failing. 
+
+It's simply that:
+
+I introduced `Employee.getDepartment()` only to illustrate the mechanics of overriding, 
+
+but that changes the domain model and it is a poor design.
+
+```
+Polymorphism does not require the superclass to declare every method that a subclass has.
+
+It requires the subclass to override a method that is already part of the superclass's contract.
+```
+In that context:
+
+- `getDepartment()` is actually a poor example for polymorphism, if it exists only in `Manager`, 
+
+- because it demonstrates access restriction but not runtime method selection. 
+
+- `toString()` is much better for the polymorphism demonstration.
+
+
+#### `toString()` — good example
+
+`Employee` has:
+```
+@Override
+public String toString() {
+    return "Name: " + name + ", Salary: " + salary;
+}
+```
+`Manager` overrides it:
+```
+@Override
+public String toString() {
+    return "Name: " + getName()
+            + ", Salary: " + getSalary()
+            + ", Department: " + department;
+}
+```
+Therefore:
+```
+Employee e = new Manager("Sarah", 70000, "Science");
+
+System.out.println(e);
+```
+The reference is `Employee`, but the actual object is `Manager`, so `Manager`'s overridden `toString()` executes.
+
+#### Question 1 — Access
+```
+e.getDepartment();
+```
+Why doesn't this compile?
+
+- Because the reference type is `Employee`, and `Employee` does not declare `getDepartment()`.
+
+#### Question 2 — Behavior
+```
+System.out.println(e);
+```
+Why does `Manager`'s `toString()` execute?
+
+- Because `toString()` is declared by `Employee` and overridden by `Manager`. The actual object is a `Manager`.
 
 ---
 
