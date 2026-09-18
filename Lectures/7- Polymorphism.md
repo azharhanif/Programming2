@@ -219,9 +219,9 @@ e
                               └───────────────────────────────┘
 
 ```
-- Reference type determines what members the program can access through the reference.
+- Reference type determines what members the program can **access** through the reference.
   
-- Actual object type determines overridden method behavior at runtime.
+- Actual object type determines overridden method **behavior** at runtime.
 
 For example:
 ```
