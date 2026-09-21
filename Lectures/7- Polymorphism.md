@@ -856,11 +856,11 @@ Employee e =
     new Manager("Sarah", 70000, "Science");
 ```
 Because `e` is an `Employee` reference:
-
+```
 e.getName();       // ✓
 e.getSalary();     // ✓
 e.giveRaise(2000); // ✓
-
+```
 But if `getDepartment()` exists only in `Manager`:
 ```
 e.getDepartment();    // ❌
