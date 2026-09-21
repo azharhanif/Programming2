@@ -623,7 +623,7 @@ e instanceof Manager
 ```
 asks:
 
-"Is the object currently referred to by e actually a `Manager`?"
+"Is the object currently referred to by `e` actually a `Manager`?"
 
 If the answer is yes, we can cast the `Employee` reference to a `Manager` reference:
 ```
@@ -818,7 +818,7 @@ Employee reference
   ↓
 still the same Manager object
   ↓
-now being treated through Employee
+now being treated as an Employee
 ```
 ## 5.3 Upcasting Does Not Create a New Object
 
