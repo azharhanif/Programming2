@@ -571,39 +571,8 @@ It does not mean:
 
 "Every object stored here must actually be an `Employee` object created with `new Employee()`."
 
-## 4.4 Tricky Case: Reference Type Inside the Loop
 
-Consider:
-```
-for (Employee e : employees) {
-    e.work();
-}
-```
-The variable `e` has type:
-```
-Employee
-```
-But on different iterations it can refer to different objects:
-```
-Iteration 1
-
-e ─────► Employee
-
-
-Iteration 2
-
-e ─────► Manager
-
-
-Iteration 3
-
-e ─────► Programmer
-```
-This is an important idea:
-
-- The same reference type can refer to different object types at different times.
-
-## 4.5 Common Mistake: "The Loop Variable Changes Type"
+## 4.4 Common Mistake: "The Loop Variable Changes Type"
 
 It doesn't.
 
@@ -633,7 +602,7 @@ The reference type remains `Employee`.
 
 The actual object can vary.
 
-## 4.6 Tricky Case: `Manager`-Specific Methods
+## 4.5 Tricky Case: `Manager`-Specific Methods
 
 Suppose `Manager` has:
 ```
@@ -662,7 +631,7 @@ The actual object being referred to might be a `Manager`,
 
 but the compiler cannot assume that every `Employee` is a `Manager`.
 
-## 4.7 — instanceof and a Preview of Downcasting
+## 4.6 — instanceof and a Preview of Downcasting
 
 If we need to access a method that exists only in `Manager`, we need to first determine whether the object is actually a `Manager`.
 
@@ -728,7 +697,7 @@ It requires an explicit cast because not every `Employee` is a `Manager`.
 More on Casting later. Here, we only need enough casting to understand why `instanceof` may be followed by a downcast.
 
 
-## 4.8 Important design warning
+## 4.7 Important design warning
 
 Do not automatically use `instanceof` every time you encounter polymorphism.
 
@@ -749,7 +718,7 @@ else if (e instanceof Programmer) {
 ```
 when the behavior can naturally be handled through overriding.
 
-## 4.9 Common Mistake: Wrong Collection Type
+## 4.8 Common Mistake: Wrong Collection Type
 
 This will not work:
 ```
