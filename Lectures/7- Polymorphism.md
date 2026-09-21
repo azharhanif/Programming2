@@ -177,6 +177,7 @@ There are two very different variables here:
 
 - `amount` is a parameter/local variable belonging to the execution of `giveRaise()`.
 
+
 Conceptually:
 ```
 STACK — giveRaise()
