@@ -149,6 +149,7 @@ are local variables.
 They don't belong to an `Employee` object.
 
 They belong to the execution of `main()`
+
 Conceptually:
 ```
 STACK — main() execution
