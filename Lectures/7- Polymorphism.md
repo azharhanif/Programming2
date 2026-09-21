@@ -51,20 +51,21 @@ Now the two object states look like:
 STACK / REFERENCES                  HEAP / OBJECTS
 
 guy ───────────────────────────►  ┌─────────────────┐
-                                  │ Employee: Guy   │
+                                  │ Employee: Guy 	│
+  │								  │		......			│
                                   │ name = "Guy"    │
                                   │ salary = 50000  │
                                   └─────────────────┘
 
 
 sarah ─────────────────────────► ┌──────────────────────────┐
-                                 │ Manager: Sarah            │
-                                 │                           │
-                                 │ Employee state:           │
-                                 │   name = "Sarah"          │
-                                 │   salary = 70000          │
-                                 │                           │
-                                 │ Manager state:            │
+                                 │ Manager: Sarah           │
+                                 │       .....                   │
+                                 │ Employee state:          │
+                                 │   name = "Sarah"         │
+                                 │   salary = 70000         │
+                                 │                          │
+                                 │ Manager state:           │
                                  │   department = "Science" │
                                  └──────────────────────────┘
 ```
