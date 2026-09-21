@@ -1102,69 +1102,6 @@ Or, using the analogy:
 
 Not every frog is secretly the Prince.
 
-## 6.4 Why Do We Need an Explicit Cast?
-
-Consider:
-```
-Employee e = new Manager("Sarah");
-```
-Java knows:
-
-`Employee` reference → `Manager` object
-
-But Java cannot assume that every `Employee` is a `Manager`.
-
-For example:
-```
-Employee e = new Programmer("Mike");
-```
-Therefore, when we write:
-```
-Manager m = (Manager) e;
-```
-we are explicitly telling Java:
-
-"I believe that this particular object is actually a Manager."
-
-Java then checks that assumption at runtime.
-
-If the assumption is wrong:
-
-`ClassCastException`
-## 6.5 instanceof: Find Out Whether This Frog Is the Prince
-
-Before downcasting when the actual object type is uncertain, we can use:
-```
-if (e instanceof Manager) {
-    Manager m = (Manager) e;
-    m.holdMeeting();
-}
-```
-The first question is:
-```
-e instanceof Manager
-```
-which means:
-
-"Is the object currently referred to by e actually a Manager?"
-
-Using the analogy:
-```
-Is THIS particular frog the Prince?
-
-          ↓
-
-      instanceof
-
-          ↓
-
-     YES → safe to downcast
-     NO  → don't downcast
-```
-The Princess doesn't kiss every frog and assume it will become the Prince.
-
-She first needs the particular frog that actually is the `Prince`.
-
 #### Common Mistake — Casting when polymorphism already solves the problem
 
 Suppose:
