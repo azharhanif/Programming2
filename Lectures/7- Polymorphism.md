@@ -4,7 +4,7 @@
 
 You should be able to:
 
-- explain polymorphism in Java, Object-state / memory-map diagram;
+- explain polymorphism in Java, stack vs heap;
 - distinguish declared/reference type from actual object type;
 - assign subclass objects to superclass references;
 - explain dynamic method dispatch;
