@@ -384,7 +384,7 @@ The overridden method is selected dynamically.
 
 ---
 
-## 3. Reference type controls what you can call
+## 3. Reference type controls what you can call (repeating from Section 1.2 above)
 
 Suppose:
 
