@@ -1134,7 +1134,7 @@ Use polymorphism when you want common behavior.
 
 Use downcasting when you genuinely need subclass-specific functionality.
 ```
-## 6.10 Upcasting vs. Downcasting
+## 6.4 Upcasting vs. Downcasting
 	
 Upcasting is safe because every subclass object is also a superclass object.
 
