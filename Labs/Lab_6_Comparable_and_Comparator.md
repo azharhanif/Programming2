@@ -1,4 +1,4 @@
-# Programming 2 — Lab 9
+# Programming 2 — Lab 6
 ## Comparable and Comparator
 
 **Estimated time:** 55–70 minutes  
