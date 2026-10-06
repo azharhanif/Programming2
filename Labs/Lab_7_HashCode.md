@@ -1,4 +1,4 @@
-# Programming 2 — Lab 10
+# Programming 2 — Lab 7
 ## HashCode, equals(), and HashSet
 
 **Estimated time:** 55–70 minutes  
