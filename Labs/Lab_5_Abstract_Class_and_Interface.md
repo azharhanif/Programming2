@@ -1,4 +1,4 @@
-# Programming 2 — Lab 8
+# Programming 2 — Lab 5
 ## Abstract Classes and Interfaces
 
 **Estimated time:** 50–65 minutes  
