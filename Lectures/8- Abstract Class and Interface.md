@@ -175,8 +175,144 @@ Flyable
 class Duck extends Animal implements Flyable, Swimmable {
 }
 ```
+A Java class can extend only one class directly. However, it can implement multiple interfaces.
 
 This is useful because Java does not support multiple inheritance of classes.
+
+Multiple inheritance means that a class inherits from two or more parent classes.
+
+#### What is multiple inheritance?
+Multiple inheritance means that a class inherits from two or more parent classes.
+Imagine we have these two classes:
+```
+class Animal {
+    public void eat() {
+        System.out.println("Eating...");
+    }
+}
+
+class Pet {
+    public void play() {
+        System.out.println("Playing...");
+    }
+}
+```
+Suppose we want to create a Dog that inherits from both Animal and Pet.
+
+In a language that supports multiple inheritance of classes, the idea might look like this:
+```
+// Not valid Java!
+class Dog extends Animal, Pet {
+}
+```
+Java does not allow this syntax. A Java class can have only one direct superclass.
+
+The question is: How can we give a class capabilities from multiple sources without extending multiple classes?
+#### The problem: What if both parent classes have the same method?
+Consider this example:
+```
+Animal
+eat()
+|
+Pet
+eat()
+|
+Dog
+Which eat() should it inherit?
+```
+If both parent classes provide an eat() method, which implementation should Dog use?
+
+- The one from Animal?
+- The one from Pet?
+  
+This is an example of an inheritance ambiguity.  
+
+#### The solution: Use an abstract class and interfaces
+
+Suppose we want every dog to be an animal, while allowing some animals to have pet-related behavior.
+
+We can use an abstract class for shared state and implementation, and interfaces for additional capabilities.
+
+```
+abstract class Animal {
+    protected String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+
+    public abstract void makeSound();
+}
+
+interface Pet {
+    void play();
+}
+
+interface Trainable {
+    void train();
+}
+```
+Now Dog can extend Animal and implement both interfaces:
+```
+class Dog extends Animal implements Pet, Trainable {
+
+    public Dog(String name) {
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("Woof!");
+    }
+
+    @Override
+    public void play() {
+        System.out.println(name + " is playing.");
+    }
+
+    @Override
+    public void train() {
+        System.out.println(name + " is training.");
+    }
+}
+```
+Usage:
+```
+Dog d = new Dog("Buddy");
+
+d.eat();
+d.makeSound();
+d.play();
+d.train();
+```
+Output:
+```
+Buddy is eating.
+Woof!
+Buddy is playing.
+Buddy is training.
+```
+Notice how Java achieves the design goal:
+- Animal provides shared state (name) and implemented behavior (eat()).
+- Pet defines the required play() behavior.
+- Trainable defines the required train() behavior.
+- Dog extends one class but implements two interfaces.
+
+An abstract class and an interface serve different purposes.
+```
+Abstract class	                                        Interface
+Can store instance state, such as name.	                Primarily defines a contract or capability.
+Can have constructors.	                                Cannot have ordinary instance constructors.
+Can provide implemented and abstract methods.	        Can declare abstract methods and, in modern Java, also default and static methods.
+A class can extend only one class.	                    A class can implement multiple interfaces.
+```
+An abstract class is useful when related subclasses share state and implementation. 
+
+Interfaces are useful when classes need to promise particular behaviors, even if those classes are otherwise unrelated.
 
 ---
 
