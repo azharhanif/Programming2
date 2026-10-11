@@ -627,6 +627,97 @@ class Car extends Vehicle implements Insurable {
 
 The abstract class handles the common vehicle identity/state. The interface represents a capability.
 
+#### Now:Compare two design choices
+Option A: Private field with a public getter
+```
+abstract class Employee {
+    private double salary;
+
+    public Employee(double salary) {
+        setSalary(salary);
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        if (salary < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.salary = salary;
+    }
+}
+```
+A subclass reads salary using getSalary() and changes it through setSalary(). The superclass controls validation and access.
+
+Option B: Protected field
+```
+abstract class Employee {
+    protected double salary;
+}
+```
+A subclass can access and modify salary directly:
+```
+class Manager extends Employee {
+    public void giveRaise(double amount) {
+        salary += amount;
+    }
+}
+```
+This is convenient, but the subclass can bypass validation and other rules imposed by the superclass.
+
+#### Why private is usually safer in Abstract class?
+Consider the following subclass:
+```
+class Manager extends Employee {
+    public Manager(double salary) {
+        this.salary = salary;
+    }
+}
+```
+- If salary is protected, this subclass can assign a negative salary without going through the superclass's validation method.
+
+- If salary is private, Java rejects this direct access. The subclass must use the superclass's public or protected methods instead.
+
+An abstract class is designed to be extended, but that does not mean all its fields should be accessible to subclasses.
+
+We can expose an inheritance-friendly design without exposing the underlying fields:
+
+```
+abstract class Employee {
+    private double salary;
+
+    protected double getSalary() {
+        return salary;
+    }
+
+    protected void updateSalary(double newSalary) {
+        if (newSalary < 0) {
+            throw new IllegalArgumentException();
+        }
+        salary = newSalary;
+    }
+}
+```
+Here, subclasses can read and update salary through controlled operations, while the actual field remains private. The protected methods are accessible to subclasses, but unrelated classes cannot call them directly.
+
+#### When would protected fields be reasonable?
+protected fields can be appropriate when:
+- The class is designed specifically for inheritance.
+- Subclasses genuinely need direct access to the field.
+
+#### Takeaway
+- Make fields private by default, even in abstract classes. 
+- Use public or protected methods to provide the access that subclasses actually need. 
+- Choose protected fields only when direct subclass access is a deliberate design decision
+
+The main reason to prefer private fields over protected fields in an abstract class is encapsulation. 
+
+An abstract class can expose the operations its subclasses need without giving them direct access to its internal data.
+  
+ 
+
 ---
 
 # Practice
