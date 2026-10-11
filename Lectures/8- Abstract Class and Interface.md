@@ -453,7 +453,139 @@ interface Flyable {
 }
 ```
 
-rather than forcing every vehicle to implement `fly()`.
+rather than forcing every vehicle to implement `fly()`. 
+
+An interface lets you define a capability that only certain classes need to provide. 
+
+You do not have to force every class in a broad category to implement that capability.
+
+#### The problem: Not every vehicle can fly
+Suppose we start with a Vehicle class.
+```
+class Vehicle {
+    protected String model;
+
+    public Vehicle(String model) {
+        this.model = model;
+    }
+}
+```
+Now imagine we have three types of vehicles:
+- A car
+- An airplane
+- A boat
+All three are vehicles, but they do not share every capability.
+
+If we put fly() in the general Vehicle class as an abstract method, every concrete vehicle subclass would have to implement it:
+```
+abstract class Vehicle {
+    public abstract void fly();
+}
+```
+
+This is a poor design because the class hierarchy says every vehicle must provide flying behavior, which is not true.
+
+A Car would then be forced to implement fly(), even though a normal car cannot fly. It might end up with an artificial implementation:
+
+```
+class Car extends Vehicle {
+    @Override
+    public void fly() {
+        // A normal car cannot fly!
+    }
+}
+```
+This is a poor design because the class hierarchy says every vehicle must provide flying behavior, which is not true.
+#### The solution: Define a separate Flyable interface
+Instead of saying that every vehicle must fly, we define a separate capability:
+```
+interface Flyable {
+    void fly();
+}
+```
+This means:
+- Any class that implements Flyable must provide a fly() method.
+
+It does not mean that every vehicle must implement Flyable.
+
+We can now design our classes like this:
+```
+class Car extends Vehicle {
+    public Car(String model) {
+        super(model);
+    }
+}
+
+class Airplane extends Vehicle implements Flyable {
+    public Airplane(String model) {
+        super(model);
+    }
+
+    @Override
+    public void fly() {
+        System.out.println(model + " is flying.");
+    }
+}
+
+class Boat extends Vehicle {
+    public Boat(String model) {
+        super(model);
+    }
+}
+```
+Notice the difference:
+- Car extends Vehicle
+- Airplane extends Vehicle implements Flyable
+- Boat extends Vehicle
+Only Airplane implements Flyable, so only Airplane is required to provide the fly() method.
+#### What happens when we use the classes?
+```
+Car car = new Car("Toyota");
+Airplane plane = new Airplane("Boeing 737");
+Boat boat = new Boat("Sea Ray");
+
+plane.fly();  // Valid
+```
+Output:
+```
+Boeing 737 is flying.
+```
+But this is not valid:
+```
+car.fly();  // Compilation error
+boat.fly(); // Compilation error
+```
+#### The additional advantage: Find all flyable objects
+
+Suppose we want to write a method that works with anything capable of flying, not just vehicles.
+```
+public static void testFlight(Flyable object) {
+    object.fly();
+}
+```
+We can call it with:
+```
+testFlight(new Airplane("Boeing 737"));
+```
+We could also have a bird implement Flyable:
+```
+class Bird implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("The bird flaps its wings.");
+    }
+}
+```
+Now this works too:
+```
+testFlight(new Bird());
+```
+A Bird is not a Vehicle, but both Bird and Airplane implement Flyable. 
+
+The method can accept either one because it depends on the interface, not on a particular class.
+
+#### Takeaway: 
+We use an interface when we want to represent a capability that some classes share, without requiring every class in a broader inheritance hierarchy to have that capability
 
 ---
 
