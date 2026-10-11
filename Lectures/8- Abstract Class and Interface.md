@@ -58,10 +58,59 @@ An abstract class can contain:
 You cannot normally write:
 
 ```java
-new Animal("A"); // ❌
+new Animal("A"); // ❌ because Animal is incomplete.
+
+❌ Not allowed
+Animal a = new Animal("A");
+Attempts to instantiate the abstract class itself.
+
+Allowed
+Animal a = new Dog("A");
+Creates a concrete Dog object and stores its reference in an Animal variable.
+
 ```
 
-because Animal is incomplete.
+
+
+#### Then Why `Animal` has a constructor?
+
+An abstract class can have constructors. Its constructor runs when a subclass object is created.
+```
+abstract class Animal {
+    String name;
+
+    public Animal(String name) {
+        this.name = name;
+        System.out.println("Animal constructor");
+    }
+
+    public abstract void makeSound();
+}
+
+class Dog extends Animal {
+    public Dog(String name) {
+        super(name);
+        System.out.println("Dog constructor");
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("Woof!");
+    }
+}
+```
+Running:
+```
+Dog d = new Dog("Buddy");
+```
+Output:
+```
+Animal constructor
+Dog constructor
+```
+The Animal constructor initializes the inherited state first; then the Dog constructor completes the subclass initialization.
+
+An abstract class is not a class with no constructor. It is a class that cannot be instantiated directly. Its constructors exist to initialize the inherited portion of concrete subclass objects.
 
 ---
 
