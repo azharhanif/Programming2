@@ -335,8 +335,20 @@ Remember: `extends`  establishes the class inheritance relationship; `implements
 Flyable f = new Bird();
 f.fly();
 ```
-
 The declared type is `Flyable`, while the actual object is `Bird`.
+
+This is demonstrating how Java allows an interface as is like a class (?), even though the interface has no constructor. 
+
+Interface is used just the type to share fly() behavior among different unrelated classes.
+
+- A name: Flyable
+- A method declaration: fly()
+- No constructor
+- No ordinary instance state that must be initialized
+  
+The interface says:
+- Any class that implements Flyable must provide a fly() method.
+- It does not say what kind of object must fly or how flying must be implemented.
 
 You can also have:
 
@@ -349,6 +361,65 @@ flyers.add(new Airplane());
 ```
 
 if all implement `Flyable`.
+
+#### One reference type for different objects
+Consider this example:
+```
+Flyable f1 = new Bird();
+Flyable f2 = new Airplane();
+
+f1.fly();
+f2.fly();
+```
+Output:
+```
+The bird flaps its wings.
+The airplane uses its engines.
+```
+Both variables have the reference type Flyable, but they refer to different kinds of objects.
+
+This is polymorphism through an interface.
+
+We can take the idea further:
+```
+Flyable[] things = {
+    new Bird(),
+    new Airplane()
+};
+
+for (Flyable f : things) {
+    f.fly();
+}
+```
+- The loop does not need to know whether each object is a bird or an airplane. 
+- It only needs to know that each object implements Flyable.
+
+That is the main advantage: 
+
+code can operate on different classes through a common interface without depending on their concrete classes.
+#### Why does the interface not need a constructor?
+A constructor initializes an object when that object's class is instantiated.
+
+An interface is not instantiated directly:
+```
+Flyable f = new Flyable(); // Compilation error
+```
+Instead, the concrete class is instantiated:
+```
+Flyable f = new Bird();
+```
+The Bird constructor initializes the Bird object. 
+
+If Bird has fields, its constructor initializes those fields as needed.
+
+The interface simply specifies which operations the object promises to support.
+
+#### Takeaway
+An interface is not a class without a constructor. 
+
+It is a separate kind of reference type that defines a contract. 
+
+Different classes—even unrelated ones—can implement that contract, allowing Java to treat their objects uniformly while dispatching each method call to the appropriate implementation.
 
 ---
 
