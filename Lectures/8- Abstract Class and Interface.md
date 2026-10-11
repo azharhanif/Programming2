@@ -305,6 +305,7 @@ Notice how Java achieves the design goal:
 An abstract class and an interface serve different purposes.
 ```
 Abstract class	                                        Interface
+--------------                                          ----------
 Can store instance state, such as name.	                Primarily defines a contract or capability.
 Can have constructors.	                                Cannot have ordinary instance constructors.
 Can provide implemented and abstract methods.	        Can declare abstract methods and, in modern Java, also default and static methods.
@@ -313,6 +314,18 @@ A class can extend only one class.	                    A class can implement mul
 An abstract class is useful when related subclasses share state and implementation. 
 
 Interfaces are useful when classes need to promise particular behaviors, even if those classes are otherwise unrelated.
+#### Takeaway
+Java's restriction does not mean a class can have only one kind of behavior. 
+
+It means a class can inherit its class implementation from only one direct superclass.
+
+For example:
+```
+class Dog extends Animal implements Pet, Trainable
+```
+This is valid Java because Dog extends exactly one class, Animal, while implementing two interfaces.
+
+Remember: `extends`  establishes the class inheritance relationship; `implements` allows a class to satisfy multiple interface contracts.
 
 ---
 
