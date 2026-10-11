@@ -739,6 +739,5 @@ Then critique the design:
 
 - Is the abstract class really necessary?
 - What belongs in the interface?
-- Which members should be private?
 - Can an employee be both taxable and something else?
 - Can the design support a new employee type without changing existing code?
