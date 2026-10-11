@@ -70,8 +70,6 @@ Creates a concrete Dog object and stores its reference in an Animal variable.
 
 ```
 
-
-
 #### Then Why `Animal` has a constructor?
 
 An abstract class can have constructors. Its constructor runs when a subclass object is created.
@@ -110,7 +108,9 @@ Dog constructor
 ```
 The Animal constructor initializes the inherited state first; then the Dog constructor completes the subclass initialization.
 
-An abstract class is not a class with no constructor. It is a class that cannot be instantiated directly. Its constructors exist to initialize the inherited portion of concrete subclass objects.
+An abstract class is not a class with no constructor. 
+
+Its constructors exist to initialize the inherited portion of concrete subclass objects.
 
 ---
 
