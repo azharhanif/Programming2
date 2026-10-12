@@ -282,13 +282,13 @@ abstract class Employee {
 
 If `salary` were `protected`, a subclass could assign a negative value directly and bypass the validation method. With a private field, subclasses must use the available methods.
 ```
-| Concern | `private` field | `protected` field |
-|---|---|---|
-| Direct subclass access | No | Yes |
-| Can bypass setter validation | Not by direct field access | Yes |
-| Freedom to change internal representation | Greater | More limited |
-| Subclass convenience | Requires methods | More convenient |
-| Encapsulation | Stronger | Weaker |
+| Concern                                             | `private` field                     | `protected` field |
+|-----------------------------------------------------|-------------------------------------|-------------------|
+| Direct subclass access                              | No                                  | Yes               |
+| Can bypass setter validation                        | Not by direct field access          | Yes               |
+| Freedom to change internal representation           | Greater                             | More limited      |
+| Subclass convenience                                | Requires methods                    | More convenient   |
+| Encapsulation                                       | Stronger                            | Weaker            |
 ```
 **Note:** Make fields private by default, including in abstract classes. Use public or protected methods to provide the access subclasses actually need. Choose protected fields only when direct subclass access is a deliberate design decision.
 
