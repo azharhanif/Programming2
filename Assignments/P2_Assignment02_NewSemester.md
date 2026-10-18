@@ -192,7 +192,7 @@ The project must compile and run. Make the output easy to verify.
 **Weight: 60 marks out of 100**  
 **Time limit: 30 minutes**
 
-The submitted project is worth **40 marks**. After submission, you will complete a separate, instructor-assigned challenge based on your own project. It tests understanding and the ability to extend your design, not memorization.
+The submitted project is worth **40 marks**. After submission, you will complete a separate, instructor-assigned challenge **60 marks** based on your own project. It tests understanding and the ability to extend your design, not memorization.
 
 The exact challenge and mark allocation will be provided in class. Variants may differ between students.
 ```
@@ -225,40 +225,29 @@ The challenge may ask you to modify existing classes, update the system class, a
 - [ ] Copy constructors, `equals()`, and `toString()` work correctly and consistently.
 - [ ] UML matches the Java implementation.
 
-## Marking rubric — submitted project (60 marks)
+## Marking rubric — submitted project (40 marks)
 
 | Criterion | Marks | What is assessed |
 |---|---:|---|
-| Abstract hierarchy and required classes | 15 | Three layers, correct inheritance, abstract classes, role-specific fields, `calculatePay()` |
-| Constructors and object methods | 10 | Default/parameterized/copy constructors, accessors, `equals()`, `toString()` |
-| Polymorphism and system collection | 10 | One `ArrayList<Employee>`, system operations, polymorphic pay calculation, total payroll |
+| Abstract hierarchy and required classes | 5 | Three layers, correct inheritance, abstract classes, role-specific fields, `calculatePay()` |
+| Constructors and object methods | 5 | Default/parameterized/copy constructors, accessors, `equals()`, `toString()` |
+| Polymorphism and system collection | 5 | One `ArrayList<Employee>`, system operations, polymorphic pay calculation, total payroll |
 | User-defined interface | 5 | `BonusEligible`, at least two implementations, interface demonstration |
 | `Comparable` natural ordering | 5 | Correct, consistent employee-ID ordering |
 | `Comparator` alternative ordering | 5 | Pay descending, name ascending for ties, working demonstration |
 | UML class diagram | 5 | Complete, readable, correct relationships, matches code |
 | Test program and evidence | 5 | Demonstrates the required behavior, including a sorting tie, copying, and equality |
-| **Total submitted project** | **60** | |
+| **Total submitted project** | **40** | |
 
-## Marking rubric — post-submission challenge (40 marks)
+## Marking rubric — post-submission challenge (60 marks)
 
 | Criterion | Marks | What is assessed |
 |---|---:|---|
-| Correct interpretation and design choice | 10 | Identifies the right class/interface and comparison behavior |
-| Correct implementation | 20 | Meets requirements and integrates with the existing project |
+| Correct interpretation and design choice | 20 | Identifies the right class/interface and comparison behavior |
+| Correct implementation | 30 | Meets requirements and integrates with the existing project |
 | Testing and explanation | 10 | Demonstrates result, handles relevant edge cases, explains reasoning |
-| **Total challenge** | **40** | |
+| **Total challenge** | **60** | |
 
-**Overall score: 100 marks** — 60 for the submitted project and 40 for the 30-minute in-class challenge.
+**Overall score: 100 marks** — 40 for the submitted project and 60 for the 30-minute in-class challenge.
 
-## Learning objective
-
-The goal is not simply to create more classes. It is to design a system where:
-
-- an abstract class defines shared state and required behavior;
-- subclasses provide specialized implementations;
-- polymorphism processes different employee types through one parent reference;
-- an interface represents an optional capability;
-- `Comparable` provides one natural ordering;
-- `Comparator` provides alternative ordering without changing the natural ordering.
-
-This assignment builds directly on Assignment 1 and applies Lectures 7, 8, and 9 in one coherent Java project.
+ 
