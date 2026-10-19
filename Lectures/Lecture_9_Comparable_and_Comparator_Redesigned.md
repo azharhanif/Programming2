@@ -103,7 +103,7 @@ Suppose we have three students sorted by GPA in ascending order:
 ```
 Position    Name	    GPA
 1	        Ali	        3.5
-2	        Mina	    3.5
+2	       Mina	    3.5
 3	        Zoe	        3.9
 ```
 Assume the list is currently:
@@ -123,7 +123,7 @@ Zoe (3.9), Mina (3.5), Ali (3.5)
 ```
 Notice that Mina and Ali had the same GPA, but their relative order has changed. Ali was before Mina; after reversing the list, Mina is before Ali.
 
-**Option B:** Define descending order directly
+**Option B:** Define descending order directly (Or, use a `Comparator`, see later).
 If the natural ordering is based on GPA, we can reverse the comparison arguments:
 ```
 @Override
@@ -131,7 +131,43 @@ public int compareTo(Student other) {
     return Double.compare(other.gpa, this.gpa);
 }
 ```
-Or, if we use a `Comparator` (see later).
+Output after Collections.sort(students):
+```
+Zoe (3.9)
+Ali (3.5)
+Mina (3.5)
+```
+**Why?**
+
+The key line is:
+```
+Double.compare(other.gpa, this.gpa)
+```
+Notice that the arguments are in the opposite order: other.gpa comes first, followed by this.gpa.
+- When comparing Zoe (3.9) with Ali (3.5), the result is negative, so Zoe comes before Ali.
+- When comparing Ali (3.5) with Mina (3.5), the result is zero, because their GPAs are equal.
+  
+**Important:** When two students have equal GPAs, this method does not specify which student should come first. 
+
+Java's sorting algorithm generally preserves their existing relative order for equal comparison results because object-list sorting is stable. 
+
+In this example, Ali was already before Mina, so Ali remains before Mina.
+
+If we want students with equal GPAs to be sorted alphabetically, we have to add a tie-breaker:
+```
+@Override
+public int compareTo(Student other) {
+    int result = Double.compare(other.gpa, this.gpa);
+
+    if (result != 0) {
+        return result;
+    }
+
+    return this.name.compareTo(other.name);
+}
+```
+Now the ordering is GPA descending, then name ascending.
+
 **Key idea:** For a user-defined class, `Collections.sort(list)` generally requires that its objects implement `Comparable` with a consistent comparison rule.
 
 ---
