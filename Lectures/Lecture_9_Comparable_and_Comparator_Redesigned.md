@@ -179,7 +179,7 @@ Negative	        First value is smaller
 Zero	            Values are equal
 Positive	        First value is larger
 ```
-Test:
+Test in the main driver:
 
 ```java
 ArrayList<Student> students = new ArrayList<>();
@@ -197,7 +197,7 @@ Output:
 [Zoe (3.2), Mina (3.7), Ali (3.9)]
 ```
 
-### Trace the comparison
+### Trace the comparison in the main driver
 
 ```java
 Student a = new Student("Mina", 3.7);
