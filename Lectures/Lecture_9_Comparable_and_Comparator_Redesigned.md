@@ -219,7 +219,7 @@ public int compareTo(Student other) {
 ```
 
 Reversing the arguments reverses the ordering.
-## 3.0 Relative order of elements
+## 3. Relative order of elements
 We saw before, built-in `Integer` implements `Comparable<Integer>`, so Java already knows its natural ordering.
 
 `Collections.sort(list)` uses that natural ordering.
@@ -309,7 +309,7 @@ We will explore `Comparator` later in the lecture.
 
 ---
 
-## 3. Safer comparison: do not subtract
+## 4. Safer comparison: do not subtract
 
 A common implementation is:
 
@@ -337,7 +337,7 @@ For strings, `compareTo()` gives lexicographic order. Do not use `==` to decide 
 
 ---
 
-## 4. Ties and secondary keys
+## 5. Ties and secondary keys
 
 ### Concept
 
@@ -385,7 +385,7 @@ Compare Ali (3.9) with Mina (3.7):
 
 ---
 
-## 5. `Comparator`: an external rule
+## 6. `Comparator`: an external rule
 
 ### Concept
 
@@ -466,7 +466,7 @@ Memory aid:
 
 ---
 
-## 6. Multiple keys with a Comparator
+## 7. Multiple keys with a Comparator
 
 ### Scenario
 
@@ -537,7 +537,7 @@ Multiplying comparison results by arbitrary constants is fragile. Use sequential
 
 ---
 
-## 7. Complete example: natural order plus an alternative
+## 8. Complete example: natural order plus an alternative
 
 ### `Student.java`
 
@@ -637,7 +637,7 @@ Notice:
 
 ---
 
-## 8. Common mistakes and debugging
+## 9. Common mistakes and debugging
 
 ### Mistake 1: wrong method signature
 
@@ -713,7 +713,7 @@ If you need descending GPA, express it directly. Reversing the entire list can r
 
 ---
 
-## 9. Practice — predict, run, explain
+## 10. Practice — predict, run, explain
 
 For each activity:
 1. **Predict** the output before running.
@@ -878,7 +878,7 @@ The class's natural ordering is being changed to serve unrelated use cases. Choo
 
 ---
 
-## 10. AI-assisted practice — scholarship ranking
+## 11. AI-assisted practice — scholarship ranking
 
 ### Scenario
 
@@ -928,47 +928,7 @@ Test:
 - an empty list.
 
 Predict each result before running it.
-
-### Part E — Explain
-
-In your own words:
-1. Why is `Comparator` suitable for this scholarship-specific rule?
-2. Would you also implement `Comparable<Student>`? What should the natural ordering be?
-3. Why is comparison chaining safer and clearer than arbitrary numeric weights?
-4. How did you verify the AI-generated code?
-
-### Suggested comparator
-
-Attempt the task before reading the solution.
-
-```java
-Comparator<Student> scholarshipOrder =
-    Comparator.comparingDouble(Student::getGpa).reversed()
-              .thenComparing(
-                  Comparator.comparingInt(Student::getVolunteerHours).reversed()
-              )
-              .thenComparing(Student::getName)
-              .thenComparing(Student::getId);
-```
-
-This assumes the four getters exist.
-
-Expected order:
-
-```text
-S03 Ali  3.9  25
-S02 Ali  3.9  15
-S01 Zoe  3.8  60
-S04 Mina 3.8  40
-S05 Mina 3.8  40
-```
-
-Why:
-- GPA 3.9 comes before GPA 3.8.
-- Among GPA 3.9 students, 25 volunteer hours comes before 15.
-- Among GPA 3.8 students, 60 hours comes before 40.
-- S04 and S05 tie on GPA, hours, and name, so ID decides.
-
+ 
 ### AI mistakes to watch for
 
 AI may reverse GPA order, sort volunteer hours ascending, compare names before volunteer hours, omit the ID tie-breaker, use subtraction, or invent a getter that does not exist. Code can compile and still implement the wrong priority. Your job is to test, verify, and explain it.
