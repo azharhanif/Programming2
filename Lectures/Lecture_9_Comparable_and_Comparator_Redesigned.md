@@ -350,7 +350,28 @@ For strings, `compareTo()` gives lexicographic order. Do not use `==` to decide 
 ## 5. `Comparator`: an external rule
 
 ### Concept
+`Comparator<T>` is a Java interface, just like `Comparable<T>`.
 
+A simplified version of its definition is:
+```
+public interface Comparator<T> {
+    int compare(T first, T second);
+}
+```
+The method `compare()` is abstract here. It declares what the implementing class must do, but does not specify how to compare two objects.
+
+For `Comparator<Student>`, the method becomes effectively:
+```
+int compare(Student first, Student second);
+```
+The difference from Comparable is:
+```
+Comparable	                                            Comparator
+public interface Comparable<T>	                        public interface Comparator<T>
+int compareTo(T other)	                                int compare(T first, T second)
+Compares the current object with another object	        Compares two supplied objects
+Usually defines the class's natural ordering	        Defines an alternative ordering rule
+```
 `Comparable` defines a natural ordering inside the class. `Comparator` defines an ordering outside the class.
 
 ```java
@@ -400,16 +421,69 @@ Comparator<Student> byGpaDescending = new Comparator<Student>() {
 
 students.sort(byGpaDescending);
 ```
+An interface cannot be instantiated directly using `new Comparator<Student>()` as if it were a normal **class** constructor. However, Java allows this syntax because it creates an **anonymous class** that implements the interface.
 
-If lambda expressions have been introduced, the same rule can be written:
+At first glance, it looks like we are creating an object of an interface. We are not.
 
-```java
-students.sort((first, second) ->
-    first.getName().compareTo(second.getName())
-);
+Java is effectively doing two things:
+- Defining a new, unnamed class that implements `Comparator<Student>`.
+- Creating an object of that unnamed class.
+This feature is called an `anonymous inner class` (more precisely, an `anonymous class`).
+
+Conceptually, it is similar to writing:
+```
+class GpaComparator implements Comparator<Student> {
+
+    @Override
+    public int compare(Student first, Student second) {
+        return Double.compare(second.getGpa(), first.getGpa());
+    }
+}
+```
+Then creating an object:
+```
+Comparator<Student> byGpaDescending =
+    new GpaComparator();
+```
+The anonymous-class version combines these two steps into one expression, so we do not need to give the class a name.
+
+#### Why can the reference type be an interface?
+Remember polymorphism from our earlier lectures?
+
+An interface reference can refer to an object of any class that implements that interface.
+
+For example:
+```
+Comparator<Student> comparator =
+    new GpaComparator();
+```
+Here:
+- Comparator<Student> is the reference type.
+- GpaComparator is the concrete class.
+- The object is an instance of GpaComparator.
+This is the same principle as:
+```
+Animal animal = new Dog();
+```
+The difference is that the comparator's concrete class may be anonymous, so it has no programmer-defined class name.
+
+#### A simpler alternative: lambda expressions
+
+If lambda expressions have been introduced, the same comparator can be written more concisely::
+
+```
+Comparator<Student> byGpaDescending =
+        (first, second)
+            -> Double.compare(second.getGpa(), first.getGpa());
 ```
 
-These are alternative implementations of the same idea.
+This works because `Comparator` is a functional interface: it has one abstract method, `compare()`. Java can use the lambda expression to provide that method's implementation.  
+
+**Takeaway:**
+
+An interface cannot be instantiated directly. 
+
+But new Comparator<Student>() { ... } is not instantiating the interface itself: it defines and instantiates an anonymous class that implements the interface.
 
 ### Comparable versus Comparator
 
