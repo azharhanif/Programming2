@@ -95,8 +95,43 @@ Output:
 
 `Integer` implements `Comparable<Integer>`, so Java already knows its natural ordering. `Collections.sort(list)` uses that natural ordering.
 
-You can call `Collections.reverse(numbers)` after sorting, but it is often clearer to express the desired descending order directly. Reversing a whole list also reverses the relative order of elements tied under the original ordering.
+You can call `Collections.reverse(numbers)` after sorting, but it is often clearer to express the desired descending order directly. 
 
+Because, reversing a whole list also reverses the relative order of elements tied under the original ordering.
+
+Suppose we have three students sorted by GPA in ascending order:
+```
+Position    Name	GPA
+1	        Ali	    3.5
+2	        Mina	3.5
+3	        Zoe	    3.9
+```
+Assume the list is currently:
+```
+Ali (3.5), Mina (3.5), Zoe (3.9)
+```
+Now we want the students sorted by GPA in descending order.
+
+**Option A:** Sort ascending, then reverse the entire list
+```
+Collections.sort(students);  // GPA ascending
+Collections.reverse(students);
+```
+The result is:
+```
+Zoe (3.9), Mina (3.5), Ali (3.5)
+```
+Notice that Mina and Ali had the same GPA, but their relative order has changed. Ali was before Mina; after reversing the list, Mina is before Ali.
+
+**Option B:** Define descending order directly
+If the natural ordering is based on GPA, we can reverse the comparison arguments:
+```
+@Override
+public int compareTo(Student other) {
+    return Double.compare(other.gpa, this.gpa);
+}
+```
+Or, if we use a `Comparator` (see later).
 **Key idea:** For a user-defined class, `Collections.sort(list)` generally requires that its objects implement `Comparable` with a consistent comparison rule.
 
 ---
