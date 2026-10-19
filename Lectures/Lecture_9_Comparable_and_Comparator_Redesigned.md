@@ -22,19 +22,18 @@ public interface Comparable<T> {
     public abstract int compareTo(T other);
 }
 ```
-Here, `T` is a generic type parameter. If we write `Comparable<Student>`, then `T` represents `Student`.
-```
-public interface Comparable<Student> {
-    int compareTo(Student other);
-}
-```
- 
 Interface methods are implicitly public and abstract in Java, unless they are declared as default, static, or private methods with a body.
 
 The definition is equivalent to writing:
 ```
 public interface Comparable<T> {
     int compareTo(T other);
+}
+```
+Here, `T` is a generic type parameter. If we write `Comparable<Student>`, then `T` represents `Student`.
+```
+public interface Comparable<Student> {
+    int compareTo(Student other);
 }
 ```
 The interface declares `compareTo()`, but it does not provide a method body. There is no comparison logic yet.
