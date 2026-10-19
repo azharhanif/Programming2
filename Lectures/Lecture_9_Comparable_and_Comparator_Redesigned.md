@@ -95,73 +95,6 @@ Output:
 
 `Integer` implements `Comparable<Integer>`, so Java already knows its natural ordering. `Collections.sort(list)` uses that natural ordering.
 
-You can call `Collections.reverse(numbers)` after sorting, but it is often clearer to express the desired descending order directly. 
-
-Because, reversing a whole list also reverses the relative order of elements tied under the original ordering.
-
-Suppose we have three students sorted by GPA in ascending order: 
-```
-Ali (3.5), Mina (3.5), Zoe (3.9)
-```
-Now we want the students sorted by GPA in descending order.
-
-**Option A:** Sort ascending, then reverse the entire list
-```
-Collections.sort(students);  // GPA ascending
-Collections.reverse(students);
-```
-The result is:
-```
-Zoe (3.9), Mina (3.5), Ali (3.5)
-```
-Notice that Mina and Ali had the same GPA, but their relative order has changed. Ali was before Mina; after reversing the list, Mina is before Ali.
-
-**Option B:** Define descending order directly (Or, use a `Comparator`, see later).
-
-If the natural ordering is based on GPA, we can reverse the comparison arguments:
-```
-@Override
-public int compareTo(Student other) {
-    return Double.compare(other.gpa, this.gpa);
-}
-```
-Output after Collections.sort(students):
-```
-Zoe (3.9)
-Ali (3.5)
-Mina (3.5)
-```
-**Why?**
-
-The key line is:
-```
-Double.compare(other.gpa, this.gpa)
-```
-Notice that the arguments are in the opposite order: other.gpa comes first, followed by this.gpa.
-- When comparing Zoe (3.9) with Ali (3.5), the result is negative, so Zoe comes before Ali.
-- When comparing Ali (3.5) with Mina (3.5), the result is zero, because their GPAs are equal.
-  
-**Important:** When two students have equal GPAs, this method does not specify which student should come first. 
-
-Java's sorting algorithm generally preserves their existing relative order for equal comparison results because object-list sorting is stable. 
-
-In this example, Ali was already before Mina, so Ali remains before Mina.
-
-If we want students with equal GPAs to be sorted alphabetically, we have to add a tie-breaker:
-```
-@Override
-public int compareTo(Student other) {
-    int result = Double.compare(other.gpa, this.gpa);
-
-    if (result != 0) {
-        return result;
-    }
-
-    return this.name.compareTo(other.name);
-}
-```
-Now the ordering is GPA descending, then name ascending.
-
 **Key idea:** For a user-defined class, `Collections.sort(list)` generally requires that its objects implement `Comparable` with a consistent comparison rule.
 
 ---
@@ -286,6 +219,77 @@ public int compareTo(Student other) {
 ```
 
 Reversing the arguments reverses the ordering.
+## 3.0 Relative order of elements
+We saw before, built-in `Integer` implements `Comparable<Integer>`, so Java already knows its natural ordering.
+
+`Collections.sort(list)` uses that natural ordering.
+
+We can call `Collections.reverse(numbers)` after sorting, but it is often clearer to express the desired descending order directly. **Why?**
+
+**Because**, reversing a whole list also reverses the relative order of elements tied under the original ordering.
+
+Suppose we have the same four students (three students have the same GPA) again sorted by GPA in ascending order: 
+```
+Zoe (3.5), Mina (3.5), Ali (3.5), Sara (3.9)
+```
+Now we want the students sorted by GPA in descending order.
+
+**Option A:** Sort ascending, then reverse the entire list
+```
+Collections.sort(students);  // GPA ascending
+Collections.reverse(students);
+```
+The result is:
+```
+Sara (3.9), Zoe (3.5), Mina (3.5), Ali (3.5)
+
+```
+Why? Sara has the highest GPA. The other three students have equal GPAs, so compareTo() returns 0 when comparing them. Java's stable sort preserves their original relative order: Zoe, Mina, Ali.
+
+**Option B:** Define descending order directly (Or, use a `Comparator`, see later).
+
+If the natural ordering is based on GPA, we can reverse the comparison arguments:
+```
+@Override
+public int compareTo(Student other) {
+    return Double.compare(other.gpa, this.gpa);
+}
+```
+Output after Collections.sort(students):
+```
+Sara (3.9), Zoe (3.5), Mina (3.5), Ali (3.5)
+```
+**Why?**
+
+The key line is:
+```
+Double.compare(other.gpa, this.gpa)
+```
+- Sara has the highest GPA, so she moves to the first position.
+- Zoe, Mina, and Ali all have a GPA of 3.5.
+- When comparing these three students, Double.compare(other.gpa, this.gpa) returns 0, because their GPAs are equal.
+- Java's list sorting is stable, so students who compare as equal retain their original relative order: Zoe, Mina, Ali.
+- 
+Java's sorting algorithm generally preserves their existing relative order for equal comparison results because object-list sorting is stable. 
+**Important:** When three students have equal GPAs, this method does not specify which student should come first. 
+
+If we want students with equal GPAs to be sorted alphabetically, we have to add a tie-breaker:
+```
+@Override
+public int compareTo(Student other) {
+    int result = Double.compare(other.gpa, this.gpa);
+
+    if (result != 0) {
+        return result;
+    }
+
+    return this.name.compareTo(other.name);
+}
+```
+Now the ordering is GPA descending, then name ascending.
+```
+Sara (3.9), Ali (3.5), Mina (3.5), Zoe (3.5)
+```
 
 **Design question:** Is GPA really the natural ordering for every use of `Student`? 
 
@@ -293,7 +297,8 @@ For custom classes, these are design decisions. Java does not automatically know
 
 Also, natural ordering does not have to be the most important order in every situation. It should be a sensible default for that class.
 
-#### What if we need a different ordering?
+**What if we need a different ordering?**
+
 Suppose the registrar wants students sorted by ID, but the scholarship committee wants the highest GPA first.
 
 We could change `compareTo()` to compare GPA, but then the registrar's default ordering would change too. That is one reason Java provides `Comparator`.
