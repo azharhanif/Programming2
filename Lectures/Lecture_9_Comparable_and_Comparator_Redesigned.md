@@ -12,6 +12,37 @@ By the end of this lecture, you should be able to:
 ## 1. The problem: what does “smaller” mean?
 
 ### Concept
+`Comparable` is a Java interface, and `compareTo()` is the abstract method declared inside that interface.
+
+Java provides the Comparable<T> interface as part of the Java Class Library, in the java.lang package.
+
+Conceptually, its definition looks like this:
+```
+public interface Comparable<T> {
+    public abstract int compareTo(T other);
+}
+```
+Here, `T` is a generic type parameter. If we write `Comparable<Student>`, then `T` represents `Student`.
+```
+public interface Comparable<Student> {
+    int compareTo(Student other);
+}
+```
+
+So the declaration is effectively:
+
+Interface methods are implicitly public and abstract in Java, unless they are declared as default, static, or private methods with a body.
+
+The definition is equivalent to writing:
+```
+public interface Comparable<T> {
+    int compareTo(T other);
+}
+```
+The interface declares `compareTo()`, but it does not provide a method body. There is no comparison logic yet.
+
+Because an interface's `compareTo()` method is `abstract`, the class is implementing the interface method.
+
 
 Sorting arranges objects according to a rule.
 
@@ -20,7 +51,19 @@ Sorting arranges objects according to a rule.
 ["Zoe", "Ali", "Mina"]  ->  ["Ali", "Mina", "Zoe"]
 ```
 
-Java knows how to order `Integer` and `String` because those classes provide natural ordering. But consider an `ArrayList<Student>` where each student has an ID, a name, and a GPA. Should students be sorted by ID, name, GPA, or GPA and then name?
+Java knows how to order `Integer` and `String` because those classes provide natural ordering. 
+
+Natural ordering is the default ordering that the class chooses for its objects. Java's built-in classes Integer and String implement `Comparable`. 
+
+- Natural ordering for integers is numerical order, from smallest to largest.
+- Natural ordering for strings is lexicographical order, based on the sequence of characters and their Unicode values.
+
+Java's `Integer` class already implements `Comparable<Integer>` and provides its own `compareTo()` implementation. We do not write that implementation.
+
+Java's `String` class already implements `Comparable<String>` and provides the comparison logic for strings.
+
+
+But consider an `ArrayList<Student>` where each student has an ID, a name, and a GPA. Should students be sorted by ID, name, GPA, or GPA and then name?
 
 Java cannot guess your application’s intention. You must define the rule.
 
