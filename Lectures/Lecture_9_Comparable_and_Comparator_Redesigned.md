@@ -201,7 +201,20 @@ public int compareTo(Student other) {
 
 Reversing the arguments reverses the ordering.
 
-**Design question:** Is GPA really the natural ordering for every use of `Student`? If several parts of an application need different rules, `Comparator` may be a better fit.
+**Design question:** Is GPA really the natural ordering for every use of `Student`? 
+
+For custom classes, these are design decisions. Java does not automatically know what makes one `Employee` or `Student` come before another.
+
+Also, natural ordering does not have to be the most important order in every situation. It should be a sensible default for that class.
+
+#### What if we need a different ordering?
+Suppose the registrar wants students sorted by ID, but the scholarship committee wants the highest GPA first.
+
+We could change `compareTo()` to compare GPA, but then the registrar's default ordering would change too. That is one reason Java provides `Comparator`.
+- `Comparable` defines the class's natural or default ordering.
+- `Comparator` lets us define alternative ordering rules for different situations.
+
+We will explore `Comparator` later in the lecture.
 
 ---
 
