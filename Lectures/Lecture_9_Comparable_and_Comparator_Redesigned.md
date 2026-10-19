@@ -14,7 +14,7 @@ By the end of this lecture, you should be able to:
 ### Concept
 `Comparable` is a Java interface, and `compareTo()` is the abstract method declared inside that interface.
 
-Java provides the Comparable<T> interface as part of the Java Class Library, in the java.lang package.
+Java provides the `Comparable<T>` interface as part of the Java Class Library, in the java.lang package.
 
 Conceptually, its definition looks like this:
 ```
@@ -244,7 +244,9 @@ The result is:
 Sara (3.9), Zoe (3.5), Mina (3.5), Ali (3.5)
 
 ```
-Why? Sara has the highest GPA. The other three students have equal GPAs, so compareTo() returns 0 when comparing them. Java's stable sort preserves their original relative order: Zoe, Mina, Ali.
+**Why?**
+
+Sara has the highest GPA. The other three students have equal GPAs, so compareTo() returns 0 when comparing them. Java's stable sort preserves their original relative order: Zoe, Mina, Ali.
 
 **Option B:** Define descending order directly (Or, use a `Comparator`, see later).
 
@@ -255,7 +257,7 @@ public int compareTo(Student other) {
     return Double.compare(other.gpa, this.gpa);
 }
 ```
-Output after Collections.sort(students):
+Output after `Collections.sort(students)`:
 ```
 Sara (3.9), Zoe (3.5), Mina (3.5), Ali (3.5)
 ```
@@ -267,13 +269,15 @@ Double.compare(other.gpa, this.gpa)
 ```
 - Sara has the highest GPA, so she moves to the first position.
 - Zoe, Mina, and Ali all have a GPA of 3.5.
-- When comparing these three students, Double.compare(other.gpa, this.gpa) returns 0, because their GPAs are equal.
+- When comparing these three students, `Double.compare(other.gpa, this.gpa)` returns 0, because their GPAs are equal.
 - Java's list sorting is stable, so students who compare as equal retain their original relative order: Zoe, Mina, Ali.
-- 
+
+  
 Java's sorting algorithm generally preserves their existing relative order for equal comparison results because object-list sorting is stable. 
+
 **Important:** When three students have equal GPAs, this method does not specify which student should come first. 
 
-If we want students with equal GPAs to be sorted alphabetically, we have to add a tie-breaker:
+If we want students with equal GPAs to be sorted alphabetically, we have to add a **tie-breaker**:
 ```
 @Override
 public int compareTo(Student other) {
@@ -299,7 +303,9 @@ Also, natural ordering does not have to be the most important order in every sit
 
 **Common mistake:** Do not combine comparison results using arbitrary weights, such as `100 * nameResult + idResult`. 
 
-Comparison results are not fixed-size scores; an arbitrary multiplier does not reliably preserve key priority. Use sequential comparisons or comparator chaining.
+Comparison results are not fixed-size scores; an arbitrary multiplier does not reliably preserve key priority. 
+
+Use sequential comparisons or comparator (?) chaining.
 
 **What if we need a different ordering?**
 
