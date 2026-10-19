@@ -580,6 +580,7 @@ Read it as: GPA descending; if tied, name ascending; if still tied, ID ascending
 `thenComparing()` is a built-in default method in Java's `Comparator<T>` interface. It lets us add a secondary sorting rule when two objects tie under the primary rule. 
 
 [More built-in methods](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Comparator.html?utm_source=chatgpt.com#method-summary)
+
 [Java Comparator Documentation](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Comparator.html)
 ### Trace example
 
