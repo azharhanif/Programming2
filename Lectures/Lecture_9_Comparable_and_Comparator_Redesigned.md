@@ -99,14 +99,7 @@ You can call `Collections.reverse(numbers)` after sorting, but it is often clear
 
 Because, reversing a whole list also reverses the relative order of elements tied under the original ordering.
 
-Suppose we have three students sorted by GPA in ascending order:
-```
-Position    Name	    GPA
-1	        Ali	        3.5
-2	       Mina	    3.5
-3	        Zoe	        3.9
-```
-Assume the list is currently:
+Suppose we have three students sorted by GPA in ascending order: 
 ```
 Ali (3.5), Mina (3.5), Zoe (3.9)
 ```
