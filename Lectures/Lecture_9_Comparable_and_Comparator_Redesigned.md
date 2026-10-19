@@ -372,20 +372,22 @@ int compareTo(T other)	                                int compare(T first, T se
 Compares the current object with another object	        Compares two supplied objects
 Usually defines the class's natural ordering	        Defines an alternative ordering rule
 ```
-`Comparable` defines a natural ordering inside the class. `Comparator` defines an ordering outside the class.
+`Comparable` puts the natural ordering rule inside the class. 
+
+`Comparator` provides a separate rule, often defined in the driver or a separate class, and passed to the sorting method when needed.
 
 ```java
 public int compare(T first, T second)
 ```
 
 Its sign has the same meaning as `compareTo()`:
-
-| Result of `compare(first, second)` | Meaning |
-|---|---|
-| Negative | `first` comes before `second` |
-| Zero | They tie under this comparator |
-| Positive | `first` comes after `second` |
-
+```
+| Result of `compare(first, second)`   | Meaning                         |
+|--------------------------------------|---------------------------------|
+| Negative                             | `first` comes before `second`   |
+| Zero                                 | They tie under this comparator  |
+| Positive                             | `first` comes after `second`    |
+```
 ### Example: sort by name
 
 ```java
@@ -408,6 +410,29 @@ students.sort(new NameComparator());
 ```
 
 The `Student` class does not need to change. The comparator uses public accessors to compare two students.
+
+A `Comparator` is usually defined outside the `Student` class, often in the main() method when you need a particular sorting rule for that program.
+
+Unlike `Comparable`, which defines natural ordering inside the class, `Comparator` lets you define different sorting rules without modifying `Student`.
+
+You can organize your program into two files.
+
+```
+Student.java
+
+Contains:
+- Fields such as name and gpa
+- Constructor and getters
+- Optionally, compareTo() if the class implements Comparable<Student>
+  
+Main.java
+  
+  Contains:
+- Creating the ArrayList<Student>
+- Adding students
+- Defining the Comparator
+- Sorting and displaying the list
+```
 
 ### Example: GPA, highest first
 
