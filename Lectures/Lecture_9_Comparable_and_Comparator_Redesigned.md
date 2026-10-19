@@ -117,6 +117,7 @@ Zoe (3.9), Mina (3.5), Ali (3.5)
 Notice that Mina and Ali had the same GPA, but their relative order has changed. Ali was before Mina; after reversing the list, Mina is before Ali.
 
 **Option B:** Define descending order directly (Or, use a `Comparator`, see later).
+
 If the natural ordering is based on GPA, we can reverse the comparison arguments:
 ```
 @Override
