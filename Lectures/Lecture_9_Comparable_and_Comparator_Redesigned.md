@@ -28,9 +28,7 @@ public interface Comparable<Student> {
     int compareTo(Student other);
 }
 ```
-
-So the declaration is effectively:
-
+ 
 Interface methods are implicitly public and abstract in Java, unless they are declared as default, static, or private methods with a body.
 
 The definition is equivalent to writing:
