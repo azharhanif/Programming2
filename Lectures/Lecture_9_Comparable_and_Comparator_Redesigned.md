@@ -508,12 +508,6 @@ This works because `Comparator` is a functional interface: it has one abstract m
 
 Java can use the lambda expression to provide that method's implementation.  
 
-**Takeaway:**
-
-An interface cannot be instantiated directly. 
-
-But `new Comparator<Student>() { ... }` is not instantiating the interface itself: it defines and instantiates an **anonymous class** that implements the interface.
-
 ### Comparable versus Comparator
 ```
 | Question                | `Comparable`                   | `Comparator`                          |
@@ -525,9 +519,16 @@ But `new Comparator<Student>() { ... }` is not instantiating the interface itsel
 | Must edit the class?    | Usually, to implement it       | No, if needed data is accessible      |
 | Sort call               | `Collections.sort(list)`       | `Collections.sort(list, comparator)`  |
 ```
-Memory aid:
-- **Comparable:** “This object knows its natural order.”
-- **Comparator:** “This separate rule compares two objects.”
+**Takeaway:**
+
+An interface cannot be instantiated directly. 
+
+But `new Comparator<Student>() { ... }` is not instantiating the interface itself.
+
+It defines and instantiates an **anonymous class** that implements the interface.
+
+- **Comparable:** This object knows its natural order.
+- **Comparator:** This separate rule compares two objects.
 
 ---
 
