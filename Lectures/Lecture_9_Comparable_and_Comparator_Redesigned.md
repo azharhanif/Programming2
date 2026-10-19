@@ -224,7 +224,28 @@ public class Student implements Comparable<Student> {
     }
 }
 ```
+**Note:** `Double.compare()` returns an int, even though it compares two double values.
 
+Look at the method signature:
+```
+public static int compare(double d1, double d2)
+```
+Java's Double class provides this static method to compare two double values. It returns an integer indicating the comparison result.
+
+**How does it work?**
+
+```
+Double.compare(3.5, 3.9);  // Negative integer
+Double.compare(3.9, 3.5);  // Positive integer
+Double.compare(3.5, 3.5);  // 0
+```
+The exact negative or positive integer is not important. Only its sign matters.
+```
+Return value	    Meaning
+Negative	        First value is smaller
+Zero	            Values are equal
+Positive	        First value is larger
+```
 Test:
 
 ```java
