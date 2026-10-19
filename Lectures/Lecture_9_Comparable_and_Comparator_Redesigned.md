@@ -101,10 +101,10 @@ Because, reversing a whole list also reverses the relative order of elements tie
 
 Suppose we have three students sorted by GPA in ascending order:
 ```
-Position    Name	GPA
-1	        Ali	    3.5
-2	        Mina	3.5
-3	        Zoe	    3.9
+Position    Name	    GPA
+1	        Ali	        3.5
+2	        Mina	    3.5
+3	        Zoe	        3.9
 ```
 Assume the list is currently:
 ```
