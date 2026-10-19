@@ -446,7 +446,9 @@ Comparator<Student> byGpaDescending = new Comparator<Student>() {
 
 students.sort(byGpaDescending);
 ```
-An interface cannot be instantiated directly using `new Comparator<Student>()` as if it were a normal **class** constructor. However, Java allows this syntax because it creates an **anonymous class** that implements the interface.
+An interface cannot be instantiated directly using `new Comparator<Student>()` as if it were a normal **class** constructor. 
+
+However, Java allows this syntax because it creates an **anonymous class** that implements the interface.
 
 At first glance, it looks like we are creating an object of an interface. We are not.
 
@@ -502,25 +504,27 @@ Comparator<Student> byGpaDescending =
             -> Double.compare(second.getGpa(), first.getGpa());
 ```
 
-This works because `Comparator` is a functional interface: it has one abstract method, `compare()`. Java can use the lambda expression to provide that method's implementation.  
+This works because `Comparator` is a functional interface: it has one abstract method, `compare()`. 
+
+Java can use the lambda expression to provide that method's implementation.  
 
 **Takeaway:**
 
 An interface cannot be instantiated directly. 
 
-But new Comparator<Student>() { ... } is not instantiating the interface itself: it defines and instantiates an anonymous class that implements the interface.
+But `new Comparator<Student>() { ... }` is not instantiating the interface itself: it defines and instantiates an **anonymous class** that implements the interface.
 
 ### Comparable versus Comparator
-
-| Question | `Comparable` | `Comparator` |
-|---|---|---|
-| Method | `compareTo(other)` | `compare(first, second)` |
-| Rule lives in | Class being compared | Separate object or expression |
-| Typical use | Natural/default order | Alternative, context-specific order |
-| Multiple rules? | One natural ordering per class | Many comparators |
-| Must edit the class? | Usually, to implement it | No, if needed data is accessible |
-| Sort call | `Collections.sort(list)` | `Collections.sort(list, comparator)` |
-
+```
+| Question                | `Comparable`                   | `Comparator`                          |
+|-------------------------|--------------------------------|---------------------------------------|
+| Method                  | `compareTo(other)`             | `compare(first, second)`              |
+| Rule lives in           | Class being compared           | Separate object or expression         |
+| Typical use             | Natural/default order          | Alternative, context-specific order   |
+| Multiple rules?         | One natural ordering per class | Many comparators                      |
+| Must edit the class?    | Usually, to implement it       | No, if needed data is accessible      |
+| Sort call               | `Collections.sort(list)`       | `Collections.sort(list, comparator)`  |
+```
 Memory aid:
 - **Comparable:** “This object knows its natural order.”
 - **Comparator:** “This separate rule compares two objects.”
