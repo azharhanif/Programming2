@@ -297,6 +297,10 @@ For custom classes, these are design decisions. Java does not automatically know
 
 Also, natural ordering does not have to be the most important order in every situation. It should be a sensible default for that class.
 
+**Common mistake:** Do not combine comparison results using arbitrary weights, such as `100 * nameResult + idResult`. 
+
+Comparison results are not fixed-size scores; an arbitrary multiplier does not reliably preserve key priority. Use sequential comparisons or comparator chaining.
+
 **What if we need a different ordering?**
 
 Suppose the registrar wants students sorted by ID, but the scholarship committee wants the highest GPA first.
@@ -337,55 +341,7 @@ For strings, `compareTo()` gives lexicographic order. Do not use `==` to decide 
 
 ---
 
-## 5. Ties and secondary keys
-
-### Concept
-
-If two students have the same GPA, comparing only GPA returns zero:
-
-```java
-Double.compare(3.7, 3.7) == 0
-```
-
-That means the students tie under the GPA ordering. It does **not** mean they are the same student.
-
-Suppose the required order is GPA ascending, then name ascending:
-
-```java
-@Override
-public int compareTo(Student other) {
-    int result = Double.compare(this.gpa, other.gpa);
-
-    if (result != 0) {
-        return result;
-    }
-
-    return this.name.compareTo(other.name);
-}
-```
-
-This is lexicographic comparison: compare the first key, and compare the next key only if the first key ties.
-
-### Trace
-
-Compare Mina (3.7) with Zoe (3.7):
-
-1. GPA comparison returns `0`.
-2. Compare names.
-3. `"Mina".compareTo("Zoe")` is negative.
-4. Mina comes before Zoe.
-
-Compare Ali (3.9) with Mina (3.7):
-
-1. GPA comparison is positive for Ali compared with Mina.
-2. Return that result immediately.
-3. Names do not need to be checked.
-
-**Common mistake:** Do not combine comparison results using arbitrary weights, such as `100 * nameResult + idResult`. Comparison results are not fixed-size scores; an arbitrary multiplier does not reliably preserve key priority. Use sequential comparisons or comparator chaining.
-
----
-
-## 6. `Comparator`: an external rule
+## 5. `Comparator`: an external rule
 
 ### Concept
 
@@ -466,7 +422,7 @@ Memory aid:
 
 ---
 
-## 7. Multiple keys with a Comparator
+## 6. Multiple keys with a Comparator
 
 ### Scenario
 
@@ -537,7 +493,7 @@ Multiplying comparison results by arbitrary constants is fragile. Use sequential
 
 ---
 
-## 8. Complete example: natural order plus an alternative
+## 7. Complete example: natural order plus an alternative
 
 ### `Student.java`
 
@@ -637,7 +593,7 @@ Notice:
 
 ---
 
-## 9. Common mistakes and debugging
+## 8. Common mistakes and debugging
 
 ### Mistake 1: wrong method signature
 
@@ -713,7 +669,7 @@ If you need descending GPA, express it directly. Reversing the entire list can r
 
 ---
 
-## 10. Practice — predict, run, explain
+## 9. Practice — predict, run, explain
 
 For each activity:
 1. **Predict** the output before running.
@@ -878,7 +834,7 @@ The class's natural ordering is being changed to serve unrelated use cases. Choo
 
 ---
 
-## 11. AI-assisted practice — scholarship ranking
+## 10. AI-assisted practice — scholarship ranking
 
 ### Scenario
 
@@ -906,18 +862,8 @@ Write down the expected order. Explain which key determines the order when two r
 
 Ask an AI coding assistant to write a `Comparator<Student>` for the four rules. Specify the priority and direction of every key. Do not accept code simply because it compiles.
 
-### Part C — Critique
 
-Check whether the AI implementation:
-- sorts GPA descending;
-- sorts volunteer hours descending only when GPA ties;
-- sorts name ascending only when both earlier keys tie;
-- sorts ID ascending only when the first three keys tie;
-- avoids subtraction for numeric comparisons;
-- uses getters that actually exist in your class;
-- avoids unnecessary changes to `Student`.
-
-### Part D — Modify and test
+### Part C — Modify and test
 
 Test:
 - a higher-GPA student with fewer volunteer hours;
