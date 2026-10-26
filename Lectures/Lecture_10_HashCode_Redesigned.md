@@ -530,9 +530,9 @@ Output:
 ```
 The numbers differ because the methods do different things.
 ```
-Method	              What it does
-Objects.hashCode(id)	Returns id.hashCode() if id isn't null; otherwise returns 0.
-Objects.hash(id)	    Treats id as one item in a varargs array and calculates a combined hash code.
+Method	                What it does
+Objects.hashCode(id)	  Returns id.hashCode() if id isn't null; otherwise returns 0.
+Objects.hash(id)	      Treats id as one item in a varargs array and calculates a combined hash code.
 ```
 **Takeaway:** For a class with one field, `Objects.hashCode(id)` is straightforward. For multiple fields, `Objects.hash(id, name, email)` is a convenient way to combine them. In either case, ensure the result is consistent with the class's `equals()` method.
 
