@@ -14,9 +14,112 @@ The central question is:
 
 You will first observe the problem, then define equality correctly, then make `HashSet` behave as intended.
 
-The lecture emphasizes that `hashCode()` helps Java find a likely bucket, while `equals()` makes the final equality decision. Equal objects must have the same hash code. citeturn2view0turn2view3
+The lecture emphasizes that `hashCode()` helps Java find a likely bucket, while `equals()` makes the final equality decision. Equal objects must have the same hash code. 
 
 ---
+# Part 0 - Practice: predict, run,  verify
+For each question, predict the output before running the code, then write in explain the role equals() and hashCode() in the given Answers.
+
+#### Practice 1 — A set of integers
+```
+Set<Integer> values = new HashSet<>();
+values.add(5);
+values.add(8);
+values.add(5);
+System.out.println(values.size());
+```
+**Answer:** 2. The repeated integer value is not stored twice. 
+
+**Explain:**
+
+#### Practice 2 — Same author data
+Assume Author has the `equals()` and `hashCode()` methods from HashCode lecture.
+```
+Set<Author> authors = new HashSet<>();
+authors.add(new Author("Alice Chen", "Canada"));
+authors.add(new Author("Alice Chen", "Canada"));
+System.out.println(authors.size());
+```
+**Answer:** 1. The objects are logically equal, and their hash codes are consistent.
+
+**Explain:**
+
+#### Practice 3 — A collision is not equality
+Assume a class has a correct `equals()` method and this hash method:
+```
+@Override
+public int hashCode() {
+    return 1;
+}
+```
+What happens if we add two objects that are not equal?
+
+**Answer:** Both can be stored. They share a hash code, but equals() says they are different. This hash function is poor for performance because it causes many collisions, but the collision alone does not make them duplicates.
+
+
+**Explain:**
+#### Practice 4 — Identify the bug
+A class defines equality using `id` and `name`:
+```
+@Override
+public boolean equals(Object obj) {
+    // Assume a correct implementation that compares id and name.
+}
+```
+But its hash method is:
+```
+@Override
+public int hashCode() {
+    return Objects.hash(id);
+}
+```
+Is this always incorrect?
+
+**Answer:** Not necessarily. Equal objects have the same id, so this hash code can still satisfy the required contract. 
+
+However, many unequal objects with the same ID will collide. Including both id and name is usually a better distribution and makes the implementation align more clearly with the equality fields:
+```
+return Objects.hash(id, name);
+```
+The contract does not require `hashCode()` to use every field in `equals()`; it requires equal objects to have equal hash codes. Using the same fields is a simple and effective guideline.
+
+**Explain:**
+#### Practice 5 — HashMap lookup
+```
+Map<String, String> codes = new HashMap<>();
+codes.put("A1", "Active");
+codes.put("I1", "Inactive");
+codes.put("A1", "Archived");
+System.out.println(codes.size());
+System.out.println(codes.get("A1"));
+```
+**Answer:**
+```
+2
+Archived
+```
+The second put for key `A1` replaces the previous value. A `HashMap` cannot store two separate mappings for the same key.
+
+**Explain:**
+#### Practice 6 — The same object twice
+```
+Author a = new Author("Alice Chen", "Canada");
+Set<Author> authors = new HashSet<>();
+authors.add(a);
+authors.add(a);
+System.out.println(authors.size());
+```
+**Answer:** 1. The exact same object is added twice; a set keeps only one occurrence.
+
+**Explain:**
+#### Practice 7 — Explain the contract
+Complete this sentence:
+
+“If a.equals(b) returns true, then a.hashCode() and b.hashCode() must __________.”
+
+**Answer:** Return the same integer value.
+
+**Explain:**
 
 # Part 1 — Create LibraryMember
 
