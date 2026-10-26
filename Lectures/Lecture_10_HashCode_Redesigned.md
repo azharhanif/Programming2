@@ -855,9 +855,14 @@ Avoid changing fields used in `equals()` or `hashCode()` while an object is stor
 
 ## 9. Subclasses: a brief note
 
-If a class extends another class, designing equality becomes more subtle. The subclass and superclass must agree on what it means for objects to be equal. Simply adding fields to a subclass's `equals()` can break symmetry or transitivity if the superclass already defines equality.
+If a class extends another class, designing equality becomes more subtle. 
 
-For this introductory lecture, do not add subclass-specific equality unless the course exercise explicitly asks for it. Follow the equality design given in the assignment, and make sure `hashCode()` respects that same design. In real projects, consider whether a record, immutable value class, or IDE-generated `equals()` and `hashCode()` is appropriate.
+The subclass and superclass must agree on what it means for objects to be equal. 
+
+Simply adding fields to a subclass's `equals()` can break symmetry or transitivity if the superclass already defines equality.
+
+For this introductory lecture, do not add subclass-specific equality.
+
 
 ---
 
@@ -905,123 +910,8 @@ If a key's equality/hash fields change after insertion, later lookups may fail. 
 
 ---
 
-## 11. Practice — predict, run, explain
 
-For each question, predict the output before running the code, then explain the role of `equals()` and `hashCode()`.
-
-### Practice 1 — A set of integers
-
-```java
-Set<Integer> values = new HashSet<>();
-values.add(5);
-values.add(8);
-values.add(5);
-System.out.println(values.size());
-```
-
-**Answer:** `2`. The repeated integer value is not stored twice.
-
-### Practice 2 — Same author data
-
-Assume `Author` has the `equals()` and `hashCode()` methods from this lecture.
-
-```java
-Set<Author> authors = new HashSet<>();
-authors.add(new Author("Alice Chen", "Canada"));
-authors.add(new Author("Alice Chen", "Canada"));
-System.out.println(authors.size());
-```
-
-**Answer:** `1`. The objects are logically equal, and their hash codes are consistent.
-
-### Practice 3 — A collision is not equality
-
-Assume a class has a correct `equals()` method and this hash method:
-
-```java
-@Override
-public int hashCode() {
-    return 1;
-}
-```
-
-What happens if we add two objects that are not equal?
-
-**Answer:** Both can be stored. They share a hash code, but `equals()` says they are different. This hash function is poor for performance because it causes many collisions, but the collision alone does not make them duplicates.
-
-### Practice 4 — Identify the bug
-
-A class defines equality using `id` and `name`:
-
-```java
-@Override
-public boolean equals(Object obj) {
-    // Assume a correct implementation that compares id and name.
-}
-```
-
-But its hash method is:
-
-```java
-@Override
-public int hashCode() {
-    return Objects.hash(id);
-}
-```
-
-Is this always incorrect?
-
-**Answer:** Not necessarily. Equal objects have the same `id`, so this hash code can still satisfy the required contract. However, many unequal objects with the same ID will collide. Including both `id` and `name` is usually a better distribution and makes the implementation align more clearly with the equality fields:
-
-```java
-return Objects.hash(id, name);
-```
-
-The contract does not require `hashCode()` to use every field in `equals()`; it requires equal objects to have equal hash codes. Using the same fields is a simple and effective guideline.
-
-### Practice 5 — HashMap lookup
-
-```java
-Map<String, String> codes = new HashMap<>();
-codes.put("A1", "Active");
-codes.put("I1", "Inactive");
-codes.put("A1", "Archived");
-System.out.println(codes.size());
-System.out.println(codes.get("A1"));
-```
-
-**Answer:**
-
-```text
-2
-Archived
-```
-
-The second `put` for key `A1` replaces the previous value. A `HashMap` cannot store two separate mappings for the same key.
-
-### Practice 6 — The same object twice
-
-```java
-Author a = new Author("Alice Chen", "Canada");
-Set<Author> authors = new HashSet<>();
-authors.add(a);
-authors.add(a);
-System.out.println(authors.size());
-```
-
-**Answer:** `1`. The exact same object is added twice; a set keeps only one occurrence.
-
-### Practice 7 — Explain the contract
-
-Complete this sentence:
-
-“If `a.equals(b)` returns `true`, then `a.hashCode()` and `b.hashCode()` must __________.”
-
-**Answer:** Return the same integer value.
-
----
-
-## 12. Final summary
+## 11. Final summary
 
 | Term | Plain-language meaning |
 |---|---|
