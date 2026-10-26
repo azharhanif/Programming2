@@ -363,7 +363,75 @@ public class Author {
 }
 ```
 
-Notice that `Objects.equals(name, other.name)` is null-safe: it can compare the two values even if one or both are `null`. Using `Objects.hash(...)` also handles `null` fields. This version permits null fields; a class could instead reject null values in its constructor.
+Notice that `Objects.equals(name, other.name)` is null-safe: it can compare the two values even if one or both are `null`. Using `Objects.hash(...)` also handles `null` fields. This version permits null fields; a class could **instead reject null values** in its constructor.
+
+If every student must have an ID, reject null in the constructor. It establishes a clear rule: a valid Student object must always have an ID.
+
+#### A. A constructor that permits null
+```
+class Student {
+    private String id;
+    private String name;
+
+    public Student(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}
+```
+We can create these objects:
+```
+Student s1 = new Student("S101", "Ali");
+Student s2 = new Student(null, "Mina");
+Student s3 = new Student("S103", null);
+```
+All three statements compile and execute. Java allows a reference-type variable such as `String` to hold `null`.
+
+However, if our `equals()` or `hashCode()` method calls `id.hashCode()` when `id` is `null`, it will throw a `NullPointerException`.
+
+#### B. An alternative: reject null in the constructor
+We can prevent invalid objects from being created by checking the values:
+```
+import java.util.Objects;
+
+class Student {
+    private String id;
+    private String name;
+
+    public Student(String id, String name) {
+        this.id = Objects.requireNonNull(id, "id cannot be null");
+        this.name = Objects.requireNonNull(name, "name cannot be null");
+    }
+}
+```
+Now this works: 
+```
+Student s1 = new Student("S101", "Ali");
+```
+
+But this throws a `NullPointerException` immediately:
+```
+Student s2 = new Student(null, "Mina");
+```
+The error occurs when the object is constructed, rather than later when another method tries to use the missing value.
+#### C. Why does this matter for `HashSet` and `HashMap`?
+Suppose `Student` class uses the following method:
+```
+@Override
+public int hashCode() {
+    return id.hashCode();
+}
+```
+If `id` is `null`, calling `hashCode()` on it causes a `NullPointerException`.
+
+If `id` is allowed to be `null`, instead we can write:
+```
+@Override
+public int hashCode() {
+    return Objects.hashCode(id);
+}
+```
+Unlike `id.hashCode()`, `Objects.hashCode(id)` safely returns `0` when `id` is `nul`.
 
 ### 4.3 Why use the same fields?
 
