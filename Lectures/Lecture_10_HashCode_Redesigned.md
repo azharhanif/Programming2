@@ -589,7 +589,14 @@ The set may print authors in an order different from the order in which they wer
 
 ## 6. What goes wrong if we override `equals()` but not `hashCode()`?
 
-Imagine that `Author` has the `equals()` method from Section 2, but does not override `hashCode()`. It inherits `Object.hashCode()`, whose value is not derived from the fields we use in `equals()`.
+Imagine that `Author` has the `equals()` method from Section 2, but does not override `hashCode()`. It inherits the instance method `hashCode()` from `Object`. 
+```
+Author a1 = new Author();
+System.out.println(a1.hashCode());
+```
+This prints an integer. The inherited implementation does not promise to calculate the hash code from `name` and `country`.
+
+**The problem:** `equals()` might consider two different `Author` objects equal, but the inherited `Object.hashCode()` does not guarantee that their hash codes will be equal.
 
 ```java
 Author a1 = new Author("Alice Chen", "Canada");
@@ -601,6 +608,19 @@ System.out.println(a1.equals(a2));
 The result is `true`. But the inherited hash codes are not required to be equal for these two distinct objects. If their hash codes differ, a `HashSet` or `HashMap` may search a different bucket and fail to recognize them as equal.
 
 This violates the required relationship between `equals()` and `hashCode()`.
+
+**Note: `Objects` is a separate utility class in java.util.**
+```
+import java.util.Objects;
+
+System.out.println(Objects.hashCode("S101"));
+System.out.println(Objects.hashCode(null)); // 0
+```
+We call it using the class name, `Objects.hashCode(...).` 
+
+It returns the supplied object's hash code, or `0` if the argument is `null`.
+
+It is **not automatically inherited** by the `Author` class here.
 
 **Not every pair of different hash codes guarantees that `equals()` is never called in every implementation detail.** The exact bucket mechanics are implementation-specific. The essential rule is that equal objects must have equal hash codes so hash-based collections can work correctly.
 
