@@ -701,25 +701,29 @@ A `HashMap` uses the key's hash code to help locate where a key-value mapping be
 
 For keys such as `String`, Java already supplies suitable `equals()` and `hashCode()` implementations. For custom key classes, you should implement both methods consistently.
 
-Example: use an employee ID object as a key.
+Example: Use an Author object as a key.
+Suppose we want to associate each author with the number of books they have written.
 
+We can use an `Author` object as the key and an Integer as the value.
 ```java
-Map<Author, String> authorGenres = new HashMap<>();
+Map<Author, Integer> bookCounts = new HashMap<>();
 
 Author a1 = new Author("Alice Chen", "Canada");
-Author a2 = new Author("Alice Chen", "Canada");
+Author a2 = new Author("Omar Ali", "Canada");
 
-authorGenres.put(a1, "Programming");
-System.out.println(authorGenres.get(a2));
+bookCounts.put(a1, 3);
+bookCounts.put(a2, 5);
+
+System.out.println(bookCounts.get(a1)); // 3
 ```
+Here:
 
-Because `a1` and `a2` are equal according to `Author.equals()` and have matching hash codes, the lookup using `a2` can find the value stored with `a1` as the key. Output:
+- Key: an Author object
+- Value: the number of books written by that author
+- `put()` adds a key–value mapping.
+- `get()` retrieves the value associated with a key.
 
-```text
-Programming
-```
-
-Without a consistent `hashCode()`, this lookup may fail even when `equals()` says the keys are equal.
+Because Author is a custom class, its equals() and hashCode() methods must be implemented consistently for logically equal authors to behave correctly as map keys.
 
 ### 7.2 `HashSet` versus `HashMap`
 
