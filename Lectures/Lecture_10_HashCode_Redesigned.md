@@ -644,95 +644,142 @@ Therefore:
 
 ---
 
-## 7. What is a `HashMap`?
+## 7. What is a `Map`? Introducing `HashMap`
 
-A `HashSet` stores unique elements. A `HashMap` stores **key-value pairs**.
+So far, we have studied `Set` and `HashSet`. A `HashSet` is useful when we want to store unique elements and check whether an element exists.
+
+But what if we want to associate information with each element?
+
+For example, a library might want to record how many books each author has written. We need more than a collection of unique authors: we need to associate each author with a book count.
+
+This is where a **`Map`** is useful.
+
+### 7.1 What is a `Map`?
+
+`Map` is an **interface** in Java's `java.util` package. It represents a collection of **key–value pairs**.
+
+Each entry associates one key with one value.
 
 Think of a dictionary:
 
 - The **key** is the word you look up.
 - The **value** is the definition associated with that word.
 
-In a program, a student ID could be the key and a student's name could be the value.
+In a library program:
+
+- The **key** could be an `Author` object.
+- The **value** could be the number of books written by that author.
+
+A `Map` allows you to retrieve a value using its key.
+
+### 7.2 How is `Map` different from `Set`?
+
+Consider the two designs below.
+
+**Design A: Use a `Set`**
 
 ```java
-import java.util.HashMap;
-import java.util.Map;
+Set<Author> authors = new HashSet<>();
 
-public class Main {
-    public static void main(String[] args) {
-        Map<String, String> studentNames = new HashMap<>();
-
-        studentNames.put("S101", "Zoe");
-        studentNames.put("S102", "Ali");
-        studentNames.put("S103", "Mina");
-
-        System.out.println(studentNames.get("S102"));
-        System.out.println(studentNames.containsKey("S101"));
-    }
-}
+authors.add(new Author("Alice Chen", "Canada"));
+authors.add(new Author("Omar Ali", "Canada"));
 ```
 
-Output:
+This stores unique authors. However, the set does not directly associate a book count with each author.
 
-```text
-Ali
-true
-```
+**Design B: Use a `Map`**
 
-Here:
-
-- `Map<String, String>` means keys are `String` objects and values are `String` objects.
-- `put(key, value)` adds a mapping or replaces the value for an existing key.
-- `get(key)` retrieves the value for a key.
-- `containsKey(key)` checks whether the key exists.
-
-If we execute:
-
-```java
-studentNames.put("S102", "Aly");
-```
-
-The value for key `S102` is replaced with `Aly`; a second separate `S102` mapping is not created. A map cannot contain duplicate keys, although different keys can map to the same value.
-
-### 7.1 Why does `HashMap` use `hashCode()` and `equals()`?
-
-A `HashMap` uses the key's hash code to help locate where a key-value mapping belongs. When looking up a key, it uses equality checks as needed to determine whether a stored key matches the requested key.
-
-For keys such as `String`, Java already supplies suitable `equals()` and `hashCode()` implementations. For custom key classes, you should implement both methods consistently.
-
-**Example: Use an Author object as a key.**
-
-Suppose we want to associate each author with the number of books they have written.
-
-We can use an `Author` object as the key and an Integer as the value.
 ```java
 Map<Author, Integer> bookCounts = new HashMap<>();
 
-Author a1 = new Author("Alice Chen", "Canada");
-Author a2 = new Author("Omar Ali", "Canada");
-
-bookCounts.put(a1, 3);
-bookCounts.put(a2, 5);
-
-System.out.println(bookCounts.get(a1)); // 3
+bookCounts.put(new Author("Alice Chen", "Canada"), 3);
+bookCounts.put(new Author("Omar Ali", "Canada"), 5);
 ```
-Here:
 
-- Key: an Author object
-- Value: the number of books written by that author
-- `put()` adds a key–value mapping.
-- `get()` retrieves the value associated with a key.
+This stores each author as a key and the number of books as its value.
 
-Because Author is a custom class, its equals() and hashCode() methods must be implemented consistently for logically equal authors to behave correctly as map keys.
+Now we can retrieve Alice's book count:
 
-### 7.2 `HashSet` versus `HashMap`
+```java
+Author alice = new Author("Alice Chen", "Canada");
 
-| Collection | Stores | Example use |
-|---|---|---|
-| `HashSet<E>` | Unique elements | Keep track of unique authors |
-| `HashMap<K, V>` | Key-value mappings, with unique keys | Look up a student's name using student ID |
+System.out.println(bookCounts.get(alice));
+```
 
+Expected output:
+
+```text
+3
+```
+
+This works because the `Author` class defines `equals()` and `hashCode()` consistently, so the new `alice` object matches the logically equal key already in the map.
+
+**Which design should we choose?**
+
+| Requirement | Suitable collection |
+|---|---|
+| Store unique authors | `Set<Author>` |
+| Associate each author with a book count | `Map<Author, Integer>` |
+| Check whether an author exists | Either can work |
+| Retrieve a book count using an author as the key | `Map<Author, Integer>` |
+
+A `Map` is not inherently better than a `Set`. Choose the collection that matches the information your program needs to store.
+
+### 7.3 What is `HashMap`?
+
+`HashMap` is a **class that implements the `Map` interface**. It uses hashing to help store, find, and retrieve entries efficiently.
+
+The following declaration is a common Java programming style:
+
+```java
+Map<Author, Integer> bookCounts = new HashMap<>();
+```
+
+Read it from right to left:
+
+- `new HashMap<>()` creates a `HashMap` object.
+- `Map<Author, Integer>` specifies the interface and the types of its keys and values.
+- `bookCounts` is the reference variable used to access the map.
+
+This follows the same design principle as:
+
+```java
+Set<Author> authors = new HashSet<>();
+```
+
+Here, `Set` is the interface and `HashSet` is the implementation.
+
+Using the interface as the reference type makes it easier to change the implementation later without changing code that uses only the `Map` interface's methods.
+
+### 7.4 Important `HashMap` methods
+
+| Method | Purpose |
+|---|---|
+| `put(key, value)` | Adds a mapping or replaces the value for an existing key |
+| `get(key)` | Retrieves the value associated with a key, or `null` if no mapping exists |
+| `containsKey(key)` | Checks whether a key exists |
+| `remove(key)` | Removes a mapping by key |
+| `size()` | Returns the number of key–value mappings |
+
+A `HashMap` does not guarantee iteration order. It also permits one `null` key and `null` values, although whether nulls are appropriate depends on your program's design.
+
+### 7.5 How does `HashMap` use `hashCode()` and `equals()`?
+
+When you use an object such as `Author` as a key, `HashMap` uses the key's hash code to help locate the appropriate area of its internal table. It uses equality checks when necessary to identify the matching key.
+
+Therefore, if two `Author` objects are considered equal by `equals()`, they must return the same hash code.
+
+If you insert a value using a key that is equal to an existing key, the map updates the value associated with that key rather than creating a second mapping for an equal key.
+
+This is why implementing `equals()` and `hashCode()` consistently is important for both `HashSet` and `HashMap`.
+
+### 7.6 `HashSet` versus `HashMap`
+```
+| Collection             | Stores                                | Example use                               |
+ 
+| `HashSet<E>`           | Unique elements                      | Keep track of unique authors               |
+| `HashMap<K, V>`        | Key-value mappings, with unique keys | Look up a student's name using student ID  |
+```
 A useful connection: Java's `HashSet` is implemented using a `HashMap` internally. You do not need to know the implementation details to use a `HashSet`, but it helps explain why hash codes matter to both collections.
 
 ![HashMap and HashSet internal structure](HashMap_HashSet.png)
