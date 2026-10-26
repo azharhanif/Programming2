@@ -20,15 +20,15 @@ By the end of this lecture, you should be able to:
 ### 1.1 Why might counting books give the wrong answer?
 
 Imagine a library has these books:
+```
+| Book                   | Author         | Canadian author? |
 
-| Book | Author | Canadian author? |
-|---|---|---|
-| *Java Basics* | Alice Chen | Yes |
-| *Java Projects* | Alice Chen | Yes |
-| *Python for Beginners* | Omar Ali | Yes |
-| *Web Design* | Maya Singh | No |
-| *Advanced Java* | Alice Chen | Yes |
-
+| *Java Basics*          | Alice Chen     | Yes |
+| *Java Projects*        | Alice Chen     | Yes |
+| *Python for Beginners* | Omar Ali       | Yes |
+| *Web Design*           | Maya Singh     | No |
+| *Advanced Java*        | Alice Chen     | Yes |
+```
 How many books have Canadian authors? There are four such books.
 
 How many **different Canadian authors** are represented? There are only two: Alice Chen and Omar Ali.
@@ -79,10 +79,12 @@ import java.util.Set;
 ### 1.3 Why use `HashSet`?
 
 `HashSet` is a common implementation of `Set`. It uses a hash table internally to help find items efficiently. For ordinary operations such as `add()` and `contains()`, it is typically very fast when hash values are distributed well.
-#### A. Why is HashSet very fast when hash values are distributed well?
-A HashSet stores unique elements. Internally, it uses a hash-based structure to help find where an element belongs.
 
-Imagine you have 10,000 student IDs and want to check whether "S8521" is already in the collection.
+#### A. Why is HashSet very fast when hash values are distributed well?
+A `HashSet` stores unique elements. Internally, it uses a hash-based structure to help find where an element belongs.
+
+Imagine you have 10,000 student IDs and want to check whether `"S8521"` is already in the collection.
+
 **Approach 1:** Use an `ArrayList`
 ```
 ArrayList<String> studentIds = new ArrayList<>();
@@ -94,9 +96,9 @@ studentIds.add("S1003");
 
 System.out.println(studentIds.contains("S8521"));
 ```
-An ArrayList generally checks elements one by one until it finds a match or reaches the end. In the worst case, it may examine all 10,000 elements.
+An `ArrayList` generally checks elements one by one until it finds a match or reaches the end. In the worst case, it may examine all 10,000 elements.
 
-**Approach 2:** Use a HashSet
+**Approach 2:** Use a `HashSet`
 ```
 HashSet<String> studentIds = new HashSet<>();
 
@@ -107,14 +109,16 @@ studentIds.add("S1003");
 
 System.out.println(studentIds.contains("S8521"));
 ```
-A HashSet uses the search value's hash code to help locate the relevant area of its internal data structure. It then checks equality as needed.
+A `HashSet` uses the search value's hash code to help locate the relevant area of its internal data structure. It then checks equality as needed.
 
 #### B. What does “hash values are distributed well” mean?
-Suppose a `HashSet` has many student IDs. Ideally, their hash codes help distribute the IDs across different internal locations instead of directing many IDs to the same location.
+Suppose a `HashSet` has many student IDs. 
+
+Ideally, their hash codes help distribute the IDs across different internal locations instead of directing many IDs to the same location.
 - Good distribution: Searches usually examine only a few candidates.
 - Poor distribution: Many elements end up in the same area, so the set must do more equality checks to identify the correct element.
   
-For example, imagine a badly designed class whose hashCode() always returns 1:
+For example, imagine a badly designed class whose `hashCode()` always returns `1`:
 ```
 @Override
 public int hashCode() {
@@ -123,9 +127,9 @@ public int hashCode() {
 ```
 Every object gets the same hash code. The `HashSet` loses much of the search advantage it normally gets from distributing elements. It must distinguish more candidates using `equals()`.
 
-With well-distributed hash codes, HashSet operations such as `add()`, `contains()`, and `remove()` generally take constant expected time, \(O(1)\). In unfavorable cases, they can take longer.
+With well-distributed hash codes, `HashSet` operations such as `add()`, `contains()`, and `remove()` generally take constant expected time, \(O(1)\). In unfavorable cases, they can take longer.
 
-**Takeaway:** A good hash code helps a HashSet narrow down the search. It does not uniquely identify an object, and collisions are allowed.
+**Takeaway:** A good hash code helps a `HashSet` narrow down the search. It does not uniquely identify an object, and collisions are allowed.
 
 A `HashSet` does **not** promise to keep elements in insertion order. Do not rely on the order in which elements appear when you print or iterate over a set.
 
@@ -578,7 +582,7 @@ Without a consistent `hashCode()`, this lookup may fail even when `equals()` say
 | `HashSet<E>` | Unique elements | Keep track of unique authors |
 | `HashMap<K, V>` | Key-value mappings, with unique keys | Look up a student's name using student ID |
 
-A useful connection: Java's `HashSet` is implemented using a `HashMap` internally. You do not need to know the 
+A useful connection: Java's `HashSet` is implemented using a `HashMap` internally. You do not need to know the implementation details to use a `HashSet`, but it helps explain why hash codes matter to both collections.
 
 ![HashMap and HashSet internal structure](HashMap_HashSet.png)
 
