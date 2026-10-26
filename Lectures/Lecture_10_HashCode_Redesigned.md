@@ -749,8 +749,6 @@ Set<Author> authors = new HashSet<>();
 
 Here, `Set` is the interface and `HashSet` is the implementation.
 
-Using the interface as the reference type makes it easier to change the implementation later without changing code that uses only the `Map` interface's methods.
-
 ### 7.4 Important `HashMap` methods
 
 | Method | Purpose |
