@@ -435,7 +435,7 @@ Unlike `id.hashCode()`, `Objects.hashCode(id)` safely returns `0` when `id` is `
 
 ### 4.3 Why use the same fields?
 
-In this class, equality depends on `name` and `country`:
+Lets continue the discussion with the `Author` class, here equality depends on `name` and `country`:
 
 ```java
 return Objects.equals(name, other.name)
