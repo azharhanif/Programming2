@@ -701,7 +701,8 @@ A `HashMap` uses the key's hash code to help locate where a key-value mapping be
 
 For keys such as `String`, Java already supplies suitable `equals()` and `hashCode()` implementations. For custom key classes, you should implement both methods consistently.
 
-Example: Use an Author object as a key.
+**Example: Use an Author object as a key.**
+
 Suppose we want to associate each author with the number of books they have written.
 
 We can use an `Author` object as the key and an Integer as the value.
