@@ -759,7 +759,9 @@ Here, `Set` is the interface and `HashSet` is the implementation.
 | `remove(key)` | Removes a mapping by key |
 | `size()` | Returns the number of key–value mappings |
 
-A `HashMap` does not guarantee iteration order. It also permits one `null` key and `null` values, although whether nulls are appropriate depends on your program's design.
+A `HashMap` does not guarantee iteration order. 
+
+`HashMap` allows one key to be `null`, but it can have multiple entries whose values are `null`.
 
 ### 7.5 How does `HashMap` use `hashCode()` and `equals()`?
 
