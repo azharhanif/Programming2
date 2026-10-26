@@ -580,8 +580,8 @@ Without a consistent `hashCode()`, this lookup may fail even when `equals()` say
 
 A useful connection: Java's `HashSet` is implemented using a `HashMap` internally. You do not need to know the implementation details to use a `HashSet`, but it helps explain why hash codes matter to both collections.
 
-![HashMap and HashSet internal structure](HashMap and HashSet Internal Structures.png)
 
+![HashMap and HashSet internal structure](HashMap and HashSet Internal Structures.png)
 ---
 
 ## 8. Which fields should `equals()` and `hashCode()` use?
