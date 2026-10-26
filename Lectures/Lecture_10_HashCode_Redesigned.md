@@ -447,14 +447,28 @@ So the hash code uses:
 ```java
 return Objects.hash(name, country);
 ```
+The hash code is calculated from both fields used to define equality.
 
 Do not define equality using `name` and `country` but calculate the hash code using only `name` in a way that causes equal objects to have different hash codes. The hash calculation must respect the equality rule.
 
-It is allowed for unequal objects to have the same hash code. The contract requires equal objects to have the same hash code; it does not require unequal objects to have different hash codes.
+**What if hashCode() uses only name?**
+Suppose we change it to:
+```
+@Override
+public int hashCode() {
+    return Objects.hash(name);
+}
+```
+This is still valid according to Java's `hashCode()` contract.
 
+**Why?** If two authors have the same name and country, they necessarily have the same name, so their hash codes will match.
+
+However, authors with the same name but different countries will also get the same hash code. That creates more collisions and may reduce performance.
+
+**Remember:** A collision does not make two objects equal. `HashSet` and `HashMap` use `equals()` to distinguish objects or keys when necessary.
 ### 4.4 Is `Objects.hash()` magic?
 
-No. It is a built-in convenience method. It combines the hash codes of the supplied values into one integer. You do not need to manually write a formula with multipliers for this introductory lecture.
+No. It is a built-in convenience method. It combines the hash codes of the supplied values into one integer. 
 
 For example:
 
@@ -476,7 +490,51 @@ public int hashCode() {
 }
 ```
 
-`Objects.hashCode(value)` returns `0` for `null`, or `value.hashCode()` when the value is not null. Be careful: `Objects.hash(id)` and `Objects.hashCode(id)` are not identical operations. The first is a varargs combination; the second returns the hash code of one object (or zero for null).
+`Objects.hashCode(value)` returns `0` for `null`, or `value.hashCode()` when the value is not null. 
+
+Note: `Objects.hash(id)` and `Objects.hashCode(id)` are not identical operations. The first is a varargs (variable number of arguments); the second returns the hash code of one object (or zero for null).
+
+**Objects.hash() use varargs?**
+```
+Objects.hash(Object... values)
+```
+The `Object... values` parameter means it can accept a variable number of objects.
+
+For example:
+```
+Objects.hash(id);
+Objects.hash(name, country);
+Objects.hash(id, name, email);
+```
+All three calls are valid. Java packages the supplied arguments into an array internally, and `Objects.hash()` combines them into one integer hash code.
+
+**Why are Objects.hash(id) and Objects.hashCode(id) different?**
+
+Consider this example:
+```
+import java.util.Objects;
+
+public class Main {
+    public static void main(String[] args) {
+        String id = "S101";
+
+        System.out.println(Objects.hashCode(id));
+        System.out.println(Objects.hash(id));
+    }
+}
+```
+Output:
+```
+78572147
+78572278
+```
+The numbers differ because the methods do different things.
+```
+Method	              What it does
+Objects.hashCode(id)	Returns id.hashCode() if id isn't null; otherwise returns 0.
+Objects.hash(id)	    Treats id as one item in a varargs array and calculates a combined hash code.
+```
+**Takeaway:** For a class with one field, `Objects.hashCode(id)` is straightforward. For multiple fields, `Objects.hash(id, name, email)` is a convenient way to combine them. In either case, ensure the result is consistent with the class's `equals()` method.
 
 ---
 
