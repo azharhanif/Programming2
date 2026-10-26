@@ -79,6 +79,53 @@ import java.util.Set;
 ### 1.3 Why use `HashSet`?
 
 `HashSet` is a common implementation of `Set`. It uses a hash table internally to help find items efficiently. For ordinary operations such as `add()` and `contains()`, it is typically very fast when hash values are distributed well.
+#### A. Why is HashSet very fast when hash values are distributed well?
+A HashSet stores unique elements. Internally, it uses a hash-based structure to help find where an element belongs.
+
+Imagine you have 10,000 student IDs and want to check whether "S8521" is already in the collection.
+**Approach 1:** Use an `ArrayList`
+```
+ArrayList<String> studentIds = new ArrayList<>();
+
+studentIds.add("S1001");
+studentIds.add("S1002");
+studentIds.add("S1003");
+// Imagine thousands more IDs...
+
+System.out.println(studentIds.contains("S8521"));
+```
+An ArrayList generally checks elements one by one until it finds a match or reaches the end. In the worst case, it may examine all 10,000 elements.
+
+**Approach 2:** Use a HashSet
+```
+HashSet<String> studentIds = new HashSet<>();
+
+studentIds.add("S1001");
+studentIds.add("S1002");
+studentIds.add("S1003");
+// Imagine thousands more IDs...
+
+System.out.println(studentIds.contains("S8521"));
+```
+A HashSet uses the search value's hash code to help locate the relevant area of its internal data structure. It then checks equality as needed.
+
+#### B. What does “hash values are distributed well” mean?
+Suppose a `HashSet` has many student IDs. Ideally, their hash codes help distribute the IDs across different internal locations instead of directing many IDs to the same location.
+- Good distribution: Searches usually examine only a few candidates.
+- Poor distribution: Many elements end up in the same area, so the set must do more equality checks to identify the correct element.
+  
+For example, imagine a badly designed class whose hashCode() always returns 1:
+```
+@Override
+public int hashCode() {
+    return 1;
+}
+```
+Every object gets the same hash code. The `HashSet` loses much of the search advantage it normally gets from distributing elements. It must distinguish more candidates using `equals()`.
+
+With well-distributed hash codes, HashSet operations such as `add()`, `contains()`, and `remove()` generally take constant expected time, \(O(1)\). In unfavorable cases, they can take longer.
+
+**Takeaway:** A good hash code helps a HashSet narrow down the search. It does not uniquely identify an object, and collisions are allowed.
 
 A `HashSet` does **not** promise to keep elements in insertion order. Do not rely on the order in which elements appear when you print or iterate over a set.
 
