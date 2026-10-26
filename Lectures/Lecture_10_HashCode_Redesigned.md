@@ -602,7 +602,7 @@ The result is `true`. But the inherited hash codes are not required to be equal 
 
 This violates the required relationship between `equals()` and `hashCode()`.
 
-**Do not teach that every pair of different hash codes guarantees that `equals()` is never called in every implementation detail.** The exact bucket mechanics are implementation-specific. The essential rule is that equal objects must have equal hash codes so hash-based collections can work correctly.
+**Not every pair of different hash codes guarantees that `equals()` is never called in every implementation detail.** The exact bucket mechanics are implementation-specific. The essential rule is that equal objects must have equal hash codes so hash-based collections can work correctly.
 
 ### What if every object returns `1`?
 
