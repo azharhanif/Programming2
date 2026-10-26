@@ -223,7 +223,51 @@ this == obj
 
 as the only equality test.
 
-That checks whether the two references point to the exact same object.
+That checks whether the two references point to the exact same object. It considers an object equal only to itself.
+```
+Student s1 = new Student("S101");
+Student s2 = new Student("S101");
+
+System.out.println(s1.equals(s1)); // true
+System.out.println(s1.equals(s2)); // false -- problem!
+```
+The second result is false, even though the two students have the same ID.
+
+**How should equals() work?**
+
+Use `this == obj` as a quick first check, then compare the meaningful data.
+```
+@Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+
+    if (!(obj instanceof Student)) return false;
+
+    Student other = (Student) obj;
+    return id.equals(other.id);
+}
+```
+Now two different `Student` objects with `ID` "S101" are considered equal.
+
+**Why does this matter for HashSet?**
+
+```
+Set<Student> students = new HashSet<>();
+
+students.add(new Student("S101"));
+students.add(new Student("S101"));
+
+System.out.println(students.size());
+```
+If `Student` uses the correct `equals()` and a compatible `hashCode()` based on id, the output is:
+```
+1
+```
+The second student is considered a duplicate.
+
+But if `equals()` only uses `this == obj`, the two separately created students are not equal. 
+
+If the class also uses the default `hashCode()`, the set will generally contain both objects, so the size will be `2`.
 
 ---
 
