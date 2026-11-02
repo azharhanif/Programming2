@@ -1198,7 +1198,7 @@ Also remember the warning about mutable keys: do not change fields used by `equa
 | Store unique authors | `HashSet<Author>` |
 | Retrieve an author's book count | `HashMap<Author, Integer>` |
 
-For a simple `ArrayList`, a loop is usually shorter and avoids creating multiple recursive stack frames. The recursive versions here are teaching examples: they help you practise recursion while reusing familiar Java classes and interfaces.
+For a simple `ArrayList`, a loop is usually shorter and avoids creating multiple recursive stack frames. The recursive versions here are examples: they help you practise recursion while reusing familiar Java classes and interfaces.
 
 ---
 
