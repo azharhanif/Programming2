@@ -1150,11 +1150,14 @@ Lecture 10 teaches that `HashSet` and `HashMap` use both `hashCode()` and `equal
 
 | Search approach | How the candidate is located |
 |---|---|
-| Recursive search through an `ArrayList` | Visit elements one by one and compare with `equals()` |
-| `HashSet.contains(target)` | Use hashing to narrow the search, then equality checks as needed |
-| `HashMap.get(key)` | Use the key's hash code to locate a candidate area, then equality checks as needed |
+| Recursive linear search using `equals()` | Examines elements one by one. It does not need `hashCode()` |
+| `HashMap.get(key)` | Uses the key's hash code to identify the bucket where the key should be stored, then uses equality checks as needed to find the matching key. |
 
 Do not add `hashCode()` to the recursive `ArrayList` search just because the `Author` class overrides it. The search does not need it.
+
+**Takeaway:** A `HashMap` does not normally search every key one by one. It uses `hashCode()` to narrow down where to look and `equals()`to identify the correct key.
+
+**One technical distinction:** a bucket can contain multiple entries because of collisions. Therefore, the bucket is a candidate location, not a guarantee that the requested key is already there.
 
 ### 8.4 Recursion does not replace `HashSet` or `HashMap` — Lecture 10
 
