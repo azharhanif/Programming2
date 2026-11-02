@@ -506,7 +506,7 @@ When Java calls `countdown(3)`, `countdown(2)`, and `countdown(1)`, these are se
 
 Each has its own value of `n`:
 ```
-Method call	        Its own local variable
+Method call     Its own local variable
 countdown(3)	    n = 3
 countdown(2)	    n = 2
 countdown(1)	    n = 1
