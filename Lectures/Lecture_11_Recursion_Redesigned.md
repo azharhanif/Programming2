@@ -1546,64 +1546,12 @@ But the method returns `0`.
 4. Trace the calls for `product(4)`.
 5. Explain how the calls return in reverse order.
 
-### AI prompt for students
+### AI prompt  
 
 You may use the following prompt:
 
 > I am learning Java recursion. Do not immediately give me the corrected code. First ask me what the base case should be. Then guide me to identify the general pattern and trace the method calls for product(4). After I attempt the solution, check my reasoning and explain any mistake in simple terms.
 
-### Teacher solution guide
-
-The method is intended to calculate the product of all integers from `1` through `num` (factorial).
-
-The student's base case is incorrect:
-
-```java
-if (num == 1) {
-    return 0;
-}
-```
-
-It should return `1`, because multiplying by `1` does not change the product.
-
-Correct method:
-
-```java
-public static int product(int num) {
-    // Base case
-    if (num == 1) {
-        return 1;
-    }
-
-    // General pattern
-    return num * product(num - 1);
-}
-```
-
-Trace of `product(4)`:
-
-```text
-product(4)
-= 4 * product(3)
-= 4 * 3 * product(2)
-= 4 * 3 * 2 * product(1)
-= 4 * 3 * 2 * 1
-= 24
-```
-
-Call and return table:
-
-| Call | Action |
-|---|---|
-| `product(4)` | Waits for `product(3)` |
-| `product(3)` | Waits for `product(2)` |
-| `product(2)` | Waits for `product(1)` |
-| `product(1)` | Returns `1` |
-| Return to `product(2)` | Returns `2 × 1 = 2` |
-| Return to `product(3)` | Returns `3 × 2 = 6` |
-| Return to `product(4)` | Returns `4 × 6 = 24` |
-
-**Teaching point:** A recursive method can have a correct general pattern but still produce the wrong result if its base case returns the wrong value.
 
 ---
 
