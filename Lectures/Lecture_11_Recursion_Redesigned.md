@@ -460,7 +460,63 @@ When `sum(4)` calls `sum(3)`, the `sum(4)` call must wait. When `sum(3)` calls `
 
 Each waiting call uses space on the **call stack**.
 
-A loop normally reuses the same method call instead of creating a new method call for every repetition. Therefore, a simple loop often uses less memory.
+A **call stack** is the part of Java's memory that keeps track of which methods are currently running, what information each method needs, and where execution should return when a method finishes.
+
+Think of it as a stack of plates: every time a method calls another method, Java places a new plate on top. When that method finishes, Java removes the top plate and returns to the method underneath.
+
+This is particularly important in recursion because a recursive method calls itself several times before the first call can finish.
+#### A simple mental picture
+Imagine this recursive method:
+```
+public static void countdown(int n) {
+    if (n == 0) {
+        System.out.println("Done!");
+        return;
+    }
+
+    System.out.println(n);
+    countdown(n - 1);
+}
+```
+We call it from main:
+```
+public static void main(String[] args) {
+    countdown(3);
+}
+```
+When `countdown(3)` calls `countdown(2)`, the first call does not disappear. It waits for the second call to finish.
+
+Then `countdown(2)` calls `countdown(1)`, which calls `countdown(0)`.
+
+When the base case executes, then Java starts removing method calls from the top of the stack. This is called **unwinding the call stack**.
+
+Notice something important: in this particular example, the method prints each number before making the recursive call. 
+
+Therefore, the numbers appear in descending order even though the calls return in ascending order.
+
+Program output:
+```
+3
+2
+1
+Done!
+```
+#### One more important concept: each call has its own variables
+When Java calls `countdown(3)`, `countdown(2)`, and `countdown(1)`, these are separate method executions.
+
+Each has its own value of `n`:
+```
+Method call	        Its own local variable
+countdown(3)	    n = 3
+countdown(2)	    n = 2
+countdown(1)	    n = 1
+countdown(0)	    n = 0
+```
+Java stores this information in a separate **stack frame** for each method call.
+
+If recursion continues too deeply, the call stack can run out of space, causing a `StackOverflowError`.
+
+On the other hand, a **loop** normally reuses the same method call instead of creating a new method call for every repetition. Therefore, a simple loop often uses less memory.
 
 **Disadvantage 2: Method-call overhead and speed**
 
