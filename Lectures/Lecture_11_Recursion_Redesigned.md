@@ -368,7 +368,7 @@ For factorial, the base case is `0! = 1`.
 ```java
 public static int factorial(int num) {
     // Base case
-    if (num == 0) {
+    if (num == 0 || num == 1) {
         return 1;
     }
 
@@ -391,7 +391,7 @@ Output:
 120
 ```
 
-For this introductory method, assume `num` is a non-negative integer. This `int` implementation overflows for `13!` and larger factorial results; a production method should validate negative input and choose a numeric type or overflow strategy appropriate to its requirements.
+For this example, assume the input is a non-negative integer (0 or greater). The method uses Java's `int` data type, which can store factorial results correctly only up to `12!`. Starting at `13!`, the result becomes too large for int, causing integer overflow. We will use small numbers in this introductory recursion example.
 
 ---
 
