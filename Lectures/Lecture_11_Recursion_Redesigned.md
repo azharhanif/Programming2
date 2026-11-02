@@ -1,0 +1,1164 @@
+# Lecture 11 — Recursion
+
+## Learning goals
+
+By the end of this lecture, you should be able to:
+
+1. Explain what recursion is and recognize a recursive method.
+2. Identify the **base case** and the **general pattern** in a recursive method.
+3. Write a recursive method that moves toward its base case.
+4. Trace recursive method calls and returns using the call stack.
+5. Explain the difference between recursion and a loop.
+6. Recognize common recursion errors, including missing base cases and calls that do not move toward the base case.
+7. Compare the advantages and disadvantages of recursion.
+8. Test recursive methods with small Java programs.
+
+---
+
+## 1. What is recursion?
+
+### 1.1 The basic idea
+
+Recursion is a way to solve a problem by having a method call itself.
+
+A recursive method does not solve every part of the problem in one step. Instead, it solves a small part and asks another call of the same method to solve a smaller version of the problem.
+
+Think about a set of boxes placed inside one another. You open one box and find a smaller box inside it. You keep opening boxes until you reach the smallest box. Then you work your way back out.
+
+That is the basic idea of recursion:
+
+- A method calls itself.
+- Each call works on a smaller or simpler problem.
+- Eventually, a call reaches a condition where it already knows the answer.
+- The method calls then return their results.
+
+### 1.2 A method that calls itself
+
+Consider this method:
+
+```java
+public static void printInfo() {
+    System.out.println("Hello");
+    printInfo();  // The method calls itself
+}
+```
+
+The method prints `Hello`, then calls itself. The new call prints `Hello`, then calls itself again. This continues without stopping.
+
+If we call it from `main`:
+
+```java
+public static void main(String[] args) {
+    printInfo();
+}
+```
+
+The output begins like this:
+
+```text
+Hello
+Hello
+Hello
+Hello
+Hello
+...
+```
+
+This method has no stopping condition. It will eventually cause a `StackOverflowError` because Java keeps creating method calls that never finish.
+
+### 1.3 The same behaviour using a loop
+
+The same endless printing can be written using a loop:
+
+```java
+public static void printInfo() {
+    while (true) {
+        System.out.println("Hello");
+    }
+}
+```
+
+Both versions continue printing forever:
+
+- The recursive version repeatedly calls the same method.
+- The loop version repeatedly executes the loop body.
+
+This shows that recursion and loops can sometimes solve the same repeated task. However, recursion can be easier to understand for problems that naturally break into smaller versions of themselves.
+
+### 1.4 A recursive method that stops
+
+Now consider a method that prints `Hello` a specific number of times:
+
+```java
+public static void printInfo(int num) {
+    if (num == 0) {
+        return;
+    }
+
+    System.out.println("Hello");
+    printInfo(num - 1);
+}
+```
+
+Call it with:
+
+```java
+public static void main(String[] args) {
+    printInfo(3);
+}
+```
+
+Output:
+
+```text
+Hello
+Hello
+Hello
+```
+
+Why does it stop?
+
+1. The first call receives `3`. It prints `Hello` and calls `printInfo(2)`.
+2. The second call receives `2`. It prints `Hello` and calls `printInfo(1)`.
+3. The third call receives `1`. It prints `Hello` and calls `printInfo(0)`.
+4. The fourth call receives `0`. It reaches `return` and stops.
+
+The important difference is that the parameter becomes smaller each time. It moves toward `0`, where the method knows it can stop.
+
+### 1.5 Comparing the loop and recursive versions
+
+A loop can print the same number of messages:
+
+```java
+public static void printInfoLoop(int num) {
+    for (int i = 0; i < num; i++) {
+        System.out.println("Hello");
+    }
+}
+```
+
+The recursive version:
+
+```java
+public static void printInfoRecursion(int num) {
+    if (num == 0) {
+        return;
+    }
+
+    System.out.println("Hello");
+    printInfoRecursion(num - 1);
+}
+```
+
+Both methods print `Hello` three times when called with `3`.
+
+The loop uses a counter (`i`) to control repetition. The recursive method uses a parameter (`num`) that gets closer to its base case.
+
+---
+
+## 2. How to write a recursive method
+
+A recursive method needs two important parts:
+
+1. **Base case:** the situation where the method already knows the answer and can stop.
+2. **General pattern:** what the method does for other cases, usually including a call to itself with a smaller or simpler problem.
+
+If either part is missing or incorrect, the recursion may not work.
+
+### 2.1 The base case
+
+The **base case** is the simplest situation for which we know the answer directly.
+
+Imagine a method called `sum(int x)`. It calculates the sum of all integers in the range `[0, x)`.
+
+The notation `[0, x)` means:
+
+- Start at `0`.
+- Include `0`.
+- Stop before `x`.
+
+For example:
+
+```text
+sum(4) = 0 + 1 + 2 + 3 = 6
+sum(3) = 0 + 1 + 2 = 3
+sum(2) = 0 + 1 = 1
+sum(1) = 0
+sum(0) = 0
+```
+
+If someone asks for `sum(4)`, we need to calculate. The same is true for `sum(3)`, `sum(2)`, and `sum(1)`.
+
+But if someone asks for `sum(0)`, we immediately know the answer: there are no integers in the range from `0` up to, but not including, `0`. The sum is `0`.
+
+Therefore:
+
+```java
+if (x == 0) {
+    return 0;
+}
+```
+
+This is the base case.
+
+**Remember:** The base case is not just a condition that stops the method. It must also return the correct answer for that simplest situation.
+
+### 2.2 The general pattern
+
+The **general pattern** explains how to solve a larger problem using a smaller version of the same problem.
+
+Let's examine a few values:
+
+```text
+sum(1) = 0
+
+sum(2) = 0 + 1
+       = sum(1) + 1
+
+sum(3) = 0 + 1 + 2
+       = sum(2) + 2
+
+sum(4) = 0 + 1 + 2 + 3
+       = sum(3) + 3
+```
+
+A pattern appears:
+
+```text
+sum(4) = sum(3) + 3
+sum(3) = sum(2) + 2
+sum(2) = sum(1) + 1
+```
+
+For a general value `x`:
+
+```text
+sum(x) = sum(x - 1) + (x - 1)
+```
+
+This equation is the general pattern.
+
+In Java, we can write:
+
+```java
+return sum(x - 1) + (x - 1);
+```
+
+Notice two things:
+
+1. The method calls itself: `sum(x - 1)`.
+2. The argument becomes smaller: `x - 1`.
+
+That smaller argument moves the method toward the base case `x == 0`.
+
+### 2.3 Combine the base case and general pattern
+
+Now combine the two parts:
+
+```java
+public static int sum(int x) {
+    // Base case
+    if (x == 0) {
+        return 0;
+    }
+
+    // General pattern
+    return sum(x - 1) + (x - 1);
+}
+```
+
+Test it:
+
+```java
+public static void main(String[] args) {
+    System.out.println(sum(4));
+    System.out.println(sum(5));
+    System.out.println(sum(0));
+}
+```
+
+Output:
+
+```text
+6
+10
+0
+```
+
+Why is `sum(4)` equal to `6`?
+
+```text
+sum(4)
+= sum(3) + 3
+= (sum(2) + 2) + 3
+= ((sum(1) + 1) + 2) + 3
+= (((sum(0) + 0) + 1) + 2) + 3
+= (((0 + 0) + 1) + 2) + 3
+= 6
+```
+
+The method keeps reducing the problem until it reaches `sum(0)`. Then it can calculate the answer while returning through the earlier calls.
+
+### 2.4 A second example: countdown
+
+A countdown is another simple example. We want to print the numbers from `num` down to `1`.
+
+```java
+public static void countdown(int num) {
+    // Base case
+    if (num == 0) {
+        return;
+    }
+
+    // General pattern
+    System.out.println(num);
+    countdown(num - 1);
+}
+```
+
+Call:
+
+```java
+countdown(4);
+```
+
+Output:
+
+```text
+4
+3
+2
+1
+```
+
+The base case is `num == 0`. The general pattern prints the current number and calls the method with `num - 1`.
+
+### 2.5 A third example: factorial
+
+The factorial of a positive integer is the product of all positive integers up to that number.
+
+For example:
+
+```text
+4! = 4 × 3 × 2 × 1 = 24
+3! = 3 × 2 × 1 = 6
+2! = 2 × 1 = 2
+1! = 1
+0! = 1
+```
+
+The important pattern is:
+
+```text
+4! = 4 × 3!
+3! = 3 × 2!
+2! = 2 × 1!
+1! = 1 × 0!
+```
+
+For factorial, the base case is `0! = 1`.
+
+```java
+public static int factorial(int num) {
+    // Base case
+    if (num == 0) {
+        return 1;
+    }
+
+    // General pattern
+    return num * factorial(num - 1);
+}
+```
+
+Test:
+
+```java
+System.out.println(factorial(4));
+System.out.println(factorial(5));
+```
+
+Output:
+
+```text
+24
+120
+```
+
+For this introductory method, assume `num` is a non-negative integer. A production method should also decide how to handle negative input and possible integer overflow.
+
+---
+
+## 3. Pros and cons of recursion
+
+Recursion is useful, but it is not automatically better than a loop. We should understand when it helps and what it costs.
+
+### 3.1 Advantages
+
+**Advantage 1: The solution can be easier to express**
+
+Some problems naturally contain smaller versions of the same problem. Recursion lets us describe that relationship directly.
+
+For example:
+
+```java
+public static int factorial(int num) {
+    if (num == 0) {
+        return 1;
+    }
+
+    return num * factorial(num - 1);
+}
+```
+
+The code closely matches the mathematical definition:
+
+```text
+factorial(num) = num × factorial(num - 1)
+```
+
+**Advantage 2: The code can be shorter**
+
+A recursive solution may require fewer lines than a loop-based solution, especially when the problem has a natural recursive structure.
+
+**Advantage 3: It is useful for structures that contain smaller structures**
+
+Examples include:
+
+- A folder that contains other folders.
+- A family tree with branches.
+- A tree data structure.
+- Problems that repeatedly divide into smaller problems.
+
+### 3.2 Disadvantages
+
+Recursion has two important disadvantages.
+
+**Disadvantage 1: Memory usage**
+
+Every time a method calls itself, the current call is not finished yet. Java must remember its local variables, parameters, and where it should continue after the new call returns.
+
+For example:
+
+```java
+public static int sum(int x) {
+    if (x == 0) {
+        return 0;
+    }
+
+    return sum(x - 1) + (x - 1);
+}
+```
+
+When `sum(4)` calls `sum(3)`, the `sum(4)` call must wait. When `sum(3)` calls `sum(2)`, both earlier calls must wait.
+
+Each waiting call uses space on the **call stack**.
+
+A loop normally reuses the same method call instead of creating a new method call for every repetition. Therefore, a simple loop often uses less memory.
+
+**Disadvantage 2: Method-call overhead and speed**
+
+A recursive call involves setting up another method call, passing arguments, and returning a result. This can make recursion slower than a loop for some tasks.
+
+For a large number of simple repetitions, a loop is often more efficient.
+
+**Important:** Recursion is not always slower or worse. It can make a complicated problem much easier to express. Choose the approach that makes the solution clear while considering performance and memory.
+
+### 3.3 Recursion versus loops
+
+| Feature | Loop | Recursion |
+|---|---|---|
+| Repetition | Uses `for` or `while` | A method calls itself |
+| Stopping condition | Loop condition | Base case |
+| Progress | Counter or variable changes | Argument or problem becomes smaller |
+| Memory | Usually less extra memory | Uses call-stack space for waiting calls |
+| Common risk | Infinite loop | Infinite recursion / `StackOverflowError` |
+| Useful for | Straightforward repetition | Problems naturally defined in smaller versions |
+
+---
+
+## 4. How recursion works: the call stack
+
+A loop and recursion do not execute in exactly the same way.
+
+A loop normally completes one iteration and then moves to the next iteration.
+
+Recursion follows a different process:
+
+1. A method starts.
+2. It calls itself.
+3. The earlier call waits for the new call to finish.
+4. This continues until a call reaches the base case.
+5. The calls return one at a time, in reverse order.
+
+This is similar to a stack data structure: **last in, first out (LIFO)**.
+
+### 4.1 Review the loop version
+
+```java
+public static int sumLoop(int num) {
+    int total = 0;
+
+    for (int i = 0; i < num; i++) {
+        total += i;
+    }
+
+    return total;
+}
+```
+
+For `sumLoop(5)`:
+
+| Iteration | `i` | `total` after addition |
+|---:|---:|---:|
+| Start | — | 0 |
+| 1 | 0 | 0 |
+| 2 | 1 | 1 |
+| 3 | 2 | 3 |
+| 4 | 3 | 6 |
+| 5 | 4 | 10 |
+
+The loop finishes each iteration before moving to the next one.
+
+### 4.2 Review the recursive version
+
+```java
+public static int sumRecursion(int num) {
+    if (num == 0) {
+        return 0;
+    }
+
+    return sumRecursion(num - 1) + num - 1;
+}
+```
+
+Call:
+
+```java
+System.out.println(sumRecursion(5));
+```
+
+Output:
+
+```text
+10
+```
+
+The recursive calls happen first:
+
+```text
+sumRecursion(5)
+    calls sumRecursion(4)
+        calls sumRecursion(3)
+            calls sumRecursion(2)
+                calls sumRecursion(1)
+                    calls sumRecursion(0)
+```
+
+At `sumRecursion(0)`, the base case returns `0`.
+
+Only then can the earlier calls finish.
+
+### 4.3 Trace the return process
+
+Let's trace `sumRecursion(5)`.
+
+The method is:
+
+```java
+public static int sumRecursion(int num) {
+    if (num == 0) {
+        return 0;
+    }
+
+    return sumRecursion(num - 1) + num - 1;
+}
+```
+
+**Step 1 — Calls move toward the base case**
+
+| Call | What it must calculate | What happens |
+|---|---|---|
+| `sumRecursion(5)` | `sumRecursion(4) + 4` | Waits |
+| `sumRecursion(4)` | `sumRecursion(3) + 3` | Waits |
+| `sumRecursion(3)` | `sumRecursion(2) + 2` | Waits |
+| `sumRecursion(2)` | `sumRecursion(1) + 1` | Waits |
+| `sumRecursion(1)` | `sumRecursion(0) + 0` | Waits |
+| `sumRecursion(0)` | `0` | Base case reached |
+
+**Step 2 — Results return in reverse order**
+
+| Returning call | Calculation | Result |
+|---|---|---:|
+| `sumRecursion(0)` | Base case | 0 |
+| `sumRecursion(1)` | `0 + 0` | 0 |
+| `sumRecursion(2)` | `0 + 1` | 1 |
+| `sumRecursion(3)` | `1 + 2` | 3 |
+| `sumRecursion(4)` | `3 + 3` | 6 |
+| `sumRecursion(5)` | `6 + 4` | 10 |
+
+The final answer is `10`.
+
+### 4.4 Visualize the stack
+
+```text
+CALLING DOWN                         RETURNING UP
+
+sumRecursion(5)                      sumRecursion(5) = 10
+    |                                    ^
+    v                                    |
+sumRecursion(4)                      sumRecursion(4) = 6
+    |                                    ^
+    v                                    |
+sumRecursion(3)                      sumRecursion(3) = 3
+    |                                    ^
+    v                                    |
+sumRecursion(2)                      sumRecursion(2) = 1
+    |                                    ^
+    v                                    |
+sumRecursion(1)                      sumRecursion(1) = 0
+    |                                    ^
+    v                                    |
+sumRecursion(0)  ---------------->   returns 0
+    BASE CASE
+```
+
+The first call is the last one to finish. The last call is the first one to return.
+
+### 4.5 Print statements before and after the recursive call
+
+The location of a print statement matters.
+
+```java
+public static void count(int num) {
+    if (num == 0) {
+        return;
+    }
+
+    System.out.println("Before: " + num);
+    count(num - 1);
+    System.out.println("After: " + num);
+}
+```
+
+Call:
+
+```java
+count(3);
+```
+
+Output:
+
+```text
+Before: 3
+Before: 2
+Before: 1
+After: 1
+After: 2
+After: 3
+```
+
+Why?
+
+- Statements before the recursive call execute while the method calls are moving toward the base case.
+- Statements after the recursive call execute while the calls are returning from the base case.
+
+This is one of the most important ideas in understanding recursion.
+
+---
+
+## 5. Common recursion mistakes
+
+### Mistake 1: No base case
+
+Incorrect:
+
+```java
+public static void printInfo() {
+    System.out.println("Hello");
+    printInfo();
+}
+```
+
+The method never stops. It eventually causes a `StackOverflowError`.
+
+Correction:
+
+```java
+public static void printInfo(int num) {
+    if (num == 0) {
+        return;
+    }
+
+    System.out.println("Hello");
+    printInfo(num - 1);
+}
+```
+
+### Mistake 2: The recursive call does not move toward the base case
+
+Incorrect:
+
+```java
+public static void countdown(int num) {
+    if (num == 0) {
+        return;
+    }
+
+    System.out.println(num);
+    countdown(num);  // num never changes
+}
+```
+
+If `num` starts at `3`, every call receives `3`. The method never reaches `0`.
+
+Correction:
+
+```java
+countdown(num - 1);
+```
+
+The argument must move toward the base case.
+
+### Mistake 3: Incorrect base-case answer
+
+Incorrect factorial method:
+
+```java
+public static int factorial(int num) {
+    if (num == 0) {
+        return 0;
+    }
+
+    return num * factorial(num - 1);
+}
+```
+
+This returns `0` for every non-negative input because every calculation eventually multiplies by the base-case result `0`.
+
+Correction:
+
+```java
+if (num == 0) {
+    return 1;
+}
+```
+
+The correct base case is `0! = 1`.
+
+### Mistake 4: Forgetting to return the recursive result
+
+Incorrect:
+
+```java
+public static int sum(int num) {
+    if (num == 0) {
+        return 0;
+    }
+
+    sum(num - 1);
+    return num - 1;
+}
+```
+
+The method calls itself, but it ignores the answer returned by that call.
+
+Correction:
+
+```java
+return sum(num - 1) + num - 1;
+```
+
+The recursive result is part of the answer.
+
+### Mistake 5: Confusing `num` with `num - 1`
+
+For the range `[0, num)`, the last number included is `num - 1`.
+
+Therefore:
+
+```java
+return sum(num - 1) + num - 1;
+```
+
+is correct for this definition.
+
+If the problem instead asks for the sum from `1` through `num`, the formula would be different:
+
+```java
+return sum(num - 1) + num;
+```
+
+Always identify exactly which numbers the problem includes before writing the recursive formula.
+
+### Mistake 6: Testing only one input
+
+A recursive method should be tested with:
+
+- The base case.
+- A small value such as `1`.
+- A value greater than `1`.
+- Any boundary or invalid inputs that the method is expected to handle.
+
+For example:
+
+```java
+System.out.println(sum(0));
+System.out.println(sum(1));
+System.out.println(sum(4));
+```
+
+Expected output:
+
+```text
+0
+0
+6
+```
+
+---
+
+## 6. A reliable method for solving recursion problems
+
+When you face a new recursion problem, do not immediately start writing Java code. Work through these steps.
+
+### Step 1: Understand what the method must return or do
+
+For example:
+
+`sum(x)` returns the sum of all integers in the range `[0, x)`.
+
+### Step 2: Find the simplest input
+
+Ask: What is the smallest input for which I know the answer immediately?
+
+For this example:
+
+```text
+sum(0) = 0
+```
+
+That gives the base case.
+
+### Step 3: Work out two or three small examples
+
+```text
+sum(1) = 0
+sum(2) = 0 + 1
+sum(3) = 0 + 1 + 2
+```
+
+### Step 4: Find a relationship between the current problem and a smaller problem
+
+```text
+sum(3) = sum(2) + 2
+sum(4) = sum(3) + 3
+```
+
+Therefore:
+
+```text
+sum(x) = sum(x - 1) + (x - 1)
+```
+
+### Step 5: Write the recursive method
+
+```java
+public static int sum(int x) {
+    if (x == 0) {
+        return 0;
+    }
+
+    return sum(x - 1) + (x - 1);
+}
+```
+
+### Step 6: Check that the method reaches the base case
+
+Ask:
+
+- Does every recursive call make the problem smaller?
+- Can the input eventually reach the base case?
+- Does the base case return the correct answer?
+- Does the general pattern use the recursive result correctly?
+
+If the answer to any of these questions is no, revise the method.
+
+---
+
+## 7. Practice — predict, trace, run, explain
+
+For each exercise, first predict the output. Then trace the method calls and returns. Finally, run the code to check your answer.
+
+### Practice 1 — How many messages?
+
+```java
+public static void printInfo(int num) {
+    if (num == 0) {
+        return;
+    }
+
+    System.out.println("Hello");
+    printInfo(num - 1);
+}
+```
+
+What is printed by:
+
+```java
+printInfo(4);
+```
+
+**Answer:**
+
+```text
+Hello
+Hello
+Hello
+Hello
+```
+
+There are four calls that print a message: `4`, `3`, `2`, and `1`. The call with `0` reaches the base case and prints nothing.
+
+### Practice 2 — Calculate the sum
+
+```java
+public static int sum(int num) {
+    if (num == 0) {
+        return 0;
+    }
+
+    return sum(num - 1) + num - 1;
+}
+```
+
+What is the result of `sum(5)`?
+
+**Answer:** `10`
+
+```text
+sum(5) = sum(4) + 4
+       = sum(3) + 3 + 4
+       = sum(2) + 2 + 3 + 4
+       = sum(1) + 1 + 2 + 3 + 4
+       = sum(0) + 0 + 1 + 2 + 3 + 4
+       = 10
+```
+
+### Practice 3 — Trace the output
+
+```java
+public static void show(int num) {
+    if (num == 0) {
+        return;
+    }
+
+    System.out.println(num);
+    show(num - 1);
+    System.out.println(num);
+}
+```
+
+What is printed by `show(3)`?
+
+**Answer:**
+
+```text
+3
+2
+1
+1
+2
+3
+```
+
+The first three lines are printed while calls move toward the base case. The final three lines are printed as the calls return.
+
+### Practice 4 — Find the error
+
+```java
+public static void count(int num) {
+    if (num == 0) {
+        return;
+    }
+
+    System.out.println(num);
+    count(num + 1);
+}
+```
+
+Why does this method not stop when called with `count(3)`?
+
+**Answer:** The argument increases instead of decreasing. It moves away from the base case `num == 0`. The recursive call should be `count(num - 1)` for positive starting values.
+
+### Practice 5 — Factorial
+
+Write a recursive method that calculates the factorial of a non-negative integer.
+
+**Answer:**
+
+```java
+public static int factorial(int num) {
+    if (num == 0) {
+        return 1;
+    }
+
+    return num * factorial(num - 1);
+}
+```
+
+For `factorial(4)`, the result is `24`.
+
+### Practice 6 — Recursion or loop?
+
+Which approach would usually be simpler for printing `Hello` exactly 1,000 times: a loop or recursion? Explain why.
+
+**Answer:** A loop is usually simpler and uses less call-stack memory for straightforward repetition. Recursion is useful when a problem naturally breaks into smaller versions of itself.
+
+### Practice 7 — Identify the base case and general pattern
+
+Consider:
+
+```java
+public static int powerOfTwo(int num) {
+    if (num == 0) {
+        return 1;
+    }
+
+    return 2 * powerOfTwo(num - 1);
+}
+```
+
+Identify:
+
+1. The base case.
+2. The general pattern.
+3. The result of `powerOfTwo(3)`.
+
+**Answer:**
+
+1. Base case: `num == 0`, returning `1`.
+2. General pattern: `2 * powerOfTwo(num - 1)`.
+3. `powerOfTwo(3) = 8`.
+
+---
+
+## 8. AI-assisted practice — use AI as a debugging partner
+
+The goal of this activity is to practise identifying the base case and general pattern. AI may help explain a trace, but you must be able to justify the answer yourself.
+
+### Activity: Repair a broken recursive method
+
+A student writes:
+
+```java
+public static int product(int num) {
+    if (num == 1) {
+        return 0;
+    }
+
+    return num * product(num - 1);
+}
+```
+
+The student expects `product(4)` to return:
+
+```text
+24
+```
+
+But the method returns `0`.
+
+**Your tasks:**
+
+1. Identify the base-case error.
+2. Explain why the current method always returns `0`.
+3. Correct the method.
+4. Trace the calls for `product(4)`.
+5. Explain how the calls return in reverse order.
+
+### AI prompt for students
+
+You may use the following prompt:
+
+> I am learning Java recursion. Do not immediately give me the corrected code. First ask me what the base case should be. Then guide me to identify the general pattern and trace the method calls for product(4). After I attempt the solution, check my reasoning and explain any mistake in simple terms.
+
+### Teacher solution guide
+
+The method is intended to calculate the product of all integers from `1` through `num` (factorial).
+
+The student's base case is incorrect:
+
+```java
+if (num == 1) {
+    return 0;
+}
+```
+
+It should return `1`, because multiplying by `1` does not change the product.
+
+Correct method:
+
+```java
+public static int product(int num) {
+    // Base case
+    if (num == 1) {
+        return 1;
+    }
+
+    // General pattern
+    return num * product(num - 1);
+}
+```
+
+Trace of `product(4)`:
+
+```text
+product(4)
+= 4 * product(3)
+= 4 * 3 * product(2)
+= 4 * 3 * 2 * product(1)
+= 4 * 3 * 2 * 1
+= 24
+```
+
+Call and return table:
+
+| Call | Action |
+|---|---|
+| `product(4)` | Waits for `product(3)` |
+| `product(3)` | Waits for `product(2)` |
+| `product(2)` | Waits for `product(1)` |
+| `product(1)` | Returns `1` |
+| Return to `product(2)` | Returns `2 × 1 = 2` |
+| Return to `product(3)` | Returns `3 × 2 = 6` |
+| Return to `product(4)` | Returns `4 × 6 = 24` |
+
+**Teaching point:** A recursive method can have a correct general pattern but still produce the wrong result if its base case returns the wrong value.
+
+---
+
+## 9. Final summary
+
+| Term | Plain-language meaning |
+|---|---|
+| Recursion | A method calling itself |
+| Recursive call | A call from a method to itself |
+| Base case | The simplest situation where the answer is known and recursion stops |
+| General pattern | The rule that solves a problem using a smaller version of the same problem |
+| Call stack | The memory structure that keeps track of active method calls |
+| Stack overflow | An error that can occur when too many method calls are waiting on the call stack |
+| LIFO | Last in, first out; the last call made is the first one to return |
+
+Remember these five rules:
+
+1. **Every recursive method needs a base case.**
+2. **The base case must return the correct answer.**
+3. **Every recursive call must move toward the base case.**
+4. **Understand that calls move down toward the base case and results return in reverse order.**
+5. **Use recursion when it makes the problem easier to express; use a loop when straightforward repetition is clearer and more efficient.**
+
+## Further reading
+
+- [Java Language Specification — Methods](https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html)
+- [Java `StackOverflowError` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/StackOverflowError.html)
+- [Java Tutorials — Classes and Objects](https://docs.oracle.com/javase/tutorial/java/javaOO/)
