@@ -16,7 +16,7 @@ By the end of this lecture, you should be able to:
 10. Explain how `equals()` and `hashCode()` relate to object identity/equality, and why recursion does not replace their contracts.
 11. Test recursive methods with base-case, ordinary, boundary, and invalid inputs.
 
-**Connection to earlier lectures:** This lecture reuses the `Employee`/`Manager` polymorphism example from Lecture 7, the `Shape` abstract class and its `calcArea()`/`calcPerimeter()` methods from Lecture 8, and the object-comparison and collection ideas from Lectures 9 and 10. The goal is to apply recursion to Java objects students have already studied—not to introduce a new object-oriented programming unit.
+**Connection to earlier lectures:** This lecture reuses the `Employee`/`Manager` polymorphism example from Lecture 7, the `Shape` abstract class and its `calcArea()`/`calcPerimeter()` methods from Lecture 8, and the object-comparison and collection ideas from Lectures 9 and 10. The goal is to apply recursion to Java objects you have already studied—not to introduce a new object-oriented programming unit.
 
 ---
 
