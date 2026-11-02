@@ -948,203 +948,104 @@ If the answer to any of these questions is no, revise the method.
 
 
 ---
+## 8. Applying recursion to Java concepts from Lectures 8, 9, and 10
 
-## 8. Applying recursion to the Java concepts from earlier lectures
+The earlier sections used numbers to explain recursion. We will now apply the same pattern to Java objects and collections from the previous lectures.
 
-The examples so far use integers. That is useful for learning the mechanics of recursion, but Programming 2 is an object-oriented Java course. We should also be able to recognize where recursion can help when working with objects and collections.
+The important idea is that recursion does not replace inheritance, interfaces, polymorphism, sorting, or object equality. It provides another way to visit elements or break a task into smaller tasks.
 
-In this section, we reuse familiar ideas from earlier lectures:
+The code fragments below assume the relevant classes from Lectures 8–10 are available in the project. Add `java.util.ArrayList`, `java.util.Collections`, `java.util.Comparator`, and other required imports to the driver class when needed.
 
-- Lecture 7: `Employee`, `Manager`, superclass references, and polymorphism.
-- Lecture 8: the abstract `Shape` class and subclasses that implement `calcArea()` and `calcPerimeter()`.
-- Lecture 9: objects that can be compared with `Comparable` or a `Comparator`.
-- Lecture 10: `equals()` and `hashCode()` and the rules that make them work correctly.
+### 8.1 Recursively visit objects that implement `Flyable` — Lecture 8
 
-The key idea is that recursion controls **how we visit elements**. The existing object-oriented methods still do their own jobs.
-
-### 8.1 Recursively visit an `ArrayList` of employees
-
-In earlier lectures, we used an `Employee` superclass and a `Manager` subclass. A collection declared as `ArrayList<Employee>` can hold both ordinary `Employee` objects and `Manager` objects.
-
-Assume the `Employee` class provides `getName()` and that `Manager` extends `Employee`. The following method visits the list by index:
+In Lecture 8, we used the `Flyable` interface to describe a capability:
 
 ```java
-import java.util.ArrayList;
-
-public static void printEmployees(ArrayList<Employee> employees, int index) {
-    // Base case: every element has been visited
-    if (index == employees.size()) {
-        return;
-    }
-
-    // Process the current element
-    System.out.println(employees.get(index).getName());
-
-    // Visit the next element
-    printEmployees(employees, index + 1);
+public interface Flyable {
+    void fly();
 }
 ```
 
-Example call:
+Different classes can implement the same interface. The lecture uses examples such as `Bird`, `Drone`, and `Airplane`. An `ArrayList<Flyable>` can store objects of these different classes:
 
 ```java
-ArrayList<Employee> staff = new ArrayList<>();
+ArrayList<Flyable> flyers = new ArrayList<>();
 
-staff.add(new Employee("Guy", 50000));
-staff.add(new Manager("Sarah", 70000, "Science"));
-staff.add(new Employee("Mina", 52000));
-
-printEmployees(staff, 0);
+flyers.add(new Bird());
+flyers.add(new Drone());
+flyers.add(new Airplane());
 ```
 
-Possible output:
+We can recursively call `fly()` on each object:
 
-```text
-Guy
-Sarah
-Mina
+```java
+public static void testFlights(ArrayList<Flyable> flyers, int index) {
+    // Base case: every object has been visited
+    if (index == flyers.size()) {
+        return;
+    }
+
+    // Process the current object
+    flyers.get(index).fly();
+
+    // Process the remaining objects
+    testFlights(flyers, index + 1);
+}
 ```
 
-Trace the parameter:
+Call the method from `main`:
 
-| Call | Current index | Action |
+```java
+testFlights(flyers, 0);
+```
+
+**How does this connect to Lecture 8?**
+
+- `Flyable` is the interface reference type.
+- `Bird`, `Drone`, and `Airplane` are concrete object types that implement the interface.
+- The recursive method only needs to know that each object is `Flyable`.
+- When `fly()` is called, Java executes the implementation belonging to the actual object.
+
+Recursion controls **which object is visited next**. Polymorphism controls **which implementation of `fly()` runs**.
+
+The exact output depends on the `fly()` implementations in the classes. For example, the lecture's bird and airplane examples use different messages.
+
+**Trace the index:**
+
+| Call | Index | Action |
 |---|---:|---|
-| `printEmployees(staff, 0)` | 0 | Prints Guy; calls index 1 |
-| `printEmployees(staff, 1)` | 1 | Prints Sarah; calls index 2 |
-| `printEmployees(staff, 2)` | 2 | Prints Mina; calls index 3 |
-| `printEmployees(staff, 3)` | 3 | `index == employees.size()`; returns |
+| `testFlights(flyers, 0)` | 0 | Calls `fly()` on the first object; calls index 1 |
+| `testFlights(flyers, 1)` | 1 | Calls `fly()` on the second object; calls index 2 |
+| `testFlights(flyers, 2)` | 2 | Calls `fly()` on the third object; calls index 3 |
+| `testFlights(flyers, 3)` | 3 | Reaches `index == flyers.size()` and returns |
 
-**What is the base case?**
+**Check your understanding:** If the list is empty and the method is called with index `0`, does it try to access `flyers.get(0)`?
+
+No. The base case is immediately true because `0 == flyers.size()`. The method returns before accessing an element.
+
+### 8.2 Recursively traverse `Student` objects — Lecture 9
+
+In Lecture 9, the `Student` class implements `Comparable<Student>` and defines its natural ordering by student ID in ascending order:
 
 ```java
-if (index == employees.size()) {
-    return;
+@Override
+public int compareTo(Student other) {
+    return this.id.compareTo(other.id);
 }
 ```
 
-**What makes progress?**
+The lecture also defines an alternative scholarship ordering with a `Comparator<Student>`:
 
 ```java
-printEmployees(employees, index + 1);
+Comparator<Student> scholarshipOrder =
+    Comparator.comparingDouble(Student::getGpa).reversed()
+              .thenComparing(Student::getName)
+              .thenComparing(Student::getId);
 ```
 
-The index increases by one until it reaches the list size.
-
-**Why does polymorphism still work?**
-
-The list is declared as `ArrayList<Employee>`, so each element is accessed through an `Employee` reference. A `Manager` object can still be stored in the list because a `Manager` is an `Employee`. If the recursive method calls an overridden instance method on an element, Java uses the actual object's implementation through dynamic method dispatch, just as it did in Lecture 7.
-
-This example only prints the name, so it does not demonstrate an overridden method call. The next example does.
-
-### 8.2 Recursion and dynamic method dispatch
-
-Suppose `Employee` has a method named `displayDetails()` and `Manager` overrides it:
+After sorting, we can use recursion to visit and display the students:
 
 ```java
-class Employee {
-    private String name;
-    private double salary;
-
-    public Employee(String name, double salary) {
-        this.name = name;
-        this.salary = salary;
-    }
-
-    public void displayDetails() {
-        System.out.println("Employee: " + name);
-    }
-}
-
-class Manager extends Employee {
-    private String department;
-
-    public Manager(String name, double salary, String department) {
-        super(name, salary);
-        this.department = department;
-    }
-
-    @Override
-    public void displayDetails() {
-        System.out.println("Manager of " + department);
-    }
-}
-```
-
-The recursive traversal can call the method without checking the object's class:
-
-```java
-public static void displayAll(ArrayList<Employee> employees, int index) {
-    if (index >= employees.size()) {
-        return;
-    }
-
-    employees.get(index).displayDetails();
-    displayAll(employees, index + 1);
-}
-```
-
-For an ordinary `Employee`, the `Employee` version runs. For a `Manager`, the overridden `Manager` version runs.
-
-**Important distinction:** Recursion does not cause polymorphism. The recursive method simply visits each reference. Polymorphism determines which overridden method executes for the actual object.
-
-### 8.3 Recursively calculate the total area of `Shape` objects
-
-In Lecture 8, we used an abstract `Shape` class with abstract methods such as `calcArea()` and `calcPerimeter()`. Concrete subclasses provide the implementation.
-
-Assume the course's `Shape` hierarchy has a working `calcArea()` method in each concrete subclass. We can recursively calculate the total area of a list:
-
-```java
-import java.util.ArrayList;
-
-public static double totalArea(ArrayList<Shape> shapes, int index) {
-    // Base case: no shapes remain
-    if (index == shapes.size()) {
-        return 0.0;
-    }
-
-    // Current shape's area + total area of the remaining shapes
-    return shapes.get(index).calcArea()
-            + totalArea(shapes, index + 1);
-}
-```
-
-Example:
-
-```java
-double result = totalArea(shapes, 0);
-System.out.println("Total area: " + result);
-```
-
-The recursive relationship is:
-
-```text
-totalArea(shapes, index)
-    = current shape's area
-      + totalArea(shapes, index + 1)
-```
-
-At the end of the list, the total of the remaining shapes is `0.0`.
-
-**Where does polymorphism appear?** `shapes` is an `ArrayList<Shape>`, but it can contain objects such as `Circle` and `Rectangle` if they extend `Shape`. The call to `calcArea()` uses the implementation belonging to each actual shape object.
-
-This is a useful combination of three ideas:
-
-1. Abstract class: `Shape` defines the common contract.
-2. Polymorphism: each concrete shape calculates its own area.
-3. Recursion: the method visits the collection one element at a time and combines the results.
-
-### 8.4 Recursion is not sorting: connection to `Comparable` and `Comparator`
-
-In Lecture 9, we learned that `Comparable` defines a class's natural ordering through `compareTo()`, while a `Comparator` provides an ordering rule separately.
-
-Recursion can visit a list before or after it has been sorted. However, simply visiting each element recursively does **not** sort the list.
-
-For example, assume `Student` implements `Comparable<Student>` and its `compareTo()` method defines the natural order:
-
-```java
-import java.util.ArrayList;
-import java.util.Collections;
-
 public static void printStudents(ArrayList<Student> students, int index) {
     if (index == students.size()) {
         return;
@@ -1155,157 +1056,190 @@ public static void printStudents(ArrayList<Student> students, int index) {
 }
 ```
 
-To print students in natural order, sort first and then traverse:
+**Natural ordering — ID ascending:**
 
 ```java
 Collections.sort(students);
 printStudents(students, 0);
 ```
 
-If a `Comparator<Student>` is required instead, sort with that comparator:
+**Alternative ordering — scholarship order:**
 
 ```java
-students.sort(studentComparator);
+students.sort(scholarshipOrder);
 printStudents(students, 0);
 ```
 
-The responsibilities are separate:
+The responsibilities are different:
 
-| Operation | Responsibility |
+| Java feature | Responsibility |
 |---|---|
-| `compareTo()` | Defines natural ordering for the class |
-| `Comparator` | Defines an alternative ordering rule |
-| `Collections.sort()` / `List.sort()` | Reorders the list |
-| Recursive `printStudents()` | Visits and prints the elements in their current order |
+| `Comparable<Student>` | Defines the natural ordering through `compareTo()` |
+| `Comparator<Student>` | Defines an alternative ordering rule |
+| `Collections.sort(students)` | Sorts using the natural ordering |
+| `students.sort(scholarshipOrder)` | Sorts using the supplied comparator |
+| `printStudents(students, 0)` | Visits and prints the elements in their current order |
 
-Do not claim that recursion has sorted the list. The sorting method performs the reordering.
+**Important:** The recursive method does not sort the list. It prints the list in whatever order the list currently has. Sort first if a particular order is required.
 
-### 8.5 Recursion and `equals()` / `hashCode()`
+#### A comparison tie does not necessarily mean two students are equal
 
-Lecture 10 introduced the relationship between `equals()` and `hashCode()`.
+Lecture 9 explains that `compareTo()` returning `0` means the two objects tie under that comparison rule. It does not automatically mean the objects are equal according to `equals()`.
 
-The essential contract is:
+For example, if `compareTo()` compares only GPA, two students with the same GPA compare as tied even if their names or IDs differ.
 
-- If two objects are equal according to `equals()`, they must return the same `hashCode()`.
-- Two objects that are not equal may still have the same hash code.
-- A hash code is not a unique identifier.
-- When overriding `equals()`, you should also override `hashCode()` consistently.
+A recursive traversal still visits both objects. It does not remove one just because the comparison result is zero.
 
-Recursion does not change these rules. A recursive method can use `equals()` to compare an item with a target while searching a collection, but it should not invent a new equality rule.
+### 8.3 Recursively search for an `Author` using `equals()` — Lecture 10
 
-For example, assume `Student` has a correctly implemented `equals()` method:
+Lecture 10 uses an `Author` class whose equality rule is based on both `name` and `country`.
+
+For example:
 
 ```java
-public static int findStudent(
-        ArrayList<Student> students, Student target, int index) {
+Author a1 = new Author("Alice Chen", "Canada");
+Author a2 = new Author("Alice Chen", "Canada");
+```
 
-    // Base case: the target was not found
-    if (index == students.size()) {
+These are two different objects, but the lecture's `equals()` method considers them logically equal because their names and countries match.
+
+We can use that existing equality rule in a recursive linear search:
+
+```java
+public static int findAuthor(
+        ArrayList<Author> authors, Author target, int index) {
+
+    // Base case: no more authors to examine
+    if (index == authors.size()) {
         return -1;
     }
 
-    // Compare the current student using equals()
-    if (students.get(index).equals(target)) {
+    // Is the current author logically equal to the target?
+    if (authors.get(index).equals(target)) {
         return index;
     }
 
-    // Search the rest of the list
-    return findStudent(students, target, index + 1);
+    // Search the remaining elements
+    return findAuthor(authors, target, index + 1);
 }
 ```
 
-Call:
+Example call:
 
 ```java
-int position = findStudent(students, searchStudent, 0);
+Author target = new Author("Alice Chen", "Canada");
+int position = findAuthor(authors, target, 0);
+
+System.out.println(position);
 ```
 
-The method returns the index of the first equal student, or `-1` if no equal student is found.
+The method returns the index of the first author that is equal to `target`. It returns `-1` if no match is found.
 
-This example demonstrates the difference between two jobs:
+**What does each part do?**
 
-- `equals()` decides whether the current object is equal to the target.
-- Recursion decides which list element to examine next.
+- `equals()` decides whether the current author and target represent the same logical author.
+- `index + 1` moves the search to the next list element.
+- The recursive call continues the search.
+- `-1` is the method's chosen result when the target is not found.
 
-`hashCode()` is not needed for this linear recursive search. Hash-based collections such as `HashSet` and `HashMap` use both `hashCode()` and `equals()` as part of their lookup process.
+#### Why does this linear search not need `hashCode()`?
 
-### 8.6 A practical rule: when should we use recursion with objects?
+This method examines the list one element at a time and calls `equals()` on each candidate. It does not use a hash table to locate the object.
 
-Recursion is useful when the work can be expressed as:
+Lecture 10 teaches that `HashSet` and `HashMap` use both `hashCode()` and `equals()` for hash-based lookup. That is a different search mechanism.
 
-1. Process the current object or element.
-2. Process the remaining objects or elements using the same method.
-3. Stop when no elements remain.
+| Search approach | How the candidate is located |
+|---|---|
+| Recursive search through an `ArrayList` | Visit elements one by one and compare with `equals()` |
+| `HashSet.contains(target)` | Use hashing to narrow the search, then equality checks as needed |
+| `HashMap.get(key)` | Use the key's hash code to locate a candidate area, then equality checks as needed |
 
-For a simple `ArrayList`, a loop is often easier and uses less call-stack memory. Recursion is included here to help you understand the pattern and prepare for recursive structures such as trees, where each node can lead to smaller subtrees.
+Do not add `hashCode()` to the recursive `ArrayList` search just because the `Author` class overrides it. The search does not need it.
+
+### 8.4 Recursion does not replace `HashSet` or `HashMap` — Lecture 10
+
+Lecture 10 introduced:
+
+```java
+Set<Author> authors = new HashSet<>();
+```
+
+This is useful when the program needs a collection of unique authors.
+
+It also introduced:
+
+```java
+Map<Author, Integer> bookCounts = new HashMap<>();
+```
+
+This is useful when the program needs to associate each author with a book count.
+
+A recursive method can traverse an `ArrayList`, but recursion is not a replacement for these collection types:
+
+- Use `HashSet` when you need to store unique elements according to `equals()` and `hashCode()`.
+- Use `HashMap` when you need key–value mappings.
+- Use a recursive `ArrayList` method when the learning task is to visit or search the list one element at a time.
+
+Remember the Lecture 10 contract: if two objects are equal according to `equals()`, they must have the same hash code. A hash code is not a unique identifier, and a collision does not prove equality.
+
+Also remember the warning about mutable keys: do not change fields used by `equals()` and `hashCode()` while an object is being used as a key in a `HashMap` or as an element in a `HashSet`. Changing those fields can make the object difficult to find.
+
+### 8.5 Choosing the right technique
+
+| Task | Suitable technique |
+|---|---|
+| Visit every object in an `ArrayList<Flyable>` | Loop or recursive traversal |
+| Display students in ID order | Sort with `Comparable`, then traverse |
+| Display students in scholarship order | Sort with `Comparator`, then traverse |
+| Find an equal `Author` in an `ArrayList` using the recursion pattern | Recursive linear search with `equals()` |
+| Store unique authors | `HashSet<Author>` |
+| Retrieve an author's book count | `HashMap<Author, Integer>` |
+
+For a simple `ArrayList`, a loop is usually shorter and avoids creating multiple recursive stack frames. The recursive versions here are teaching examples: they help you practise recursion while reusing familiar Java classes and interfaces.
 
 ---
 
-## 9. Integrated practice — connect Lectures 7–10 to recursion
+## 9. Integrated practice — recursion with earlier Java topics
 
-### Practice 9.1 — Polymorphic employee list
+Try each question before reading its answer. For code-writing questions, identify the base case first.
 
-Assume `Manager extends Employee`, and both classes have a working `displayDetails()` method. Write a recursive method that displays every employee in an `ArrayList<Employee>`.
+### Practice 9.1 — Traverse a list of `Flyable` objects
 
-**Requirements:**
+Lecture 8 introduced `Flyable` and showed that a collection can hold different objects that implement the interface.
 
-- Use an index parameter.
-- Stop when the index reaches the list size.
-- Do not use a loop.
-- Do not use `instanceof` to decide which `displayDetails()` method to call.
-
-**Answer:**
+Complete the recursive method:
 
 ```java
-public static void displayAll(
-        ArrayList<Employee> employees, int index) {
-
-    if (index == employees.size()) {
+public static void testFlights(ArrayList<Flyable> flyers, int index) {
+    if (____________________________) {
         return;
     }
 
-    employees.get(index).displayDetails();
-    displayAll(employees, index + 1);
-}
-```
+    ________________________________;
 
-The method relies on dynamic method dispatch. It does not need to know whether the current object is an `Employee` or a `Manager`.
-
-### Practice 9.2 — Total area of shapes
-
-Assume `Shape` is abstract and every concrete shape implements `calcArea()`. Complete the recursive method:
-
-```java
-public static double totalArea(ArrayList<Shape> shapes, int index) {
-    if (________________________) {
-        return 0.0;
-    }
-
-    return ________________________________
-            + ________________________________;
+    ________________________________;
 }
 ```
 
 **Answer:**
 
 ```java
-public static double totalArea(ArrayList<Shape> shapes, int index) {
-    if (index == shapes.size()) {
-        return 0.0;
+public static void testFlights(ArrayList<Flyable> flyers, int index) {
+    if (index == flyers.size()) {
+        return;
     }
 
-    return shapes.get(index).calcArea()
-            + totalArea(shapes, index + 1);
+    flyers.get(index).fly();
+
+    testFlights(flyers, index + 1);
 }
 ```
 
-### Practice 9.3 — Search using `equals()`
+The base case stops when all elements have been visited. The recursive call advances the index.
 
-A recursive method searches an `ArrayList<Student>` for a student equal to `target`. What should it return if it reaches the end of the list without finding a match?
+### Practice 9.2 — What does recursion do after sorting?
 
-**Answer:** Return `-1`, provided the method's documented return value uses `-1` to mean “not found.” This is a method-design decision; it is not a special recursion rule.
-
-### Practice 9.4 — Sorting versus traversal
+Assume `Student` implements `Comparable<Student>` with natural ordering by ID ascending.
 
 A student writes:
 
@@ -1313,357 +1247,245 @@ A student writes:
 printStudents(students, 0);
 ```
 
-and claims that this prints the students in `Comparable` order.
+and claims that this method automatically sorts the students by ID.
 
-Is the claim necessarily correct?
+Is the claim correct?
 
-**Answer:** No. The recursive method prints the elements in the list's current order. The list must first be sorted using `Collections.sort(students)` or an appropriate `students.sort(comparator)` call if a particular ordering is required.
-
-### Practice 9.5 — Identify each concept
-
-For the statement below, identify the concepts involved:
+**Answer:** No. The recursive method only visits the list in its current order. To use the natural ordering, call:
 
 ```java
-shapes.get(index).calcArea()
-        + totalArea(shapes, index + 1);
+Collections.sort(students);
+printStudents(students, 0);
 ```
+
+### Practice 9.3 — Comparator order
+
+The scholarship comparator from Lecture 9 uses:
+
+1. GPA descending.
+2. Name ascending when GPA ties.
+3. ID ascending when both GPA and name tie.
+
+Should the recursive printing method contain these three comparison rules?
+
+**Answer:** No. The comparator defines the ordering. The sorting method rearranges the list. The recursive method simply prints each element in the order it receives.
+
+### Practice 9.4 — Search for an `Author`
+
+Assume `Author.equals()` compares both `name` and `country`, as in Lecture 10.
+
+What should the recursive search return when it reaches the end of the list without finding an equal author?
+
+**Answer:** `-1`, if the method's documented convention is that `-1` means “not found.”
+
+### Practice 9.5 — Does a comparison tie mean duplicate authors?
+
+A student says:
+
+> If `compareTo()` returns `0`, the two objects are duplicates and one should be removed.
+
+Is this always true?
+
+**Answer:** No. `compareTo()` returning `0` means the objects tie under the ordering rule. It does not automatically mean `equals()` returns `true`. Sorting and equality are separate concepts.
+
+### Practice 9.6 — Which collection should you use?
+
+Choose `ArrayList`, `HashSet`, or `HashMap` for each task:
+
+1. Keep a list of authors in the order they were entered.
+2. Store each author only once according to the `Author.equals()` rule.
+3. Associate each author with the number of books they have written.
+4. Recursively visit every author in a list.
 
 **Answer:**
 
-- `shapes.get(index)` accesses an object from an `ArrayList`.
-- `calcArea()` uses the `Shape` abstraction and polymorphic method dispatch.
-- `totalArea(...)` is the recursive call.
-- `+` combines the current area's result with the result for the remaining elements.
+1. `ArrayList<Author>`
+2. `HashSet<Author>`
+3. `HashMap<Author, Integer>`
+4. `ArrayList<Author>` with a recursive traversal method
+
+### Practice 9.7 — Trace the recursive author search
+
+Suppose the list contains:
+
+```text
+Index 0: Alice Chen (Canada)
+Index 1: Omar Ali (Canada)
+Index 2: Maya Singh (India)
+```
+
+The target is:
+
+```java
+new Author("Maya Singh", "India")
+```
+
+What index does `findAuthor(authors, target, 0)` return?
+
+**Answer:** `2`.
+
+The method checks index 0, then index 1, then index 2. At index 2, `equals()` returns `true`, so the method returns `2` without searching further.
 
 ---
 
-## 10. AI-assisted practice — explain and verify a recursive object traversal
+## 10. AI-assisted practice — explain, implement, and verify
 
-Use an AI assistant as a programming tutor. Do not ask it to complete the exercise immediately. Ask it to help you reason about the base case, recursive progress, and object-oriented behaviour.
+Use AI as a programming tutor, not as a replacement for your own reasoning. The goal is to demonstrate that you understand both recursion and the Java concepts from the previous lectures.
 
-**Task:** Create an `ArrayList<Employee>` containing at least one `Employee` and one `Manager`. Write a recursive method that displays the details of every object.
+### Activity A — Recursively test `Flyable` objects
 
-**Prompt 1 — Plan before coding**
+**Task:** Use the `Flyable` interface and the `Bird`, `Drone`, and `Airplane` examples from Lecture 8. Create an `ArrayList<Flyable>` and write a recursive method that calls `fly()` on every element.
 
-> I am learning recursion in Java. I have an ArrayList<Employee> that can contain Employee and Manager objects. Do not write the complete solution yet. Help me identify the base case, the recursive case, and how the index should change.
+Ask AI:
 
-**Prompt 2 — Trace the method**
+> I am learning Java recursion. I have an ArrayList<Flyable> containing objects that implement the Flyable interface. Do not write the complete solution immediately. Help me identify the base case, the recursive case, and how the index should change.
 
-> Trace my recursive method for a list of three objects. Show every method call, the index value, when each call waits, and the order in which calls return.
+Then ask:
 
-**Prompt 3 — Check polymorphism**
-
-> Explain why calling displayDetails() through an Employee reference can execute the Manager override. Separate the role of polymorphism from the role of recursion.
-
-**Prompt 4 — Test edge cases**
-
-> Suggest test cases for an empty list, a one-element list, and a list containing both Employee and Manager objects. Explain the expected behaviour.
+> Trace my method for a list containing three objects. Show each call, the index value, and when each call returns.
 
 **Student submission:**
 
-1. The `Employee` and `Manager` code used.
-2. The recursive traversal method.
-3. A trace for a list containing three objects.
-4. Expected output and actual output.
-5. A short explanation of how recursion and polymorphism work together.
+1. The recursive method.
+2. A trace showing all method calls.
+3. The output produced by the actual `fly()` implementations.
+4. An explanation of how recursion and interface polymorphism work together.
 
-### Teacher solution guide
+### Activity B — Sort, then recursively print students
 
-A suitable solution has this structure:
+**Task:** Use the `Student` class from Lecture 9.
+
+1. Sort by natural ordering (ID ascending) and recursively print the list.
+2. Sort by the scholarship comparator and recursively print the list again.
+3. Explain which part sorts and which part traverses.
+
+Ask AI:
+
+> I have a Java Student class that implements Comparable<Student> by ID ascending. I also have a Comparator<Student> for scholarship order: GPA descending, name ascending, and ID ascending. Help me write a recursive method that prints an ArrayList<Student> by index. Do not put sorting logic inside the recursive method.
+
+**Student submission:**
+
+1. The recursive printing method.
+2. The natural-order sorting call and output.
+3. The comparator sorting call and output.
+4. A short explanation of why recursion does not perform the sorting.
+
+### Activity C — Search for an `Author` using `equals()`
+
+**Task:** Use the `Author` equality rule from Lecture 10: two authors are equal when both their names and countries match.
+
+Ask AI:
+
+> Help me trace a recursive linear search through an ArrayList<Author>. The search must use the existing equals() method, return the first matching index, and return -1 if no match is found. First ask me to identify the base case.
+
+**Student submission:**
+
+1. The recursive search method.
+2. A trace for a target that is found.
+3. A trace for a target that is not found.
+4. An explanation of why this ArrayList search uses `equals()` but does not need `hashCode()`.
+
+### Solution guide
+
+**Activity A — expected method structure:**
 
 ```java
-public static void displayAll(
-        ArrayList<Employee> employees, int index) {
-
-    if (index == employees.size()) {
+public static void testFlights(ArrayList<Flyable> flyers, int index) {
+    if (index == flyers.size()) {
         return;
     }
 
-    employees.get(index).displayDetails();
-    displayAll(employees, index + 1);
+    flyers.get(index).fly();
+    testFlights(flyers, index + 1);
 }
 ```
 
-A strong explanation should state:
+A strong explanation identifies `index == flyers.size()` as the base case, `index + 1` as progress, and dynamic dispatch as the reason each object's own `fly()` implementation runs.
 
-- The base case is reached when `index == employees.size()`.
-- The recursive call uses `index + 1`, so each call moves toward the base case.
-- Each call processes exactly one element before moving to the next.
-- An empty list stops immediately when called with index `0`.
-- The declared type `Employee` permits references to both `Employee` and `Manager` objects.
-- Overridden `displayDetails()` calls are selected according to the actual object type.
-- Recursion performs the traversal; polymorphism selects the overridden method implementation.
-
-Common errors to check:
-
-- Starting with an index other than `0` without explaining why.
-- Using `index > employees.size()` as the only base case. `index == employees.size()` is sufficient when the method is always called with a valid starting index and increments by one.
-- Forgetting `index + 1`.
-- Calling the method with `index` unchanged.
-- Using `employees.get(index + 1)` before checking the base case.
-- Writing `Employee.displayDetails()` as if the method were static.
-- Using `instanceof` unnecessarily instead of allowing polymorphism to select the overridden method.
-
----
-
-
----
-
-## 7. Practice — predict, trace, run, explain
-
-For each exercise, first predict the output. Then trace the method calls and returns. Finally, run the code to check your answer.
-
-### Practice 1 — How many messages?
+**Activity B — expected method structure:**
 
 ```java
-public static void printInfo(int num) {
-    if (num == 0) {
+public static void printStudents(ArrayList<Student> students, int index) {
+    if (index == students.size()) {
         return;
     }
 
-    System.out.println("Hello");
-    printInfo(num - 1);
+    System.out.println(students.get(index));
+    printStudents(students, index + 1);
 }
 ```
 
-What is printed by:
+Sorting happens before the recursive call:
 
 ```java
-printInfo(4);
+Collections.sort(students);
+printStudents(students, 0);
+
+students.sort(scholarshipOrder);
+printStudents(students, 0);
 ```
 
-**Answer:**
-
-```text
-Hello
-Hello
-Hello
-Hello
-```
-
-There are four calls that print a message: `4`, `3`, `2`, and `1`. The call with `0` reaches the base case and prints nothing.
-
-### Practice 2 — Calculate the sum
+**Activity C — expected method structure:**
 
 ```java
-public static int sum(int num) {
-    if (num == 0) {
-        return 0;
+public static int findAuthor(
+        ArrayList<Author> authors, Author target, int index) {
+
+    if (index == authors.size()) {
+        return -1;
     }
 
-    return sum(num - 1) + (num - 1);
-}
-```
-
-What is the result of `sum(5)`?
-
-**Answer:** `10`
-
-```text
-sum(5) = sum(4) + 4
-       = sum(3) + 3 + 4
-       = sum(2) + 2 + 3 + 4
-       = sum(1) + 1 + 2 + 3 + 4
-       = sum(0) + 0 + 1 + 2 + 3 + 4
-       = 10
-```
-
-### Practice 3 — Trace the output
-
-```java
-public static void show(int num) {
-    if (num == 0) {
-        return;
+    if (authors.get(index).equals(target)) {
+        return index;
     }
 
-    System.out.println(num);
-    show(num - 1);
-    System.out.println(num);
+    return findAuthor(authors, target, index + 1);
 }
 ```
 
-What is printed by `show(3)`?
+A strong explanation distinguishes the jobs: `equals()` checks logical equality; recursion advances through the list; `hashCode()` is used by hash-based collections, not by this sequential search.
 
-**Answer:**
+**Common errors to check:**
 
-```text
-3
-2
-1
-1
-2
-3
-```
-
-The first three lines are printed while calls move toward the base case. The final three lines are printed as the calls return.
-
-### Practice 4 — Find the error
-
-```java
-public static void count(int num) {
-    if (num == 0) {
-        return;
-    }
-
-    System.out.println(num);
-    count(num + 1);
-}
-```
-
-Why does this method not stop when called with `count(3)`?
-
-**Answer:** The argument increases instead of decreasing. It moves away from the base case `num == 0`. The recursive call should be `count(num - 1)` for positive starting values.
-
-### Practice 5 — Factorial
-
-Write a recursive method that calculates the factorial of a non-negative integer.
-
-**Answer:**
-
-```java
-public static int factorial(int num) {
-    if (num == 0) {
-        return 1;
-    }
-
-    return num * factorial(num - 1);
-}
-```
-
-For `factorial(4)`, the result is `24`.
-
-### Practice 6 — Recursion or loop?
-
-Which approach would usually be simpler for printing `Hello` exactly 1,000 times: a loop or recursion? Explain why.
-
-**Answer:** A loop is usually simpler and uses less call-stack memory for straightforward repetition. Recursion is useful when a problem naturally breaks into smaller versions of itself.
-
-### Practice 7 — Identify the base case and general pattern
-
-Assume `num` is non-negative; negative input is outside the domain of this introductory implementation.
-
-Consider:
-
-```java
-public static int powerOfTwo(int num) {
-    if (num == 0) {
-        return 1;
-    }
-
-    return 2 * powerOfTwo(num - 1);
-}
-```
-
-Identify:
-
-1. The base case.
-2. The general pattern.
-3. The result of `powerOfTwo(3)`.
-
-**Answer:**
-
-1. Base case: `num == 0`, returning `1`.
-2. General pattern: `2 * powerOfTwo(num - 1)`.
-3. `powerOfTwo(3) = 8`. (This `int` implementation overflows for sufficiently large exponents; for example, `2^31` is outside the positive `int` range.)
+- The base case is missing or checks the wrong index.
+- The recursive call does not use `index + 1`.
+- The method accesses `get(index)` before checking the base case.
+- The student puts sorting comparisons inside the recursive printing method.
+- The student assumes `compareTo() == 0` always means `equals()` is true.
+- The student uses `hashCode()` as if it were a unique identifier.
+- The student claims that recursive `ArrayList` search uses the same mechanism as `HashSet` or `HashMap`.
 
 ---
 
-## 8. AI-assisted practice — use AI as a debugging partner
+## 11. Final summary — recursion and the earlier Java lectures
 
-The goal of this activity is to practise identifying the base case and general pattern. AI may help explain a trace, but you must be able to justify the answer yourself.
-
-### Activity: Repair a broken recursive method
-
-A student writes:
-
-```java
-public static int product(int num) {
-    if (num == 1) {
-        return 0;
-    }
-
-    return num * product(num - 1);
-}
-```
-
-The student expects `product(4)` to return:
-
-```text
-24
-```
-
-But the method returns `0`.
-
-**Your tasks:**
-
-1. Identify the base-case error.
-2. Explain why the current method always returns `0`.
-3. Correct the method.
-4. Trace the calls for `product(4)`.
-5. Explain how the calls return in reverse order.
-
-### AI prompt  
-
-You may use the following prompt:
-
-> I am learning Java recursion. Do not immediately give me the corrected code. First ask me what the base case should be. Then guide me to identify the general pattern and trace the method calls for product(4). After I attempt the solution, check my reasoning and explain any mistake in simple terms.
-
-
----
-
-## 9. Final summary
-
-| Term | Plain-language meaning |
-|---|---|
-| Recursion | A method calling itself |
-| Recursive call | A call from a method to itself |
-| Base case | The simplest situation where the answer is known and recursion stops |
-| General pattern | The rule that solves a problem using a smaller version of the same problem |
-| Call stack | The memory structure that keeps track of active method calls |
-| Stack overflow | An error that can occur when too many method calls are waiting on the call stack |
-| LIFO | Last in, first out; the last call made is the first one to return |
-
-Remember these five rules:
-
-1. **Every recursive method needs a base case.**
-2. **The base case must return the correct answer.**
-3. **Every recursive call must move toward the base case.**
-4. **Understand that calls move down toward the base case and results return in reverse order.**
-5. **Use recursion when it makes the problem easier to express; use a loop when straightforward repetition is clearer and more efficient.**
-
-## Further reading
-
-- [Java Language Specification — Methods](https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html)
-- [Java `StackOverflowError` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/StackOverflowError.html)
-- [Java Tutorials — Classes and Objects](https://docs.oracle.com/javase/tutorial/java/javaOO/)
-
-
-## 11. Final summary — what recursion adds to Programming 2
-
-Recursion is a method of solving a problem by solving a smaller version of the same problem.
+Recursion solves a problem by solving a smaller version of the same problem. It can also be used to visit objects in a collection one element at a time.
 
 Every correct recursive method needs:
 
-1. A **base case** that returns or performs the correct result for the simplest case.
+1. A **base case** that stops the recursion and returns or performs the correct result.
 2. A **recursive case** that makes progress toward the base case.
-3. A correct use of the result returned by the recursive call, when the method returns a value.
+3. Correct handling of the result from the recursive call when the method returns a value.
 
-When applying recursion to earlier Programming 2 topics, keep each concept's responsibility clear:
+### How recursion connects to earlier lectures
 
-| Earlier topic | What it contributes | What recursion contributes |
+| Previous lecture | Java concept | What recursion adds |
 |---|---|---|
-| Polymorphism (`Employee` / `Manager`) | The actual object's overridden method is executed | Visits each object in sequence |
-| Abstract class (`Shape`) | Defines a common contract such as `calcArea()` | Combines results from each concrete shape |
-| `Comparable` / `Comparator` | Defines an ordering rule | Traverses the list; it does not sort it |
-| `equals()` / `hashCode()` | Defines consistent object equality and hash behaviour | Can visit objects and call `equals()` during a search |
+| Lecture 8 | Abstract classes, interfaces, and polymorphism (`Flyable`, `Bird`, `Drone`, `Airplane`) | Visits each object and calls the appropriate implementation |
+| Lecture 9 | `Comparable`, `compareTo()`, and `Comparator` | Traverses a list after it has been sorted; it does not perform the sorting |
+| Lecture 10 | `equals()` and `hashCode()` | Can use `equals()` during a recursive linear search; hash-based collections use `hashCode()` and `equals()` for their own lookup process |
+
+### Final checklist
 
 Before submitting a recursive method, ask:
 
 - What is the smallest valid input?
-- What does the method return or do in that case?
-- How does each recursive call make the problem smaller or simpler?
+- What should happen in the base case?
+- How does each recursive call make progress?
 - Does the method eventually reach the base case?
-- Does the recursive result contribute correctly to the final result?
-- Have I tested an empty input, a base case, and a normal case?
+- If the method returns a value, am I using the recursive result correctly?
+- Have I tested an empty collection, a one-element collection, a match, and a no-match case where appropriate?
+- Have I kept recursion separate from the responsibilities of interfaces, comparators, equality methods, and collections?
 
-**Main takeaway:** Recursion is not a replacement for object-oriented programming. It is another control technique that can work with the classes, objects, interfaces, collections, and methods you already know.
+**Main takeaway:** Recursion is another way to control how a task is performed. It works alongside object-oriented concepts; it does not replace them. Use a loop when straightforward repetition is clearer, and use recursion when the problem naturally breaks into smaller versions of itself.
+
