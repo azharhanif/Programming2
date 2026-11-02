@@ -23,6 +23,8 @@ Recursion is a way to solve a problem by having a method call itself.
 
 A recursive method does not solve every part of the problem in one step. Instead, it solves a small part and asks another call of the same method to solve a smaller version of the problem.
 
+**Input assumptions in this lecture:** Unless an exercise says otherwise, examples such as `printInfo`, `countdown`, `sum`, and `powerOfTwo` are demonstrated with non-negative integer arguments. Their simple base cases are designed for that input range; they do not automatically validate negative arguments.
+
 Think about a set of boxes placed inside one another. You open one box and find a smaller box inside it. You keep opening boxes until you reach the smallest box. Then you work your way back out.
 
 That is the basic idea of recursion:
@@ -169,7 +171,7 @@ If either part is missing or incorrect, the recursion may not work.
 
 The **base case** is the simplest situation for which we know the answer directly.
 
-Imagine a method called `sum(int x)`. It calculates the sum of all integers in the range `[0, x)`.
+Imagine a method called `sum(int x)`. It calculates the sum of all integers in the range `[0, x)`. For the implementation below, assume `x >= 0`; negative input is outside this method’s stated domain.
 
 The notation `[0, x)` means:
 
@@ -384,7 +386,7 @@ Output:
 120
 ```
 
-For this introductory method, assume `num` is a non-negative integer. A production method should also decide how to handle negative input and possible integer overflow.
+For this introductory method, assume `num` is a non-negative integer. This `int` implementation overflows for `13!` and larger factorial results; a production method should validate negative input and choose a numeric type or overflow strategy appropriate to its requirements.
 
 ---
 
@@ -527,7 +529,7 @@ public static int sumRecursion(int num) {
         return 0;
     }
 
-    return sumRecursion(num - 1) + num - 1;
+    return sumRecursion(num - 1) + (num - 1);
 }
 ```
 
@@ -570,7 +572,7 @@ public static int sumRecursion(int num) {
         return 0;
     }
 
-    return sumRecursion(num - 1) + num - 1;
+    return sumRecursion(num - 1) + (num - 1);
 }
 ```
 
@@ -765,7 +767,7 @@ The method calls itself, but it ignores the answer returned by that call.
 Correction:
 
 ```java
-return sum(num - 1) + num - 1;
+return sum(num - 1) + (num - 1);
 ```
 
 The recursive result is part of the answer.
@@ -777,7 +779,7 @@ For the range `[0, num)`, the last number included is `num - 1`.
 Therefore:
 
 ```java
-return sum(num - 1) + num - 1;
+return sum(num - 1) + (num - 1);
 ```
 
 is correct for this definition.
@@ -927,7 +929,7 @@ public static int sum(int num) {
         return 0;
     }
 
-    return sum(num - 1) + num - 1;
+    return sum(num - 1) + (num - 1);
 }
 ```
 
@@ -1016,6 +1018,8 @@ Which approach would usually be simpler for printing `Hello` exactly 1,000 times
 
 ### Practice 7 — Identify the base case and general pattern
 
+Assume `num` is non-negative; negative input is outside the domain of this introductory implementation.
+
 Consider:
 
 ```java
@@ -1038,7 +1042,7 @@ Identify:
 
 1. Base case: `num == 0`, returning `1`.
 2. General pattern: `2 * powerOfTwo(num - 1)`.
-3. `powerOfTwo(3) = 8`.
+3. `powerOfTwo(3) = 8`. (This `int` implementation overflows for sufficiently large exponents; for example, `2^31` is outside the positive `int` range.)
 
 ---
 
