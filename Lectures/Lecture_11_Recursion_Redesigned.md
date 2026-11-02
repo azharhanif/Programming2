@@ -1328,7 +1328,7 @@ public static void displayAll(
 }
 ```
 
-A strong student explanation should state:
+A strong explanation should state:
 
 - The base case is reached when `index == employees.size()`.
 - The recursive call uses `index + 1`, so each call moves toward the base case.
