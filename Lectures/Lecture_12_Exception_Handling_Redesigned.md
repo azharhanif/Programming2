@@ -14,6 +14,10 @@ By the end of this lecture, you should be able to:
 8. Pass exception handling responsibility from one method to its caller.
 9. Create and throw a user-defined exception.
 10. Choose between handling an exception inside a method and declaring it for the caller to handle.
+11. Apply exception handling to familiar Programming 2 classes: `Employee`/`Manager`, interfaces and polymorphic collections, `Student` sorting, `Author` equality, `HashSet`, `HashMap`, and recursive methods.
+12. Distinguish an exception from an `Error`, including why a `StackOverflowError` is not normally handled as an ordinary input exception.
+
+**Connections to earlier lectures:** This lecture reuses the `Employee`/`Manager` inheritance and polymorphism example from Lecture 7; the interface and polymorphic collection examples from Lecture 8 (`Flyable`, `Bird`, `Drone`, and `Airplane`); the `Student` natural ordering and scholarship `Comparator` examples from Lecture 9; the `Author`, `equals()`, `hashCode()`, `HashSet`, and `HashMap` examples from Lecture 10; and the recursive `ArrayList` traversal, search, and call-stack examples from Lecture 11. The aim is to apply exception handling to familiar code—not to introduce another unrelated set of classes.
 
 ---
 
@@ -290,7 +294,7 @@ Think of the `try` block as a protected area.
 - Java looks for a matching `catch` block.
 - If a matching handler is found, its code runs.
 
-A `try` statement must have at least one `catch` block or a `finally` block. This lecture focuses mainly on `try-catch`; `finally` is introduced later in this section.
+A `try` statement must be followed by at least one `catch` block, a `finally` block, or both. This lecture focuses mainly on `try-catch`; a short `finally` example appears in Section 15.6.
 
 ### 4.2 A simple try-catch example
 
@@ -734,7 +738,47 @@ Reason: / by zero
 
 The handler now gives useful information to the person running the program.
 
-### 7.5 About `System.exit(1)`
+### 7.5 Connection to object methods: avoid accidental NullPointerException
+
+In Lectures 7–10, you worked with objects and reference variables. A reference can be `null`, which means it does not currently refer to an object.
+
+For example:
+
+```java
+Student student = null;
+System.out.println(student.getGpa());
+```
+
+This compiles, but it throws a `NullPointerException` at runtime because Java cannot call `getGpa()` on a `null` reference.
+
+A better design is often to validate the reference before using it:
+
+```java
+if (student == null) {
+    System.out.println("No student object was supplied.");
+}
+else {
+    System.out.println(student.getGpa());
+}
+```
+
+Do not automatically catch every `NullPointerException`. First ask why the reference is null and whether the program should reject it earlier, for example in a constructor or method parameter check.
+
+Lecture 10 also showed a safer way to compare possibly-null object fields:
+
+```java
+Objects.equals(name, other.name)
+```
+
+This avoids a `NullPointerException` that could occur with:
+
+```java
+name.equals(other.name)
+```
+
+when `name` is `null`. The `Objects.equals()` method does not eliminate every possible null problem, but it is useful when comparing nullable fields.
+
+### 7.6 About `System.exit(1)`
 
 You may sometimes see:
 
@@ -1742,7 +1786,7 @@ You may use the following prompt:
 
 > I am learning Java exception handling. Do not immediately rewrite my code. First ask me to identify the two compile-time problems. Give me one hint at a time about the throw statement and catch-block order. After I attempt the correction, explain the exception flow in simple terms.
 
-### Teacher solution guide
+### Solution guide
 
 There are two compile-time problems.
 
@@ -1829,7 +1873,7 @@ Execution flow:
 
 ---
 
-## 16. Final summary
+## 16. Summary of core exception-handling concepts
 
 | Term | Plain-language meaning |
 |---|---|
@@ -1858,10 +1902,1239 @@ Remember these six rules:
 5. **Know the difference between `throw` and `throws`.** One throws an object; the other declares possible propagation.
 6. **Create custom exceptions when they make application rules clearer.** Pass messages to the parent constructor with `super(message)`.
 
+## Further reading — core exception handling
+
+- [Java `Throwable` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html)
+- [Java `Exception` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Exception.html)
+- [Java `RuntimeException` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/RuntimeException.html)
+- [Java `try` statement — Java Language Specification](https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.20)
+- [Java `throw` statement — Java Language Specification](https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.18)
+
+
+---
+
+## 17. Applying exception handling to Lecture 7 — `Employee` and `Manager`
+
+In Lecture 7, you learned inheritance and polymorphism using an `Employee` superclass and a `Manager` subclass.
+
+Exception handling becomes useful when objects are created with invalid data or when a method receives an invalid argument.
+
+### 15.1 Validate employee data in the constructor
+
+Imagine that an employee's salary must not be negative.
+
+A negative salary is not a problem that should be silently accepted. We can reject it using `IllegalArgumentException`.
+
+```java
+public class Employee {
+    private String name;
+    private double salary;
+
+    public Employee(String name, double salary) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException(
+                "Employee name cannot be empty."
+            );
+        }
+
+        if (salary < 0) {
+            throw new IllegalArgumentException(
+                "Salary cannot be negative."
+            );
+        }
+
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void displayDetails() {
+        System.out.println(name + " earns $" + salary);
+    }
+}
+```
+
+What does `throw new IllegalArgumentException(...)` do?
+
+1. It creates an exception object.
+2. It throws that object immediately.
+3. The constructor stops at that point.
+4. The `Employee` object is not successfully created.
+5. The exception propagates to the code that called the constructor, unless it is handled earlier.
+
+### 15.2 Test the constructor from `main`
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Employee e1 = new Employee("Mina", 65000);
+            Employee e2 = new Employee("Ali", -5000);
+
+            e1.displayDetails();
+            e2.displayDetails();
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Employee could not be created.");
+            System.out.println("Reason: " + e.getMessage());
+        }
+
+        System.out.println("Program continues.");
+    }
+}
+```
+
+Output:
+
+```text
+Employee could not be created.
+Reason: Salary cannot be negative.
+Program continues.
+```
+
+Notice that `e1` is created, but the second constructor call throws an exception. The remaining statements inside the `try` block are skipped. Therefore, `e1.displayDetails()` is also skipped because it appears after the failing constructor call.
+
+If you want to handle each employee independently, put each creation in its own `try-catch` block or move the creation into a helper method that handles one employee at a time.
+
+### 15.3 What about a `Manager` object?
+
+A `Manager` is an `Employee`, so it can use the validation in the superclass constructor by calling `super(...)`.
+
+```java
+public class Manager extends Employee {
+    private String department;
+
+    public Manager(String name, double salary, String department) {
+        super(name, salary);
+
+        if (department == null || department.isBlank()) {
+            throw new IllegalArgumentException(
+                "Manager department cannot be empty."
+            );
+        }
+
+        this.department = department;
+    }
+
+    @Override
+    public void displayDetails() {
+        System.out.println(
+            "Manager: " + getName()
+            + ", department: " + department
+            + ", salary: $" + getSalary()
+        );
+    }
+}
+```
+
+The superclass constructor validates the employee name and salary. The subclass constructor validates the department.
+
+Try:
+
+```java
+try {
+    Manager manager = new Manager("Sara", 85000, "");
+}
+catch (IllegalArgumentException e) {
+    System.out.println(e.getMessage());
+}
+```
+
+Output:
+
+```text
+Manager department cannot be empty.
+```
+
+**Important:** The exception does not change inheritance or polymorphism. It controls what happens when invalid data is supplied during object creation.
+
+### 15.4 When should the constructor throw and when should `main` catch?
+
+The constructor knows what makes an `Employee` invalid. It should reject invalid data.
+
+The caller knows what the program should do next. For example, `main` might display an error, ask for another value, or skip that employee.
+
+This is a useful division of responsibility:
+
+- Constructor: enforce the class's rules.
+- Calling method: decide how to respond to the failed creation.
+
+---
+
+## 18. Applying exception handling to Lecture 8 — interfaces and polymorphic collections
+
+Lecture 8 used interfaces and polymorphism. Examples included `Flyable`, with classes such as `Bird`, `Drone`, and `Airplane` implementing the interface.
+
+Exception handling can be used when a polymorphic method receives invalid data or when a collection contains a null reference.
+
+### 16.1 A polymorphic collection
+
+```java
+import java.util.ArrayList;
+
+ArrayList<Flyable> flyers = new ArrayList<>();
+
+flyers.add(new Bird());
+flyers.add(new Drone(80));
+flyers.add(new Airplane());
+```
+
+The collection is declared using the interface type `Flyable`, but it can hold objects of different concrete classes that implement that interface.
+
+Suppose we want to call `fly()` on every object:
+
+```java
+for (Flyable flyer : flyers) {
+    flyer.fly();
+}
+```
+
+This is polymorphism: the implementation belonging to the actual object is executed.
+
+### 16.2 What if the collection contains null?
+
+Consider:
+
+```java
+flyers.add(null);
+```
+
+The collection can contain a null reference. But this call cannot work:
+
+```java
+flyer.fly();
+```
+
+If `flyer` is null, Java throws a `NullPointerException`.
+
+A defensive version is:
+
+```java
+for (Flyable flyer : flyers) {
+    if (flyer == null) {
+        System.out.println("Skipping an empty flyer reference.");
+        continue;
+    }
+
+    flyer.fly();
+}
+```
+
+This example uses an ordinary null check rather than using an exception for a predictable condition.
+
+**Teaching point:** A variable declared as an interface type does not guarantee that it refers to a valid object. The declared type controls which methods can be called; the actual reference must still be non-null.
+
+### 16.3 Handle an exception thrown by an implementation
+
+An interface method can be implemented by different classes. A particular implementation may reject an operation by throwing an unchecked exception.
+
+For example, suppose a drone's `fly()` implementation validates its battery level:
+
+```java
+public class Drone implements Flyable {
+    private int batteryLevel;
+
+    public Drone(int batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
+
+    @Override
+    public void fly() {
+        if (batteryLevel < 20) {
+            throw new IllegalStateException(
+                "Drone battery is too low to fly."
+            );
+        }
+
+        System.out.println("Drone is flying.");
+    }
+}
+```
+
+The caller can handle that exception without needing to know the internal details of the drone:
+
+```java
+for (Flyable flyer : flyers) {
+    try {
+        flyer.fly();
+    }
+    catch (IllegalStateException e) {
+        System.out.println("Flight skipped: " + e.getMessage());
+    }
+}
+```
+
+This is an example of polymorphism and exception handling working together:
+
+- Polymorphism chooses the correct `fly()` implementation.
+- The implementation may throw an exception when its own rule is violated.
+- The calling code decides how to respond.
+
+The `Bird` and `Airplane` implementations do not have to use the same validation rule.
+
+### 16.4 Do not catch an exception just to hide it
+
+This is weak:
+
+```java
+try {
+    flyer.fly();
+}
+catch (Exception e) {
+    // Ignore the problem
+}
+```
+
+The program gives no indication that a flight failed. Prefer a specific catch and a meaningful response.
+
+---
+
+## 19. Applying exception handling to Lecture 9 — `Comparable`, `Comparator`, and Student ranking
+
+Lecture 9 introduced `Student`, `Comparable<Student>`, `compareTo()`, and separate `Comparator<Student>` rules such as scholarship ranking.
+
+Exception handling can help enforce valid student data and diagnose problems in comparison or sorting code.
+
+### 17.1 Reject an invalid GPA in the Student constructor
+
+Assume the GPA scale for this example is from `0.0` to `4.0`.
+
+```java
+public class Student implements Comparable<Student> {
+    private String name;
+    private double gpa;
+
+    public Student(String name, double gpa) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException(
+                "Student name cannot be empty."
+            );
+        }
+
+        if (Double.isNaN(gpa) || gpa < 0.0 || gpa > 4.0) {
+            throw new IllegalArgumentException(
+                "GPA must be between 0.0 and 4.0."
+            );
+        }
+
+        this.name = name;
+        this.gpa = gpa;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getGpa() {
+        return gpa;
+    }
+
+    @Override
+    public int compareTo(Student other) {
+        return Double.compare(this.gpa, other.gpa);
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + gpa + ")";
+    }
+}
+```
+
+Why check `Double.isNaN(gpa)`?
+
+A `double` can contain a special value called `NaN` ("Not a Number"). Ordinary comparisons such as `gpa < 0.0` and `gpa > 4.0` are both false when `gpa` is `NaN`. Therefore, the explicit check rejects it.
+
+### 17.2 Test valid and invalid students
+
+```java
+public static void main(String[] args) {
+    try {
+        Student a = new Student("Mina", 3.7);
+        Student b = new Student("Ali", 4.5);
+
+        System.out.println(a);
+        System.out.println(b);
+    }
+    catch (IllegalArgumentException e) {
+        System.out.println("Student data rejected: " + e.getMessage());
+    }
+}
+```
+
+Output:
+
+```text
+Student data rejected: GPA must be between 0.0 and 4.0.
+```
+
+The first student is created. The second constructor call throws an exception, so the later print statements inside the `try` block are skipped.
+
+### 17.3 Does `compareTo()` need exception handling?
+
+A comparison method should normally compare valid objects. The constructor validation helps ensure that student objects begin with valid data.
+
+However, this method can still fail if `other` is null:
+
+```java
+@Override
+public int compareTo(Student other) {
+    return Double.compare(this.gpa, other.gpa);
+}
+```
+
+Calling:
+
+```java
+a.compareTo(null);
+```
+
+causes a `NullPointerException` when the method tries to access `other.gpa`.
+
+One possible defensive implementation is:
+
+```java
+@Override
+public int compareTo(Student other) {
+    if (other == null) {
+        throw new NullPointerException(
+            "Cannot compare a Student with null."
+        );
+    }
+
+    return Double.compare(this.gpa, other.gpa);
+}
+```
+
+The explicit throw gives a clearer message. It is still an unchecked exception.
+
+For this introductory course, the more important rule is to avoid putting null references into a list that will be sorted.
+
+### 17.4 Sorting and catching invalid student data
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+
+public static void main(String[] args) {
+    ArrayList<Student> students = new ArrayList<>();
+
+    try {
+        students.add(new Student("Mina", 3.7));
+        students.add(new Student("Ali", 3.9));
+        students.add(new Student("Sara", 3.5));
+
+        Collections.sort(students);
+
+        for (Student student : students) {
+            System.out.println(student);
+        }
+    }
+    catch (IllegalArgumentException e) {
+        System.out.println("Could not build student list: "
+                + e.getMessage());
+    }
+}
+```
+
+Output:
+
+```text
+Sara (3.5)
+Mina (3.7)
+Ali (3.9)
+```
+
+This example sorts using the natural ordering defined by `compareTo()`.
+
+### 17.5 Comparator for scholarship ranking
+
+A scholarship comparator may rank the highest GPA first:
+
+```java
+import java.util.Comparator;
+
+Comparator<Student> byGpaDescending =
+        (first, second) ->
+                Double.compare(second.getGpa(), first.getGpa());
+```
+
+Then:
+
+```java
+students.sort(byGpaDescending);
+```
+
+Exception handling does not replace the comparator. The comparator defines the ordering. Validation protects the data used by that ordering.
+
+**Key distinction:**
+
+- `IllegalArgumentException` can reject invalid GPA values when a `Student` is created.
+- `compareTo()` defines natural ordering.
+- `Comparator<Student>` defines an alternative ordering.
+- `sort()` performs the reordering.
+- A catch block decides how to respond if an exception occurs.
+
+---
+
+## 20. Applying exception handling to Lecture 10 — `equals()`, `hashCode()`, `HashSet`, and `HashMap`
+
+Lecture 10 introduced the `Author` class, logical equality, hashing, and hash-based collections.
+
+These concepts have several useful connections to exceptions.
+
+### 18.1 Null-safe equality prevents a common NullPointerException
+
+Suppose an `Author` has `name` and `country` fields.
+
+A risky implementation is:
+
+```java
+return name.equals(other.name)
+        && country.equals(other.country);
+```
+
+This can throw a `NullPointerException` if `name`, `country`, or `other` is null.
+
+The safer pattern from Lecture 10 is:
+
+```java
+import java.util.Objects;
+
+@Override
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    }
+
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+
+    Author other = (Author) obj;
+
+    return Objects.equals(name, other.name)
+            && Objects.equals(country, other.country);
+}
+```
+
+`Objects.equals(a, b)` safely handles null references. It does not mean that null is always valid data; it simply prevents this comparison from throwing a null-related exception.
+
+### 18.2 Constructor validation versus allowing null fields
+
+There are two legitimate design choices.
+
+**Choice A — Reject null or blank author information**
+
+```java
+public Author(String name, String country) {
+    if (name == null || name.isBlank()) {
+        throw new IllegalArgumentException(
+            "Author name is required."
+        );
+    }
+
+    if (country == null || country.isBlank()) {
+        throw new IllegalArgumentException(
+            "Author country is required."
+        );
+    }
+
+    this.name = name;
+    this.country = country;
+}
+```
+
+**Choice B — Permit null fields**
+
+If the design intentionally permits null values, use null-safe operations such as `Objects.equals()` and `Objects.hash()`.
+
+The important point is consistency: decide whether null is allowed, then implement the class accordingly.
+
+### 18.3 Does HashSet throw an exception for a duplicate?
+
+No. A duplicate is an ordinary collection condition, not an exception.
+
+Assume `Author` correctly overrides `equals()` and `hashCode()`:
+
+```java
+Set<Author> authors = new HashSet<>();
+
+authors.add(new Author("Alice Chen", "Canada"));
+authors.add(new Author("Alice Chen", "Canada"));
+
+System.out.println(authors.size());
+```
+
+Output:
+
+```text
+1
+```
+
+The second equal author is simply not added as a second element.
+
+Do not write a `try-catch` block to handle ordinary duplicates. Use the return value of `add()` if you want to know whether a new element was added:
+
+```java
+boolean added = authors.add(
+    new Author("Alice Chen", "Canada")
+);
+
+if (!added) {
+    System.out.println("That author is already in the set.");
+}
+```
+
+### 18.4 HashMap lookup and null values
+
+A `HashMap` permits one null key and null values. Therefore, `map.get(key)` returning null does not always tell you whether the key is absent or whether the key is present and mapped to null.
+
+Use `containsKey()` when you need to distinguish those cases:
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+Map<String, String> status = new HashMap<>();
+
+status.put("A1", "Active");
+status.put("B2", null);
+
+System.out.println(status.get("A1"));
+System.out.println(status.get("B2"));
+System.out.println(status.containsKey("B2"));
+System.out.println(status.containsKey("C3"));
+```
+
+Output:
+
+```text
+Active
+null
+true
+false
+```
+
+This is not an exception. It is normal `HashMap` behaviour.
+
+### 18.5 A custom hashCode() or equals() can itself fail
+
+Hash-based collections call the key's `hashCode()` and may call `equals()` when checking keys.
+
+If your own implementation dereferences a null field unsafely, collection operations can trigger a `NullPointerException`.
+
+For example, this is risky:
+
+```java
+@Override
+public int hashCode() {
+    return name.hashCode();
+}
+```
+
+If `name` is null, this throws a `NullPointerException`.
+
+A null-safe alternative is:
+
+```java
+@Override
+public int hashCode() {
+    return Objects.hash(name, country);
+}
+```
+
+This is another reason to implement `equals()` and `hashCode()` carefully and consistently.
+
+**Important:** A hash collision is not an exception. Two unequal objects may have the same hash code. The collection uses equality checks to distinguish them.
+
+---
+
+## 21. Applying exception handling to Lecture 11 — recursion and the call stack
+
+Lecture 11 introduced recursive methods, base cases, recursive progress, and the call stack.
+
+Exception handling is especially useful when recursive methods receive invalid input. It also helps us understand why `StackOverflowError` is different from an ordinary exception.
+
+### 19.1 Validate input before starting recursion
+
+Recall the recursive sum method from Lecture 11:
+
+```java
+public static int sum(int x) {
+    if (x == 0) {
+        return 0;
+    }
+
+    return sum(x - 1) + (x - 1);
+}
+```
+
+This method assumes `x` is non-negative.
+
+What happens if someone calls:
+
+```java
+sum(-3);
+```
+
+The base case `x == 0` is never reached because each recursive call makes the value smaller:
+
+```text
+-3, -4, -5, -6, ...
+```
+
+The method eventually causes a `StackOverflowError`.
+
+A better design validates the input before recursion begins:
+
+```java
+public static int sum(int x) {
+    if (x < 0) {
+        throw new IllegalArgumentException(
+            "x must be non-negative."
+        );
+    }
+
+    return sumHelper(x);
+}
+
+private static int sumHelper(int x) {
+    if (x == 0) {
+        return 0;
+    }
+
+    return sumHelper(x - 1) + (x - 1);
+}
+```
+
+The public method validates the input. The private helper performs the recursion after the input has passed validation.
+
+Test it:
+
+```java
+public static void main(String[] args) {
+    try {
+        System.out.println(sum(4));
+        System.out.println(sum(-3));
+    }
+    catch (IllegalArgumentException e) {
+        System.out.println("Invalid input: " + e.getMessage());
+    }
+}
+```
+
+Output:
+
+```text
+6
+Invalid input: x must be non-negative.
+```
+
+The negative input is rejected before it can create an unbounded sequence of recursive calls.
+
+### 19.2 Recursive ArrayList search: validate the index
+
+Lecture 11 used recursive traversal and search through an `ArrayList`.
+
+For example:
+
+```java
+public static int findStudent(
+        ArrayList<Student> students, Student target, int index) {
+
+    if (index == students.size()) {
+        return -1;
+    }
+
+    if (students.get(index).equals(target)) {
+        return index;
+    }
+
+    return findStudent(students, target, index + 1);
+}
+```
+
+This method expects a valid starting index, normally `0`.
+
+If a caller passes `-1`, the method attempts:
+
+```java
+students.get(-1)
+```
+
+and Java throws an `IndexOutOfBoundsException` (specifically, an `IndexOutOfBoundsException` for a negative index).
+
+We can validate the starting index:
+
+```java
+public static int findStudent(
+        ArrayList<Student> students, Student target, int index) {
+
+    if (students == null) {
+        throw new IllegalArgumentException(
+            "Student list cannot be null."
+        );
+    }
+
+    if (index < 0 || index > students.size()) {
+        throw new IndexOutOfBoundsException(
+            "Starting index is outside the list."
+        );
+    }
+
+    if (index == students.size()) {
+        return -1;
+    }
+
+    if (students.get(index).equals(target)) {
+        return index;
+    }
+
+    return findStudent(students, target, index + 1);
+}
+```
+
+The method now distinguishes two situations:
+
+- `index == students.size()` is a valid stopping point meaning no elements remain.
+- `index < 0` or `index > students.size()` is an invalid starting index.
+
+### 19.3 Catch the invalid starting index
+
+```java
+try {
+    int position = findStudent(students, searchStudent, -1);
+    System.out.println("Found at: " + position);
+}
+catch (IndexOutOfBoundsException e) {
+    System.out.println("Search could not start: " + e.getMessage());
+}
+```
+
+Output:
+
+```text
+Search could not start: Starting index is outside the list.
+```
+
+### 19.4 StackOverflowError is an Error, not an ordinary Exception
+
+Consider the incorrect recursive method:
+
+```java
+public static void count(int num) {
+    System.out.println(num);
+    count(num + 1);
+}
+```
+
+The recursive call moves away from a stopping condition. Eventually, the call stack can run out of space and Java throws a `StackOverflowError`.
+
+Recall the simplified hierarchy:
+
+```text
+Throwable
+├── Error
+│   └── StackOverflowError
+└── Exception
+    └── RuntimeException
+```
+
+A catch block such as:
+
+```java
+catch (Exception e) {
+    System.out.println("Something went wrong.");
+}
+```
+
+does **not** catch `StackOverflowError`, because `StackOverflowError` is an `Error`, not an `Exception`.
+
+You could technically catch `StackOverflowError` because it is a `Throwable`, but that is not a normal recovery strategy. The call stack may already be exhausted, and the correct solution is to repair the recursive logic:
+
+- Add a correct base case.
+- Make each recursive call move toward that base case.
+- Validate input before starting recursion.
+
+**Teaching point:** Exception handling does not replace correct recursive design.
+
+### 19.5 Integer overflow is not automatically an exception
+
+The factorial method from Lecture 11 used `int`:
+
+```java
+public static int factorial(int num) {
+    if (num == 0) {
+        return 1;
+    }
+
+    return num * factorial(num - 1);
+}
+```
+
+For sufficiently large values, the result exceeds the range of `int`. Java integer arithmetic normally wraps around; it does not automatically throw an exception for integer overflow.
+
+If overflow must be detected, use checked arithmetic:
+
+```java
+public static int factorialChecked(int num) {
+    if (num < 0) {
+        throw new IllegalArgumentException(
+            "Factorial input must be non-negative."
+        );
+    }
+
+    if (num == 0) {
+        return 1;
+    }
+
+    return Math.multiplyExact(
+        num,
+        factorialChecked(num - 1)
+    );
+}
+```
+
+`Math.multiplyExact()` throws `ArithmeticException` if the multiplication overflows.
+
+Test:
+
+```java
+try {
+    System.out.println(factorialChecked(5));
+    System.out.println(factorialChecked(13));
+}
+catch (IllegalArgumentException | ArithmeticException e) {
+    System.out.println("Factorial could not be calculated: "
+            + e.getMessage());
+}
+```
+
+The first call returns `120`. The second call throws `ArithmeticException` because `13!` is larger than the maximum `int` value.
+
+---
+
+## 22. `finally` — code that runs after try/catch
+
+The `finally` block is useful when some cleanup action should happen whether the `try` block succeeds or an exception is handled.
+
+### 20.1 Basic example
+
+```java
+public static void main(String[] args) {
+    try {
+        int result = 10 / 0;
+        System.out.println(result);
+    }
+    catch (ArithmeticException e) {
+        System.out.println("Cannot divide by zero.");
+    }
+    finally {
+        System.out.println("End of calculation.");
+    }
+}
+```
+
+Output:
+
+```text
+Cannot divide by zero.
+End of calculation.
+```
+
+If the divisor is changed to `2`, the output is:
+
+```text
+5
+End of calculation.
+```
+
+The `finally` block normally executes whether the `try` block completes normally or a matching exception is caught.
+
+### 20.2 When is finally useful?
+
+Common uses include:
+
+- Closing resources.
+- Releasing a lock.
+- Restoring a state after an operation.
+- Performing cleanup that should happen on both success and failure.
+
+For files, database connections, and similar resources, Java's try-with-resources statement is often preferred because it closes supported resources automatically. That topic can be introduced separately.
+
+---
+
+## 23. Integrated practice — exceptions across Lectures 7–11
+
+Try each task before reading the answer. Identify which earlier lecture concept is involved and what exception-handling decision is required.
+
+### Practice 21.1 — Employee validation
+
+A student writes:
+
+```java
+Employee e = new Employee("Mina", -5000);
+System.out.println(e.getSalary());
+```
+
+Assume the `Employee` constructor rejects negative salaries by throwing `IllegalArgumentException`.
+
+**Questions:**
+
+1. Does the object get created successfully?
+2. Which exception is thrown?
+3. What should the caller do?
+
+**Answer:**
+
+1. No. The constructor does not complete successfully.
+2. `IllegalArgumentException`.
+3. The caller can catch it and display a useful message, request corrected input, or reject the employee record.
+
+Example:
+
+```java
+try {
+    Employee e = new Employee("Mina", -5000);
+    System.out.println(e.getSalary());
+}
+catch (IllegalArgumentException e) {
+    System.out.println("Invalid employee: " + e.getMessage());
+}
+```
+
+### Practice 21.2 — Polymorphic Flyable list
+
+A list contains `Bird`, `Drone`, and `Airplane` objects implementing `Flyable`. One element is null.
+
+**Question:** Why can `flyer.fly()` throw `NullPointerException`, even though the variable is declared as `Flyable`?
+
+**Answer:** `Flyable` is the reference type, but the reference can still hold null. The interface type does not guarantee that an object exists. Check for null before calling the method.
+
+### Practice 21.3 — Student GPA validation
+
+A `Student` constructor accepts only GPA values between `0.0` and `4.0`.
+
+What exception should it throw for a GPA of `4.5`?
+
+**Answer:** `IllegalArgumentException`, because the caller supplied an argument outside the method's accepted range.
+
+### Practice 21.4 — HashSet duplicate
+
+A student adds the same logical `Author` twice to a correctly implemented `HashSet<Author>`.
+
+Should the student use `try-catch` to handle the duplicate?
+
+**Answer:** No. A duplicate is normal `HashSet` behaviour, not an exception. Use the boolean return value of `add()` if the program needs to know whether the element was newly added.
+
+### Practice 21.5 — Recursive search
+
+A recursive search method is called with index `-1`.
+
+What is the problem, and how should it be handled?
+
+**Answer:** A negative index is invalid. Validate the index before calling `ArrayList.get(index)` and throw `IndexOutOfBoundsException` or `IllegalArgumentException` according to the method's documented contract.
+
+### Practice 21.6 — Recursive method never reaches its base case
+
+A recursive method keeps calling itself with `num + 1` and eventually causes `StackOverflowError`.
+
+Will `catch (Exception e)` handle it?
+
+**Answer:** No. `StackOverflowError` extends `Error`, not `Exception`. Repair the base case and recursive progress instead of relying on a catch block.
+
+### Practice 21.7 — Sorting students
+
+A `Comparator<Student>` receives a null student reference and tries to call `getGpa()`.
+
+What may happen?
+
+**Answer:** A `NullPointerException` may occur. Prevent null entries in the list or define an explicit null-ordering policy in the comparator if null entries are part of the intended design.
+
+---
+
+## 24. AI-assisted practice — debug a small student-management program
+
+Use AI as a debugging partner. First identify the problems yourself; then ask AI for hints and verify the corrected program by running it.
+
+### Activity: Repair the program
+
+Assume the course already has `Employee`, `Manager`, `Student`, and `Author` classes based on the earlier lectures.
+
+A student submits this code:
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Main {
+    public static void main(String[] args) {
+
+        ArrayList<Student> students = new ArrayList<>();
+
+        students.add(new Student("Mina", 3.7));
+        students.add(new Student("Ali", 4.5));
+
+        Collections.sort(students);
+
+        Student first = students.get(5);
+        System.out.println(first);
+
+        Set<Author> authors = new HashSet<>();
+        authors.add(new Author("Alice Chen", "Canada"));
+        authors.add(new Author("Alice Chen", "Canada"));
+
+        System.out.println("Authors: " + authors.size());
+    }
+}
+```
+
+For this exercise, assume:
+
+- `Student` rejects a GPA outside `0.0` to `4.0` using `IllegalArgumentException`.
+- `Student` implements `Comparable<Student>`.
+- `Author` correctly overrides `equals()` and `hashCode()`.
+
+**Your tasks:**
+
+1. Identify the first exception that occurs.
+2. Explain why the sorting and array access are not reached.
+3. Add a `try-catch` around student creation and sorting.
+4. Explain why `students.get(5)` would be invalid if execution reached it.
+5. Explain why adding two equal authors does not throw an exception.
+6. Rewrite the program so the author set is still tested even if student creation fails.
+
+### AI prompt for students
+
+> I am learning Java exception handling and have studied inheritance, interfaces, Comparable, Comparator, equals(), hashCode(), HashSet, HashMap, and recursion. Do not give me the complete corrected program immediately. Ask me to identify which line throws first, then guide me through the exception flow. Help me separate invalid input, invalid collection index, and ordinary duplicate behaviour. After I attempt a solution, check it and explain each correction.
+
+### Solution guide
+
+The first exception occurs here:
+
+```java
+students.add(new Student("Ali", 4.5));
+```
+
+The `Student` constructor rejects the GPA and throws `IllegalArgumentException`.
+
+Therefore:
+
+- `Collections.sort(students)` is not reached.
+- `students.get(5)` is not reached.
+- The author set is not created in the original program because execution has already left `main()` due to the uncaught exception.
+
+A corrected version can isolate the student operation so that the author test still runs:
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Main {
+    public static void main(String[] args) {
+
+        ArrayList<Student> students = new ArrayList<>();
+
+        try {
+            students.add(new Student("Mina", 3.7));
+            students.add(new Student("Ali", 4.5));
+
+            Collections.sort(students);
+
+            System.out.println(students);
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println(
+                "Student data error: " + e.getMessage()
+            );
+        }
+
+        Set<Author> authors = new HashSet<>();
+
+        authors.add(new Author("Alice Chen", "Canada"));
+        boolean addedAgain =
+                authors.add(new Author("Alice Chen", "Canada"));
+
+        System.out.println("Second Alice added? " + addedAgain);
+        System.out.println("Authors: " + authors.size());
+    }
+}
+```
+
+Expected output, assuming the constructor message shown in Section 17:
+
+```text
+Student data error: GPA must be between 0.0 and 4.0.
+Second Alice added? false
+Authors: 1
+```
+
+The invalid student data is handled, and execution continues after the catch block. The `HashSet` test then runs.
+
+If the student also wants to demonstrate an invalid index, it should be a separate test:
+
+```java
+try {
+    Student first = students.get(5);
+    System.out.println(first);
+}
+catch (IndexOutOfBoundsException e) {
+    System.out.println("Invalid student-list index.");
+}
+```
+
+**Teaching points:**
+
+- A constructor can throw `IllegalArgumentException` to enforce class rules.
+- A `try-catch` handles the exception at the level where the program can decide what to do next.
+- An invalid `ArrayList` index causes an index exception.
+- `Comparable` defines ordering; it does not validate the index used by `get()`.
+- `HashSet` uses `equals()` and `hashCode()` to recognize duplicates. A duplicate does not throw an exception.
+- Exception handling should be narrow enough that unrelated operations can continue when appropriate.
+
+---
+
+## 25. Final summary — exception handling across the course
+
+| Earlier lecture | Familiar concept | Exception-handling connection |
+|---|---|---|
+| Lecture 7 | `Employee`, `Manager`, inheritance, polymorphism | Validate constructor arguments; a subclass can also reject invalid subclass-specific data |
+| Lecture 8 | `Flyable`, `Bird`, `Drone`, `Airplane`, polymorphic collections | A polymorphic method implementation may throw an exception; null references must be checked |
+| Lecture 9 | `Student`, `Comparable`, `Comparator`, scholarship ranking | Validate GPA and reject invalid comparison data; sorting does not protect against null references |
+| Lecture 10 | `Author`, `equals()`, `hashCode()`, `HashSet`, `HashMap` | Use null-safe equality and hashing; duplicates are normal collection behaviour, not exceptions |
+| Lecture 11 | Recursion, `ArrayList` traversal/search, call stack | Validate input and indexes; understand why a missing base case may cause `StackOverflowError` |
+
+Remember these eight rules:
+
+1. **Validate data at the boundary.** Constructors and public methods should reject invalid arguments with a meaningful exception when appropriate.
+2. **Use specific exceptions.** `IllegalArgumentException` is suitable for an invalid argument; index exceptions describe invalid collection positions.
+3. **Catch exceptions where you can respond meaningfully.** The method that detects a problem does not always need to handle it.
+4. **Do not use exceptions for ordinary conditions.** A duplicate in a `HashSet` is not an exception; use the collection's return value.
+5. **Do not confuse polymorphism with exception handling.** Dynamic dispatch chooses the method implementation; exceptions describe failures during execution.
+6. **Keep comparison and equality contracts intact.** `compareTo()`, `Comparator`, `equals()`, and `hashCode()` each have their own responsibility.
+7. **Validate recursive input before starting recursion.** A bad base case or a call that moves away from it can cause `StackOverflowError`.
+8. **Remember that `Error` and `Exception` are different.** `catch (Exception e)` does not catch `StackOverflowError`.
+
+**Main takeaway:** Exception handling is not an isolated Java topic. It protects the object-oriented programs you have already built. Constructors validate objects, polymorphic methods can report failed operations, sorting depends on valid data, hash-based collections depend on correct equality methods, and recursive methods need input validation as well as a correct base case.
+
 ## Further reading
 
 - [Java `Throwable` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html)
 - [Java `Exception` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Exception.html)
 - [Java `RuntimeException` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/RuntimeException.html)
+- [Java `IllegalArgumentException` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html)
+- [Java `Math.multiplyExact()` API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Math.html#multiplyExact(int,int))
 - [Java `try` statement — Java Language Specification](https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.20)
 - [Java `throw` statement — Java Language Specification](https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.18)
