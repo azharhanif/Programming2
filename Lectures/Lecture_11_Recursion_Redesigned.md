@@ -212,16 +212,19 @@ The **general pattern** explains how to solve a larger problem using a smaller v
 Let's examine a few values:
 
 ```text
-sum(1) = 0
+sum(0)= 0
+sum(1) = 0 + 0
+       = sum(1-1) + (1-1)
+       = sum(0) + 0
 
 sum(2) = 0 + 1
-       = sum(1) + 1
+       = sum(2-1) + (2-1)
 
 sum(3) = 0 + 1 + 2
-       = sum(2) + 2
+       = sum(3-1) + (3-1)
 
 sum(4) = 0 + 1 + 2 + 3
-       = sum(3) + 3
+       = sum(4-1) + (4-1)
 ```
 
 A pattern appears:
