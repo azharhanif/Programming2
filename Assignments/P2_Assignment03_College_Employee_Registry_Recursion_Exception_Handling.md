@@ -17,14 +17,14 @@ Your existing system already has an employee hierarchy, polymorphic payroll calc
 
 ## 2. Lecture alignment
 ```
-| Assignment component | Lecture connection |
+| Assignment component                     | Lecture connection |
 |---|---|
-| Employee identity | Lecture 10 — `equals()` and `hashCode()` |
-| Duplicate prevention | Lecture 10 — `Set` and `HashSet` |
-| Employee directory | Lecture 10 — `HashMap` |
-| Recursive reports and search | Lecture 11 — base case, recursive case, `ArrayList` traversal |
-| Validation and error reporting | Lecture 12 — `throw`, `try-catch`, custom exceptions |
-| Preserve the existing design | Lectures 8–12 — interfaces, polymorphism, sorting, collections, recursion, and exception handling |
+| Employee identity                        | Lecture 10 — `equals()` and `hashCode()` |
+| Duplicate prevention                     | Lecture 10 — `Set` and `HashSet` |
+| Employee directory                       | Lecture 10 — `HashMap` |
+| Recursive reports and search             | Lecture 11 — base case, recursive case, `ArrayList` traversal |
+| Validation and error reporting           | Lecture 12 — `throw`, `try-catch`, custom exceptions |
+| Preserve the existing design             | Lectures 8–12 — interfaces, polymorphism, sorting, collections,                                                   recursion, and exception handling |
 ```
 ## 3. Existing classes to keep
 
