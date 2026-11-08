@@ -58,11 +58,11 @@ Java organizes serious problems and exceptions in a class hierarchy. Both `Error
 A simplified view is:
 
 ```text
-                 Throwable
-                /         \
-             Error      Exception
-                           |
-                    RuntimeException
+                Object
+  └── Throwable
+        ├── Error
+        └── Exception
+              └── RuntimeException
 ```
 
 - **Error:** Represents a serious problem that applications normally are not expected to recover from. Examples include `OutOfMemoryError` and `StackOverflowError`.
