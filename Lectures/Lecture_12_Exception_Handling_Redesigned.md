@@ -205,10 +205,125 @@ Remember:
 - Not every unchecked exception should be caught. Often the better solution is to correct the code or validate the input.
 
 ---
+## 3. User-defined exception handling with `try-catch`
 
-## 3. Java's default exception handler
+There are two main approaches covered in this lecture:
 
-### 3.1 What happens when we do not handle an exception?
+- `try-catch`: a method provides a handler for an exception.
+- `throws`: a method declares that an exception may be passed to its caller.
+
+We will begin with `try-catch`.
+
+### 3.1 Basic syntax of try-catch
+
+A basic `try-catch` structure contains a `try` block and at least one `catch` block.
+
+```java
+try {
+    // Code that may throw an exception
+}
+catch (ExceptionType e) {
+    // Code that handles this type of exception
+}
+```
+
+Think of the `try` block as a protected area.
+
+- Java executes the statements inside `try` normally.
+- If no exception is thrown, the `catch` block is skipped.
+- If an exception is thrown, Java stops executing the remaining statements in that `try` block.
+- Java looks for a matching `catch` block.
+- If a matching handler is found, its code runs.
+
+A `try` statement must be followed by at least one `catch` block, a `finally` block, or both. This lecture focuses mainly on `try-catch`; a short `finally` example appears in Section 15.6.
+
+### 3.2 A simple try-catch example
+
+Let's protect a division operation.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int num1 = 10;
+        int num2 = 0;
+
+        try {
+            int result = num1 / num2;
+            System.out.println("Result: " + result);
+        }
+        catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero.");
+        }
+
+        System.out.println("Program continues.");
+    }
+}
+```
+
+Output:
+
+```text
+Cannot divide by zero.
+Program continues.
+```
+
+What happened?
+
+1. Java enters the `try` block.
+2. It attempts `10 / 0`.
+3. Java throws an `ArithmeticException`.
+4. Java skips the remaining statements in the `try` block.
+5. The `catch (ArithmeticException e)` block matches the exception.
+6. The catch block prints the message.
+7. Execution continues after the `try-catch` structure.
+
+Notice that `Result: ...` is not printed because the division did not complete.
+
+### 3.3 What if no exception occurs?
+
+Change the divisor:
+
+```java
+int num2 = 2;
+```
+
+Now the division succeeds.
+
+Output:
+
+```text
+Result: 5
+Program continues.
+```
+
+The `catch` block is skipped because no exception was thrown.
+
+A `try-catch` block does not prevent exceptions from occurring. It allows the program to respond when a matching exception is thrown. If no matching exception occurs, the catch block is skipped, and the code continues normally.
+
+### 3.4 Put only the relevant statements inside try
+
+It is usually better to place the statements that may throw the exception inside the `try` block, rather than putting an entire program inside it.
+
+For example:
+
+```java
+int[] numbers = {10, 20, 30};
+int index = 5;
+
+try {
+    System.out.println(numbers[index]);
+}
+catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("That array position does not exist.");
+}
+```
+
+The array access is the operation that may throw the exception, so it is the statement that needs protection.
+
+---
+## 4. Java's default exception handler
+
+### 4.1 What happens when we do not handle an exception?
 
 When an exception is thrown and no matching handler is found in the current method, Java looks for a handler in the method that called it.
 
@@ -249,7 +364,7 @@ The line number depends on the actual file.
 
 Neither `System.out.println(result)` nor `System.out.println("Program finished")` is executed.
 
-### 3.2 What is a stack trace?
+### 4.2 What is a stack trace?
 
 A **stack trace** is a report showing the sequence of method calls that were active when an exception occurred.
 
@@ -455,124 +570,6 @@ For this course, focus on recognizing and reading stack traces. You will often s
 **Good practice:** `printStackTrace()` is useful during learning and debugging. Larger applications commonly use a logging framework to record exception details. Do not catch an exception only to print its stack trace and then silently continue if the program cannot safely proceed.
 
 ---
-
-## 4. User-defined exception handling with `try-catch`
-
-There are two main approaches covered in this lecture:
-
-- `try-catch`: a method provides a handler for an exception.
-- `throws`: a method declares that an exception may be passed to its caller.
-
-We will begin with `try-catch`.
-
-### 4.1 Basic syntax of try-catch
-
-A basic `try-catch` structure contains a `try` block and at least one `catch` block.
-
-```java
-try {
-    // Code that may throw an exception
-}
-catch (ExceptionType e) {
-    // Code that handles this type of exception
-}
-```
-
-Think of the `try` block as a protected area.
-
-- Java executes the statements inside `try` normally.
-- If no exception is thrown, the `catch` block is skipped.
-- If an exception is thrown, Java stops executing the remaining statements in that `try` block.
-- Java looks for a matching `catch` block.
-- If a matching handler is found, its code runs.
-
-A `try` statement must be followed by at least one `catch` block, a `finally` block, or both. This lecture focuses mainly on `try-catch`; a short `finally` example appears in Section 15.6.
-
-### 4.2 A simple try-catch example
-
-Let's protect a division operation.
-
-```java
-public class Main {
-    public static void main(String[] args) {
-        int num1 = 10;
-        int num2 = 0;
-
-        try {
-            int result = num1 / num2;
-            System.out.println("Result: " + result);
-        }
-        catch (ArithmeticException e) {
-            System.out.println("Cannot divide by zero.");
-        }
-
-        System.out.println("Program continues.");
-    }
-}
-```
-
-Output:
-
-```text
-Cannot divide by zero.
-Program continues.
-```
-
-What happened?
-
-1. Java enters the `try` block.
-2. It attempts `10 / 0`.
-3. Java throws an `ArithmeticException`.
-4. Java skips the remaining statements in the `try` block.
-5. The `catch (ArithmeticException e)` block matches the exception.
-6. The catch block prints the message.
-7. Execution continues after the `try-catch` structure.
-
-Notice that `Result: ...` is not printed because the division did not complete.
-
-### 4.3 What if no exception occurs?
-
-Change the divisor:
-
-```java
-int num2 = 2;
-```
-
-Now the division succeeds.
-
-Output:
-
-```text
-Result: 5
-Program continues.
-```
-
-The `catch` block is skipped because no exception was thrown.
-
-A `try-catch` block does not prevent exceptions from occurring. It allows the program to respond when a matching exception is thrown. If no matching exception occurs, the catch block is skipped, and the code continues normally.
-
-### 4.4 Put only the relevant statements inside try
-
-It is usually better to place the statements that may throw the exception inside the `try` block, rather than putting an entire program inside it.
-
-For example:
-
-```java
-int[] numbers = {10, 20, 30};
-int index = 5;
-
-try {
-    System.out.println(numbers[index]);
-}
-catch (ArrayIndexOutOfBoundsException e) {
-    System.out.println("That array position does not exist.");
-}
-```
-
-The array access is the operation that may throw the exception, so it is the statement that needs protection.
-
----
-
 ## 5. Multiple catch blocks and specific handlers
 
 A `try` block can have more than one `catch` block. Each catch block can handle a different type of exception.
