@@ -107,8 +107,8 @@ The exact error message and stack trace may vary depending on the Java version a
 However, the exception type identifies the problem consistently.
 ```
 There are three important concepts:
-Term	            Meaning
-Exception type	    The category of error, such as ArrayIndexOutOfBoundsException.
+Term	                Meaning
+Exception type	        The category of error, such as ArrayIndexOutOfBoundsException.
 Exception message	A descriptive explanation of what went wrong.
 Stack trace	        Information showing where the exception occurred and the sequence of method calls leading to it.
 ```
