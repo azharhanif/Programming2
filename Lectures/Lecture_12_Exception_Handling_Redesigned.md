@@ -116,7 +116,13 @@ Stack trace	        Information showing where the exception occurred and the seq
 
 **Exception handling** is the process of responding to an exception so that the program can deal with the problem in a controlled way.
 
-Instead of allowing an exception to stop the program immediately, we can provide a handler.
+Instead of allowing an exception to terminate the program unexpectedly, we can write an exception handler using a `catch` block. The handler contains instructions describing what the program should do when a particular exception occurs.
+
+A `try` block contains code that might cause an exception, while a `catch` block contains the handler that responds to that exception.
+
+
+In Java, an exception handler is usually the code inside a `catch` block. It is not necessarily a separate function or method.
+
 
 For example, if a user enters an invalid array position, our program might display a useful message and ask for another position.
 
