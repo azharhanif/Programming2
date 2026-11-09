@@ -100,7 +100,18 @@ The exact exception message and stack trace depend on the Java runtime, but the 
 ```text
 ArrayIndexOutOfBoundsException
 ```
+**Important:** The exception type will be ArrayIndexOutOfBoundsException because the program attempted to access an array element using an invalid index.
 
+The exact error message and stack trace may vary depending on the Java version and execution environment. 
+
+However, the exception type identifies the problem consistently.
+```
+There are three important concepts:
+Term	            Meaning
+Exception type	    The category of error, such as ArrayIndexOutOfBoundsException.
+Exception message	A descriptive explanation of what went wrong.
+Stack trace	        Information showing where the exception occurred and the sequence of method calls leading to it.
+```
 ### 1.4 What is exception handling?
 
 **Exception handling** is the process of responding to an exception so that the program can deal with the problem in a controlled way.
