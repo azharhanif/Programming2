@@ -1386,6 +1386,9 @@ The main difference is:
 
 For a checked custom exception, callers must catch it or declare it using `throws`.
 
+**Imp:** 
+- Extend Exception to create a checked custom exception.
+- Extend RuntimeException to create an unchecked custom exception.
 ### 10.4 Why is `super(message)` important?
 
 Consider this constructor:
