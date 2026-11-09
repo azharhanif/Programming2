@@ -1146,9 +1146,11 @@ public static void main(String[] args) throws ArithmeticException {
 
 The code compiles because `ArithmeticException` is unchecked, and the declaration is allowed.
 
-However, there is no application method above `main()` to provide a handler. If the exception remains uncaught, it reaches the thread's uncaught-exception handler.
+However, there is no application method above `main()` to provide a handler. If an exception is not handled by any matching catch block, Java passes it to the thread's uncaught-exception handler. By default, Java prints the exception details and stack trace, and the thread terminates.
 
 For a checked exception, declaring `throws` in `main()` also satisfies the compiler, but the exception can still remain uncaught at runtime.
+
+An uncaught-exception handler is Java's final mechanism for dealing with an exception that was not caught by the application.
 
 ---
 
