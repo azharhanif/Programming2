@@ -549,7 +549,7 @@ Program continues.
 
 The `catch` block is skipped because no exception was thrown.
 
-A `try-catch` does not automatically make the code inside `try` safer or change its normal behaviour. The catch block runs only when a matching exception is thrown.
+A `try-catch` block does not prevent exceptions from occurring. It allows the program to respond when a matching exception is thrown. If no matching exception occurs, the catch block is skipped, and the code continues normally.
 
 ### 4.4 Put only the relevant statements inside try
 
