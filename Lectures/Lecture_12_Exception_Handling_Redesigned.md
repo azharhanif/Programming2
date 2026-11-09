@@ -1041,26 +1041,7 @@ What happens?
 5. The `try-catch` in `main()` handles it.
 
 The `divide()` method does not contain its own `try-catch` block. When an exception occurs, Java propagates it back to the calling method. In this example, `main()` provides the catch block that handles the exception.
-```
-public class Calculator {
 
-    public static int divide(int a, int b) {
-        return a / b;
-    }
-
-    public static void main(String[] args) {
-
-        try {
-            int result = divide(10, 0);
-            System.out.println("Result: " + result);
-        } catch (ArithmeticException e) {
-            System.out.println("Cannot divide by zero.");
-        }
-
-        System.out.println("Program continues.");
-    }
-}
-```
 ### 8.3 Passing responsibility through multiple methods
 
 The exception can pass through more than one method.
