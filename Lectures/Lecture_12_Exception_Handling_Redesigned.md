@@ -1158,53 +1158,130 @@ An uncaught-exception handler is Java's final mechanism for dealing with an exce
 
 These two keywords look similar, but they have different jobs.
 
+
+
 ### 9.1 `throws` — declaration in a method header
 
-`throws` declares that a method may pass an exception to its caller.
+The keyword `throws` is written in a method header to declare that a method may pass an exception to the method that calls it.
+
+Consider a method that reads a student data file:
 
 ```java
-public static void calculate() throws ArithmeticException {
-    int result = 10 / 0;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+public static String loadStudentData() throws IOException {
+    return Files.readString(Path.of("students.txt"));
 }
 ```
 
-Think of `throws` as an announcement.
+The method declares `throws IOException` because reading a file may fail. For example, the file might not exist or Java might not have permission to read it.
+
+The method does not handle the exception itself. Instead, it allows the exception to propagate to its caller.
+
+The calling method can handle it:
+
+```java
+public static void main(String[] args) {
+    try {
+        String data = loadStudentData();
+        System.out.println(data);
+    }
+    catch (IOException e) {
+        System.out.println("Unable to read the student file.");
+    }
+}
+```
+
+**What happens?**
+
+1. `main()` calls `loadStudentData()`.
+2. Java attempts to read `students.txt`.
+3. If reading succeeds, the method returns the file contents.
+4. If an `IOException` occurs, the exception propagates to `main()`.
+5. The matching `catch` block handles the exception.
+
+**Important:** `IOException` is a checked exception. Java requires the method to either handle it with `try-catch` or declare it using `throws`.
+
+Think of `throws` as a declaration: *This method may pass this exception to its caller.*
 
 ### 9.2 `throw` — actually throw an exception object
 
-`throw` is used inside a method body to throw an exception.
+The keyword `throw` is used inside a method body to explicitly throw an exception when a particular condition is not acceptable.
+
+Consider a method that validates a student's age:
 
 ```java
-public static void checkNumber(int num) {
-    if (num < 0) {
-        throw new IllegalArgumentException("Number cannot be negative.");
+public static void registerStudent(String name, int age) {
+
+    if (age < 0) {
+        throw new IllegalArgumentException(
+            "Age cannot be negative."
+        );
     }
 
-    System.out.println("Number accepted: " + num);
+    System.out.println(name + " has been registered.");
 }
 ```
 
-Call:
+Call the method:
 
 ```java
-checkNumber(-5);
+registerStudent("Ahmed", -5);
 ```
 
-The method creates an `IllegalArgumentException` object and throws it.
+**What happens?**
 
-If there is no matching handler in this method, the exception propagates to the caller.
+1. The method receives the student's name and age.
+2. It checks whether the age is negative.
+3. Because the age is `-5`, the condition is true.
+4. Java creates and throws an `IllegalArgumentException` object.
+5. The remaining statements in the method are skipped.
+6. If the caller has a matching `catch` block, it handles the exception.
 
-### 9.3 Compare the two keywords
+The caller can handle the exception:
+
+```java
+public static void main(String[] args) {
+
+    try {
+        registerStudent("Ahmed", -5);
+    }
+    catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+    }
+}
+```
+
+**Output:**
+
+```text
+Age cannot be negative.
+```
+
+Notice that the `throw` statement actually causes the exception to occur. It is not simply declaring that an exception might occur.
+
+### 9.3 Compare `throw` and `throws`
+
+These two keywords look similar, but they have different purposes.
 
 | Keyword | Where it appears | Purpose |
 |---|---|---|
-| `throw` | Inside a method body | Throws one exception object |
-| `throws` | In a method declaration | Declares exception types that may propagate to the caller |
+| `throw` | Inside a method body | Explicitly throws an exception object. |
+| `throws` | In a method header | Declares exception types that may be passed to the caller. |
 
-A quick way to remember:
+**A quick way to remember:**
 
-- `throw` = perform the action.
-- `throws` = declare the possibility.
+- `throw` = actually throw an exception.
+- `throws` = declare that a method may pass an exception to its caller.
+
+**Important distinction:**
+
+- A method using `throw` does not automatically need a `throws` declaration if it throws an unchecked exception.
+- A method that throws a checked exception must either handle it using `try-catch` or declare it using `throws`.
+
+
 
 ### 9.4 A method can use both
 
@@ -1219,7 +1296,7 @@ public static void checkAge(int age)
     System.out.println("Age accepted.");
 }
 ```
-
+Note: In this example, throws IllegalArgumentException is optional because IllegalArgumentException is an unchecked exception. It is included only to demonstrate that a method can use both keywords. Java does not require a throws declaration for unchecked exceptions.
 The method declares the exception type with `throws`, and actually throws an exception object with `throw`.
 
 Because `IllegalArgumentException` is unchecked, Java does not require the `throws` declaration. It is included here to make the relationship between the two keywords visible.
