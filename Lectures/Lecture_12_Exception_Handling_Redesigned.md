@@ -251,33 +251,208 @@ Neither `System.out.println(result)` nor `System.out.println("Program finished")
 
 ### 3.2 What is a stack trace?
 
-A **stack trace** is a list of method calls that shows how Java arrived at the line where an exception occurred.
+A **stack trace** is a report showing the sequence of method calls that were active when an exception occurred.
 
-For example, suppose:
+It helps answer two important questions:
+
+- **Where did the exception occur?**
+- **How did the program get there?**
+
+A stack trace normally shows the method where the exception was thrown first, followed by the methods that called it.
+
+#### Example 1 — Follow the method calls
 
 ```java
-public static void main(String[] args) {
-    calculate();
-}
+public class StackTraceExample {
 
-public static void calculate() {
-    divide();
-}
+    public static void main(String[] args) {
+        calculate();
+    }
 
-public static void divide() {
-    int result = 10 / 0;
+    public static void calculate() {
+        divide();
+    }
+
+    public static void divide() {
+        int result = 10 / 0;
+        System.out.println(result);
+    }
 }
 ```
 
-The exception occurs inside `divide()`, but `divide()` was called by `calculate()`, and `calculate()` was called by `main()`.
+The exception occurs inside `divide()`. However, `divide()` was called by `calculate()`, and `calculate()` was called by `main()`.
 
-The stack trace helps us follow that path.
+A simplified stack trace may look like this:
 
-A stack trace is useful when debugging because it helps identify:
+```text
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+    at StackTraceExample.divide(StackTraceExample.java:14)
+    at StackTraceExample.calculate(StackTraceExample.java:10)
+    at StackTraceExample.main(StackTraceExample.java:6)
+```
 
-- The line where the exception occurred.
-- The method in which it occurred.
-- The methods that called that method.
+The exact line numbers and message can vary depending on the source file and Java runtime.
+
+Read the stack trace from top to bottom:
+
+1. `divide()` — the exception occurred here.
+2. `calculate()` — this method called `divide()`.
+3. `main()` — this method called `calculate()`.
+
+This is useful when an error occurs several method calls away from the code that originally started the operation.
+
+#### Example 2 — Print the complete stack trace
+
+Every exception object provides a `printStackTrace()` method.
+
+```java
+public class StackTraceExample {
+
+    public static void main(String[] args) {
+        try {
+            calculate();
+        }
+        catch (ArithmeticException e) {
+            System.out.println("The calculation failed.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void calculate() {
+        divide();
+    }
+
+    public static void divide() {
+        int result = 10 / 0;
+        System.out.println(result);
+    }
+}
+```
+
+The `catch` block handles the exception. The statement:
+
+```java
+e.printStackTrace();
+```
+
+prints the exception type, its message, and the stack trace.
+
+**When is this useful?** It is especially useful while debugging because it shows the location of the problem and the method-call path that led to it.
+
+#### Example 3 — Examine individual stack-trace elements
+
+Sometimes we want to examine the stack trace instead of printing the entire report.
+
+The method `getStackTrace()` returns an array of `StackTraceElement` objects.
+
+Each `StackTraceElement` describes one method call in the stack trace.
+
+```java
+public class StackTraceExample {
+
+    public static void main(String[] args) {
+        try {
+            calculate();
+        }
+        catch (ArithmeticException e) {
+            StackTraceElement[] trace = e.getStackTrace();
+
+            for (StackTraceElement element : trace) {
+                System.out.println("Class: " + element.getClassName());
+                System.out.println("Method: " + element.getMethodName());
+                System.out.println("File: " + element.getFileName());
+                System.out.println("Line: " + element.getLineNumber());
+                System.out.println("--------------------");
+            }
+        }
+    }
+
+    public static void calculate() {
+        divide();
+    }
+
+    public static void divide() {
+        int result = 10 / 0;
+    }
+}
+```
+
+Useful `StackTraceElement` methods include:
+
+| Method | Information returned |
+|---|---|
+| `getClassName()` | Name of the class |
+| `getMethodName()` | Name of the method |
+| `getFileName()` | Source file name, when available |
+| `getLineNumber()` | Source line number, when available |
+
+You do not need to memorize every method. The important idea is that `getStackTrace()` lets a program inspect the stack-trace information programmatically.
+
+#### Example 4 — Find the original cause of an exception
+
+An exception can be created because another exception occurred. This is called **exception chaining**.
+
+For example:
+
+```java
+try {
+    Integer.parseInt("ABC");
+}
+catch (NumberFormatException e) {
+    throw new IllegalArgumentException("Invalid employee number", e);
+}
+```
+
+The original problem is a `NumberFormatException`: Java cannot convert `"ABC"` into an integer.
+
+The program then throws an `IllegalArgumentException` and attaches the original exception as its cause.
+
+A caller can retrieve that original cause using `getCause()`:
+
+```java
+try {
+    validateEmployeeNumber();
+}
+catch (IllegalArgumentException e) {
+    System.out.println("Problem: " + e.getMessage());
+
+    Throwable cause = e.getCause();
+
+    if (cause != null) {
+        System.out.println("Original cause: "
+                + cause.getClass().getSimpleName());
+        System.out.println("Original message: "
+                + cause.getMessage());
+    }
+}
+```
+
+For this example, the original cause is `NumberFormatException`.
+
+`getCause()` is useful when a method translates a lower-level exception into a more meaningful exception for the rest of the application.
+
+#### Three important methods to remember
+```
+| Method | What it does | Typical use |
+|--------|--------------|-------------|
+| `getMessage()` | Returns the exception's detail message | Find out what went wrong |
+| `getStackTrace()` | Returns an array describing the method-call path | Examine where and how the exception occurred |
+| `getCause()` | Returns the original exception that caused this exception, or `null` if there is no cause | Investigate exception chaining |
+```
+There is also a convenient method:
+
+- `printStackTrace()` — prints the exception and its stack trace.
+
+**Remember:**
+
+- `getMessage()` tells us what went wrong.
+- `getStackTrace()` helps us understand where and how it happened.
+- `getCause()` helps us identify the original cause.
+- `printStackTrace()` prints the exception information for debugging.
+
+For this course, focus on recognizing and reading stack traces. You will often see them in the IDE console when a Java program encounters an unhandled exception.
+
+**Good practice:** `printStackTrace()` is useful during learning and debugging. Larger applications commonly use a logging framework to record exception details. Do not catch an exception only to print its stack trace and then silently continue if the program cannot safely proceed.
 
 ---
 
