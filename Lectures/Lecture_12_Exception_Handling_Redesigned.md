@@ -218,7 +218,7 @@ If no suitable handler is found, the exception reaches the thread's uncaught-exc
 
 1. Prints the exception type and message.
 2. Prints a stack trace showing where the exception occurred and how the program reached that point.
-3. Ends the affected thread. If it is the only application thread, the program terminates.
+3. When an exception is not handled, the thread in which the exception occurred terminates. If that thread is the only application thread running, the entire program terminates. If other application threads are still running, they may continue executing.
 
 Consider:
 
