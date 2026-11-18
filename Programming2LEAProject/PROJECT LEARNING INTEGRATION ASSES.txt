@@ -1,0 +1,80 @@
+PROJECT (LEARNING INTEGRATION ASSESSMENT) 
+
+Students implement a GUI integrating the following aspects: 
+
+ Object-oriented Programming: inheritance, polymorphism, encapsulation, and abstraction.
+ Fundamental control structures such as branches (continue, break, return) and loops.
+ Basic data structures such as arrays and ArrayList.
+ Abstract class and Interface
+ Exception handling
+ TextIO: import from an external file and export as file (such as .txt)
+ Recursion
+ Etc.
+
+Requirements 
+
+ In this project, a clear definition of the problem(s) to be solved and the basic project structure is given by
+the teacher. The application scope should be representative of a simple system with multi (2 to 3)
+hierarchies and interfaces.
+ Students translate requirements to produce the UML class diagram.
+ Students analyze the problem by themselves and find the appropriate data types, control structures,
+data structure, and algorithms to solve the problem.
+ Students may apply code version management best practices using a service such as GitHub.
+ At least one or two methods in the project should be implemented by using recursion.
+ Students debug their code using debugging techniques.
+ Students design a unit test suite and driver classes for their program. The implementation must pass all
+tests. The GUI should not crash in any situation.
+ Documentation of classes and methods through block comments.
+ Apply the selected programming language coding convention and style guide.
+ Proper use of arrays or ArrayLists to process stored elements.
+ Proper presentation and formatting of the program output, e.g., tabular output where appropriate.
+ Formatting the prompt messages correctly.
+ Read/write files such as .txt, .csv, and JSON and process the data.
+ Proper layout of the GUI.
+ Proper event handler to handle different events.
+ Application of object-oriented programming concepts, including data abstraction, encapsulation and
+information hiding, inheritance, polymorphism, and instantiation.
+ Implementation of both overriding and overloading methods.
+ Implementation of error handling through the proper use of the exception-class hierarchy and checked
+and unchecked exceptions.
+
+Deliverables: 
+
+ Deliverable 1: UML class diagram and pseudocode for chosen key methods
+ Deliverable 2: Project Source Code
+ Deliverable 3: Test suite and documentation
+
+PROJECT EVALUATION CRITERIA 
+
+The below criteria are considered in the evaluation of the project deliverables: 
+
+Deliverable 1: UML class diagram and pseudocode 
+ Design of user-defined data-types such as classes and interfaces
+ Correctness of the pseudocode
+ Proper identification of class attributes and methods
+ Proper application of encapsulation and inheritance principles
+ Proper graphic representation of the classes, interfaces and their relationships
+ Compliance with nomenclature rules
+
+Deliverable 2: Implementation
+ The program executes without errors (execution and logical) and all features are usable
+ Respect of the project requirements and implementation of all required features
+ Correct selection of algorithms
+ Correct selection of primitive data types
+ Correct implementation of user-defined data types
+ Appropriate implementation of inheritance
+ Application of good programming practices that involve
+o Code formatting
+o Standard naming convention for the selected language
+o Using meaningful identifiers
+o Code documentation
+o Data validation and error avoidance
+o Exception handling
+ Presentation and expressiveness of the program output
+ Appropriate choice of graphic elements for display and data input
+ Proper layout and set-up of graphic elements
+ Appropriate Reading and processing data from external file and exporting the result appropriately.
+
+Deliverable 3: Test Suite
+ Appropriate unit test to test all functional methods
+ Appropriate driver class to test all functional methods in the project
