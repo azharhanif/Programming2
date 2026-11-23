@@ -1,7 +1,5 @@
-# Programming 2 — Lecture 13: File I/O in Java
+# Programming 2 — Lecture 13 Lecture 14: File I/O in Java
 ## Reading, validating, creating objects, and writing files — preparing for Lab 8
-
-**This lecture combines the former Lecture 13 (TextIO Input) and Lecture 14 (TextIO Output).**
 
 ---
 
@@ -116,7 +114,7 @@ This one list can hold both `LectureCourse` and `LabCourse` objects because both
 
 That is inheritance and polymorphism working together. The file-loading code decides which concrete object to construct. Later code can process every object through a `Course` reference.
 
-### Important details in the teacher solution
+### Important details in the solution
 
 The Lab 8 IntelliJ solution uses `final` fields in `Course`. The course information is validated in the constructor and then cannot be reassigned.
 
@@ -462,7 +460,7 @@ If the first field is neither `LECTURE` nor `LAB`, the solution throws an `Illeg
 
 ## 9. Reject duplicate course codes
 
-The IntelliJ teacher solution includes an additional validation step: it rejects duplicate course codes, ignoring letter case.
+The IntelliJ solution includes an additional validation step: it rejects duplicate course codes, ignoring letter case.
 
 ```java
 if (findCourse(courses, code) != null) {
@@ -558,7 +556,7 @@ Do not catch every possible exception and silently ignore it. The program should
 
 ## 11. The complete `loadCourses` method
 
-The following is the core method from the Lab 8 teacher solution. Read it in stages: opening the file, reading each line, validating fields, creating the object, checking for duplicates, and adding the object.
+The following is the core method from the Lab 8 solution. Read it in stages: opening the file, reading each line, validating fields, creating the object, checking for duplicates, and adding the object.
 
 ```java
 public ArrayList<Course> loadCourses(String filename) throws IOException {
@@ -1013,7 +1011,7 @@ The exact spacing can depend on the console, but the important results are:
 
 ## 20. Run the Lab 8 solution in IntelliJ IDEA
 
-The teacher solution is organized as a small Java project:
+The solution is organized as a small Java project:
 
 ```text
 Lab8_IntelliJ_Ready/
@@ -1055,7 +1053,7 @@ javac -Xlint:all -d out src/*.java
 java -cp out Lab8Main
 ```
 
-The supplied teacher solution has been compiled and run successfully with the provided input file. It is compatible with Java 8 or later.
+The supplied solution has been compiled and run successfully with the provided input file. It is compatible with Java 8 or later.
 
 ## 21. Common mistakes and how to avoid them
 
