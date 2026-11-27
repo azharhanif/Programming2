@@ -510,6 +510,162 @@ public ArrayList<Course> getCourses() {
 
 This returns a **defensive copy**. A caller can modify the returned list without directly changing the catalogue's internal list.
 
+### 6.4.1 Understanding Defensive Copies
+
+In `CourseCatalog`, we have an internal list:
+
+```java
+private ArrayList<Course> courses = new ArrayList<>();
+```
+
+The `private` keyword prevents other classes from directly accessing this list.
+
+The `getCourses()` method returns a defensive copy:
+
+```java
+public ArrayList<Course> getCourses() {
+    return new ArrayList<>(courses);
+}
+```
+
+But what exactly is a **defensive copy**, and why do we need it?
+
+#### A. What happens without a defensive copy?
+
+Suppose we implemented `getCourses()` like this:
+
+```java
+public ArrayList<Course> getCourses() {
+    return courses;
+}
+```
+
+Now consider this code in another class:
+
+```java
+ArrayList<Course> myCourses = catalog.getCourses();
+
+myCourses.clear();
+```
+
+Because `myCourses` refers to the actual internal list, calling `clear()` removes all courses from the catalogue!
+
+This is a problem because another class can accidentally modify the internal data managed by `CourseCatalog`.
+
+#### B. What happens with a defensive copy?
+
+Instead, we use:
+
+```java
+public ArrayList<Course> getCourses() {
+    return new ArrayList<>(courses);
+}
+```
+
+The expression:
+
+```java
+new ArrayList<>(courses)
+```
+
+creates a new list containing the same course references as the original list.
+
+Now consider:
+
+```java
+ArrayList<Course> myCourses = catalog.getCourses();
+
+myCourses.clear();
+```
+
+This time:
+
+- `myCourses` is a separate list.
+- `myCourses.clear()` removes elements only from `myCourses`.
+- The original `courses` list inside `CourseCatalog` remains unchanged.
+
+#### C. Visualizing a defensive copy
+
+Initially, the catalogue contains three courses:
+
+```text
+CourseCatalog
+    |
+    v
+Internal ArrayList
++----------+
+| Course A |
+| Course B |
+| Course C |
++----------+
+```
+
+When another class calls `getCourses()`, Java creates a separate list:
+
+```text
+CourseCatalog                  Other Class
+    |                              |
+    v                              v
+Internal ArrayList             Returned ArrayList
++----------+                   +----------+
+| Course A |<----------------->| Course A |
+| Course B |<----------------->| Course B |
+| Course C |<----------------->| Course C |
++----------+                   +----------+
+```
+
+Notice that there are two separate list structures, but the course objects are shared.
+
+If the caller clears its list, the catalogue's list is not affected.
+
+#### D. Important: A defensive copy is a shallow copy
+
+The implementation:
+
+```java
+return new ArrayList<>(courses);
+```
+
+creates a **shallow copy**, not a deep copy.
+
+It copies the list structure, but it does not create new Course objects. Both lists contain references to the same objects.
+
+For example:
+
+```java
+ArrayList<Course> myCourses = catalog.getCourses();
+
+// This does NOT remove courses from the catalogue.
+myCourses.clear();
+```
+
+However, if `Course` had a setter, this could modify a shared object:
+
+```java
+ArrayList<Course> myCourses = catalog.getCourses();
+
+// Both lists refer to the same Course object.
+myCourses.get(0).setTitle("Changed Title");
+```
+
+The changed title could also be visible through the catalogue.
+
+In our Lab 9 solution, the fields in `Course` are declared `final`, so the course information cannot be changed through setters.
+
+#### E. Why is this important?
+
+A defensive copy supports **encapsulation**.
+
+Encapsulation means that a class controls access to its internal data. Other classes can obtain information through public methods without receiving unrestricted access to the class's internal collection.
+
+Remember:
+
+- Returning the original list exposes the internal collection.
+- Returning a defensive copy protects the original list structure.
+- A shallow copy still shares references to the objects inside the list.
+
+**Key takeaway:** A defensive copy protects the collection's structure from external modification, but a shallow defensive copy does not automatically protect the objects stored inside the collection.
+
 ### 6.5 `Lab9GUI.java` — the interface and event handlers
 
 The GUI class extends `JFrame`:
